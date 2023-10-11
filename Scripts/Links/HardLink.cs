@@ -1,9 +1,15 @@
 ﻿using System;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
+
 namespace TinyReactive.Links {
-    [Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+    [InlineProperty]
+#endif
+    [Serializable]
     public sealed class HardLink<T> : SmartLink<T> where T : MonoBehaviour {
         public T GetInstance(Transform parent) => GetInstance(parent, _ => { });
 
