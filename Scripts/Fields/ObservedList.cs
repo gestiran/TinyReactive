@@ -21,9 +21,9 @@ namespace TinyReactive.Fields {
     [ShowInInspector, InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class ObservedList<T> : IEnumerable<T>, IEnumerator<T> {
-        public int count => _value.Count;
-        public T Current => _value[_currentId];
-        object IEnumerator.Current => _value[_currentId];
+        public int count => list.Count;
+        public T Current => list[_currentId];
+        object IEnumerator.Current => list[_currentId];
         
         private readonly List<ActionListener> _onAdd;
         private readonly List<ActionListener<T>> _onAddWithValue;
@@ -32,10 +32,10 @@ namespace TinyReactive.Fields {
         private readonly List<ActionListener> _onClear;
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
-        [ShowInInspector, HideReferenceObjectPicker, HideDuplicateReferenceBox,
-         ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, DraggableItems = false, DefaultExpandedState = false)]
+        [ShowInInspector, HideReferenceObjectPicker, HideDuplicateReferenceBox]
+         [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, DraggableItems = false, DefaultExpandedState = false)]
     #endif
-        private List<T> _value;
+        internal List<T> list;
         
         private int _currentId;
         private bool _lock;
@@ -47,7 +47,7 @@ namespace TinyReactive.Fields {
         public ObservedList(T[] value, int capacity = Observed.CAPACITY) : this(value.ToList(), capacity) { }
         
         public ObservedList(List<T> value, int capacity = Observed.CAPACITY) {
-            _value = value;
+            list = value;
             _onAdd = new List<ActionListener>(capacity);
             _onAddWithValue = new List<ActionListener<T>>(capacity);
             _onRemove = new List<ActionListener>(capacity);
@@ -57,12 +57,12 @@ namespace TinyReactive.Fields {
         }
         
         public T this[int index] {
-            get => _value[index];
+            get => list[index];
             set {
                 _onRemove.Invoke();
-                _onRemoveWithValue.Invoke(_value[index]);
+                _onRemoveWithValue.Invoke(this.list[index]);
                 
-                _value[index] = value;
+                this.list[index] = value;
                 
                 _onAdd.Invoke();
                 _onAddWithValue.Invoke(value);
@@ -75,13 +75,13 @@ namespace TinyReactive.Fields {
         }
         
         public void Add([NotNull] params T[] values) {
-            _value.AddRange(values);
+            list.AddRange(values);
             _onAdd.Invoke();
             _onAddWithValue.Invoke(values);
         }
         
         public void Add([NotNull] T value) {
-            _value.Add(value);
+            this.list.Add(value);
             _onAdd.Invoke();
             _onAddWithValue.Invoke(value);
         }
@@ -108,7 +108,7 @@ namespace TinyReactive.Fields {
             }
             
             _lock = true;
-            _value.AddRange(values);
+            list.AddRange(values);
             DateTime now = DateTime.Now;
             
             for (int i = _onAdd.Count - 1; i >= 0; i--) {
@@ -159,7 +159,7 @@ namespace TinyReactive.Fields {
             }
             
             _lock = true;
-            _value.Add(value);
+            this.list.Add(value);
             DateTime now = DateTime.Now;
             
             for (int i = _onAdd.Count - 1; i >= 0; i--) {
@@ -202,7 +202,7 @@ namespace TinyReactive.Fields {
         
         public void Remove([NotNull] params T[] values) {
             for (int i = values.Length - 1; i >= 0; i--) {
-                _value.Remove(values[i]);
+                list.Remove(values[i]);
             }
             
             _onRemove.Invoke();
@@ -210,7 +210,7 @@ namespace TinyReactive.Fields {
         }
         
         public bool Remove([NotNull] T value) {
-            if (_value.Remove(value)) {
+            if (this.list.Remove(value)) {
                 _onRemove.Invoke();
                 _onRemoveWithValue.Invoke(value);
                 return true;
@@ -221,8 +221,8 @@ namespace TinyReactive.Fields {
         
         public void RemoveAll() {
             for (int i = count - 1; i >= 0; i--) {
-                T value = _value[i];
-                _value.RemoveAt(i);
+                T value = this.list[i];
+                this.list.RemoveAt(i);
                 _onRemove.Invoke();
                 _onRemoveWithValue.Invoke(value);
             }
@@ -243,7 +243,7 @@ namespace TinyReactive.Fields {
             _lock = true;
             
             for (int i = values.Length - 1; i >= 0; i--) {
-                _value.Remove(values[i]);
+                list.Remove(values[i]);
             }
             
             DateTime now = DateTime.Now;
@@ -296,7 +296,7 @@ namespace TinyReactive.Fields {
             }
             
             _lock = true;
-            _value.Remove(value);
+            this.list.Remove(value);
             DateTime now = DateTime.Now;
             
             for (int i = _onRemove.Count - 1; i >= 0; i--) {
@@ -333,17 +333,17 @@ namespace TinyReactive.Fields {
         }
         
         public void Clear() {
-            _value.Clear();
+            list.Clear();
             _onClear.Invoke();
         }
         
-        public int IndexOf(T element) => _value.IndexOf(element);
+        public int IndexOf(T element) => list.IndexOf(element);
         
-        public bool Contains(T element) => _value.Contains(element);
+        public bool Contains(T element) => list.Contains(element);
         
         public void RemoveAt(int id) {
-            T element = _value[id];
-            _value.RemoveAt(id);
+            T element = list[id];
+            list.RemoveAt(id);
             _onRemove.Invoke();
             _onRemoveWithValue.Invoke(element);
         }
@@ -411,7 +411,7 @@ namespace TinyReactive.Fields {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         
         public IEnumerator<T> GetEnumerator() {
-            foreach (T value in _value) {
+            foreach (T value in list) {
                 yield return value;
             }
         }
@@ -419,14 +419,14 @@ namespace TinyReactive.Fields {
         public bool MoveNext() {
             _currentId++;
             
-            return _currentId < _value.Count;
+            return _currentId < list.Count;
         }
         
         public void Reset() => _currentId = -1;
         
         public void Dispose() {
             Reset();
-            _value = null;
+            list = null;
             _onAdd.Clear();
             _onAddWithValue.Clear();
             _onRemove.Clear();
