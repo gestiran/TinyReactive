@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 namespace TinyReactive.Extensions {
@@ -83,6 +84,59 @@ namespace TinyReactive.Extensions {
                     Debug.LogException(exception);
                 }
             }
+        }
+        
+        [Pure]
+        public static UnloadPool Create(this UnloadPool unload) {
+            if (unload != null) {
+                return unload;
+            }
+            
+            return new UnloadPool();
+            
+        }
+        
+        [Pure]
+        public static UnloadPool Reset(this UnloadPool unload) {
+            if (unload != null) {
+                unload.Unload();
+            }
+            
+            return null;
+        }
+        
+        public static void Recreate(this UnloadPool unload, out UnloadPool result) {
+            if (unload != null) {
+                unload.Unload();
+            }
+            
+            result = new UnloadPool();
+        }
+        
+        public static void Update(this UnloadPool unload, out UnloadPool result, UnloadPool reference) {
+            if (unload != null) {
+                unload.Unload();
+            }
+            
+            result = reference;
+        }
+        
+        [Pure]
+        public static UnloadPool Update(this UnloadPool unload, UnloadPool reference) {
+            if (unload != null) {
+                unload.Unload();
+            }
+            
+            return reference;
+        }
+        
+        [Pure]
+        public static UnloadPool Recreate(this UnloadPool unload) {
+            if (unload != null) {
+                unload.Unload();
+            }
+            
+            return new UnloadPool();
         }
     }
 }
