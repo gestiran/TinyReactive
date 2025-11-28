@@ -21,13 +21,13 @@ namespace TinyReactive.Fields {
 #if ODIN_INSPECTOR
     [ShowInInspector, InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
-    public sealed class Observed<T> : IEquatable<Observed<T>>, IEquatable<T>, IUnload {
+    public class Observed<T> : IEquatable<Observed<T>>, IEquatable<T>, IUnload {
         public T value => _value;
         
     #if ODIN_INSPECTOR
         [ShowInInspector, HorizontalGroup, HideLabel, OnValueChanged("@Set(_value)"), HideDuplicateReferenceBox, HideReferenceObjectPicker]
     #endif
-        private T _value;
+        protected T _value;
         
         private readonly int _id;
         private readonly List<ActionListener> _listeners;
@@ -52,7 +52,7 @@ namespace TinyReactive.Fields {
         
         public void SetSilent(T newValue) => _value = newValue;
         
-        public void Set(T newValue) {
+        public virtual void Set(T newValue) {
             T current = _value;
             _value = newValue;
             _listeners.Invoke();
@@ -168,7 +168,7 @@ namespace TinyReactive.Fields {
         
     #endregion
         
-        public void Unload() {
+        public virtual void Unload() {
             _listeners.Clear();
             _listenersValue.Clear();
             _listenersChange.Clear();

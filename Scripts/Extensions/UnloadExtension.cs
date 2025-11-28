@@ -138,5 +138,10 @@ namespace TinyReactive.Extensions {
             
             return new UnloadPool();
         }
+        
+        public static T WithUnload<T>(this T obj, UnloadPool unload) where T : IUnload {
+            unload.Add(obj);
+            return obj;
+        }
     }
 }
