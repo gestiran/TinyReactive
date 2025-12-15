@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System.Collections.Generic;
-using TinyReactive.Extensions;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -15,10 +14,10 @@ namespace TinyReactive.Fields {
     public sealed class ObservedDictionary<TKey, TValue> {
         public int count => root.Count;
         
-        private readonly List<ActionListener> _onAdd;
-        private readonly List<ActionListener<TValue>> _onAddWithValue;
-        private readonly List<ActionListener> _onRemove;
-        private readonly List<ActionListener<TValue>> _onRemoveWithValue;
+        private readonly LazyList<ActionListener> _onAdd;
+        private readonly LazyList<ActionListener<TValue>> _onAddWithValue;
+        private readonly LazyList<ActionListener> _onRemove;
+        private readonly LazyList<ActionListener<TValue>> _onRemoveWithValue;
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [ShowInInspector, LabelText("Elements")]
@@ -32,10 +31,10 @@ namespace TinyReactive.Fields {
         
         public ObservedDictionary(Dictionary<TKey, TValue> value, int capacity = Observed.CAPACITY) {
             root = value;
-            _onAdd = new List<ActionListener>(capacity);
-            _onAddWithValue = new List<ActionListener<TValue>>(capacity);
-            _onRemove = new List<ActionListener>(capacity);
-            _onRemoveWithValue = new List<ActionListener<TValue>>(capacity);
+            _onAdd = new LazyList<ActionListener>(capacity);
+            _onAddWithValue = new LazyList<ActionListener<TValue>>(capacity);
+            _onRemove = new LazyList<ActionListener>(capacity);
+            _onRemoveWithValue = new LazyList<ActionListener<TValue>>(capacity);
             
         #if ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay = new List<TValue>();
@@ -49,8 +48,26 @@ namespace TinyReactive.Fields {
         
         public void Add(TKey key, TValue value) {
             root.Add(key, value);
-            _onAdd.Invoke();
-            _onAddWithValue.Invoke(value);
+            
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
+            
+            if (_onAdd.Count > 0) {
+                foreach (ActionListener listener in _onAdd) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_onAddWithValue.Count > 0) {
+                foreach (ActionListener<TValue> listener in _onAddWithValue) {
+                    listener.Invoke(value);
+                }
+            }
             
         #if ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay.Add(value);
@@ -62,8 +79,25 @@ namespace TinyReactive.Fields {
                 return false;
             }
             
-            _onRemove.Invoke();
-            _onRemoveWithValue.Invoke(value);
+            if (_onRemove.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onRemoveWithValue.isDirty) {
+                _onRemoveWithValue.Apply();
+            }
+            
+            if (_onRemove.Count > 0) {
+                foreach (ActionListener listener in _onRemove) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_onRemoveWithValue.Count > 0) {
+                foreach (ActionListener<TValue> listener in _onRemoveWithValue) {
+                    listener.Invoke(value);
+                }
+            }
             
         #if ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay.Remove(value);
@@ -89,8 +123,26 @@ namespace TinyReactive.Fields {
                     }
                     
                     root.Remove(dataPair[dataId].Key);
-                    _onRemove.Invoke();
-                    _onRemoveWithValue.Invoke(value);
+                    
+                    if (_onRemove.isDirty) {
+                        _onAdd.Apply();
+                    }
+                    
+                    if (_onRemoveWithValue.isDirty) {
+                        _onRemoveWithValue.Apply();
+                    }
+                    
+                    if (_onRemove.Count > 0) {
+                        foreach (ActionListener listener in _onRemove) {
+                            listener.Invoke();
+                        }
+                    }
+                    
+                    if (_onRemoveWithValue.Count > 0) {
+                        foreach (ActionListener<TValue> listener in _onRemoveWithValue) {
+                            listener.Invoke(value);
+                        }
+                    }
                     
                 #if ODIN_INSPECTOR && UNITY_EDITOR
                     _inspectorDisplay.Remove(value);

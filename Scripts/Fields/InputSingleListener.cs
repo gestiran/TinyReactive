@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
-using System.Collections.Generic;
-using TinyReactive.Extensions;
 
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
@@ -14,9 +12,9 @@ namespace TinyReactive.Fields {
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputSingleListener : IUnload {
-        private readonly List<Func<bool>> _listeners;
+        private readonly LazyList<Func<bool>> _listeners;
         
-        public InputSingleListener() => _listeners = new List<Func<bool>>(Observed.CAPACITY);
+        public InputSingleListener() => _listeners = new LazyList<Func<bool>>(Observed.CAPACITY);
         
         public InputSingleListener(Func<bool> action) : this() => AddListener(action);
         
@@ -25,7 +23,19 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR
         [Button]
     #endif
-        public void Send(bool expectedResult = true) => _listeners.InvokeAny(expectedResult);
+        public void Send(bool expectedResult = true) {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (Func<bool> listener in _listeners) {
+                    if (listener.Invoke() == expectedResult) {
+                        return;
+                    }
+                }
+            }
+        }
         
     #region Add
         

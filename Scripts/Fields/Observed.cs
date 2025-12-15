@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
-using System.Collections.Generic;
-using TinyReactive.Extensions;
 
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
@@ -30,24 +28,24 @@ namespace TinyReactive.Fields {
         protected T _value;
         
         private readonly int _id;
-        private readonly List<ActionListener> _listeners;
-        private readonly List<ActionListener<T>> _listenersValue;
-        private readonly List<ActionListener<T, T>> _listenersChange;
+        private readonly LazyList<ActionListener> _listeners;
+        private readonly LazyList<ActionListener<T>> _listenersValue;
+        private readonly LazyList<ActionListener<T, T>> _listenersChange;
         
         public Observed(T data, int capacity = Observed.CAPACITY) {
             _value = data;
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(capacity);
-            _listenersValue = new List<ActionListener<T>>(capacity);
-            _listenersChange = new List<ActionListener<T, T>>(capacity);
+            _listeners = new LazyList<ActionListener>(capacity);
+            _listenersValue = new LazyList<ActionListener<T>>(capacity);
+            _listenersChange = new LazyList<ActionListener<T, T>>(capacity);
         }
         
         public Observed() {
             _value = default;
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(Observed.CAPACITY);
-            _listenersValue = new List<ActionListener<T>>(Observed.CAPACITY);
-            _listenersChange = new List<ActionListener<T, T>>(Observed.CAPACITY);
+            _listeners = new LazyList<ActionListener>(Observed.CAPACITY);
+            _listenersValue = new LazyList<ActionListener<T>>(Observed.CAPACITY);
+            _listenersChange = new LazyList<ActionListener<T, T>>(Observed.CAPACITY);
         }
         
         public void SetSilent(T newValue) => _value = newValue;
@@ -55,9 +53,36 @@ namespace TinyReactive.Fields {
         public virtual void Set(T newValue) {
             T current = _value;
             _value = newValue;
-            _listeners.Invoke();
-            _listenersValue.Invoke(newValue);
-            _listenersChange.Invoke(current, newValue);
+            
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listenersValue.isDirty) {
+                _listenersValue.Apply();
+            }
+            
+            if (_listenersChange.isDirty) {
+                _listenersChange.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_listenersValue.Count > 0) {
+                foreach (ActionListener<T> listener in _listenersValue) {
+                    listener.Invoke(newValue);
+                }
+            }
+            
+            if (_listenersChange.Count > 0) {
+                foreach (ActionListener<T, T> listener in _listenersChange) {
+                    listener.Invoke(current, newValue);
+                }
+            }
         }
         
     #region Add
@@ -95,7 +120,7 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerFirst(ActionListener listener) {
-            if (_listeners.Count > 0) {
+            if (_listeners.CacheCount > 0) {
                 _listeners.Insert(0, listener);
             } else {
                 AddListener(listener);
@@ -110,7 +135,7 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerFirst(ActionListener<T> listener) {
-            if (_listenersValue.Count > 0) {
+            if (_listenersValue.CacheCount > 0) {
                 _listenersValue.Insert(0, listener);
             } else {
                 AddListener(listener);
@@ -125,8 +150,8 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerLast(ActionListener listener) {
-            if (_listeners.Count > 0) {
-                _listeners.Insert(_listeners.Count - 1, listener);
+            if (_listeners.CacheCount > 0) {
+                _listeners.Insert(_listeners.CacheCount - 1, listener);
             } else {
                 AddListener(listener);
             }
@@ -140,8 +165,8 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerLast(ActionListener<T> listener) {
-            if (_listenersValue.Count > 0) {
-                _listenersValue.Insert(_listenersValue.Count - 1, listener);
+            if (_listenersValue.CacheCount > 0) {
+                _listenersValue.Insert(_listenersValue.CacheCount - 1, listener);
             } else {
                 AddListener(listener);
             }

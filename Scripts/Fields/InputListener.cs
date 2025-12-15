@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
-using System.Collections.Generic;
-using TinyReactive.Extensions;
 
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
@@ -15,11 +13,11 @@ namespace TinyReactive.Fields {
 #endif
     public sealed class InputListener : IUnload {
         private readonly int _id;
-        private readonly List<ActionListener> _listeners;
+        private readonly LazyList<ActionListener> _listeners;
         
         public InputListener(int capacity = Observed.CAPACITY) {
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(capacity);
+            _listeners = new LazyList<ActionListener>(capacity);
         }
         
         public InputListener(ActionListener action) : this() => AddListener(action);
@@ -29,7 +27,17 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR
         [Button]
     #endif
-        public void Send() => _listeners.Invoke();
+        public void Send() {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+        }
         
     #region Add
         
@@ -62,13 +70,13 @@ namespace TinyReactive.Fields {
 #endif
     public sealed class InputListener<T> : IUnload {
         private readonly int _id;
-        private readonly List<ActionListener> _listeners;
-        private readonly List<ActionListener<T>> _listenersValue;
+        private readonly LazyList<ActionListener> _listeners;
+        private readonly LazyList<ActionListener<T>> _listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(capacity);
-            _listenersValue = new List<ActionListener<T>>(capacity);
+            _listeners = new LazyList<ActionListener>(capacity);
+            _listenersValue = new LazyList<ActionListener<T>>(capacity);
         }
         
         public InputListener(ActionListener action) : this() => AddListener(action);
@@ -87,14 +95,50 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR
         [Button]
     #endif
-        public void Send(T data) {
-            _listeners.Invoke();
-            _listenersValue.Invoke(data);
+        public void Send(T value) {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listenersValue.isDirty) {
+                _listenersValue.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_listenersValue.Count > 0) {
+                foreach (ActionListener<T> listener in _listenersValue) {
+                    listener.Invoke(value);
+                }
+            }
         }
         
-        public void Send(params T[] data) {
-            _listeners.Invoke();
-            _listenersValue.Invoke(data);
+        public void Send(params T[] values) {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listenersValue.isDirty) {
+                _listenersValue.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_listenersValue.Count > 0) {
+                foreach (T value in values) {
+                    foreach (ActionListener<T> listener in _listenersValue) {
+                        listener.Invoke(value);
+                    }   
+                }
+            }
         }
         
     #region Add
@@ -143,13 +187,13 @@ namespace TinyReactive.Fields {
 #endif
     public sealed class InputListener<T1, T2> : IUnload {
         private readonly int _id;
-        private readonly List<ActionListener> _listeners;
-        private readonly List<ActionListener<T1, T2>> _listenersValue;
+        private readonly LazyList<ActionListener> _listeners;
+        private readonly LazyList<ActionListener<T1, T2>> _listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(capacity);
-            _listenersValue = new List<ActionListener<T1, T2>>(capacity);
+            _listeners = new LazyList<ActionListener>(capacity);
+            _listenersValue = new LazyList<ActionListener<T1, T2>>(capacity);
         }
         
         public InputListener(ActionListener action) : this() => AddListener(action);
@@ -163,9 +207,26 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR
         [Button]
     #endif
-        public void Send(T1 data1, T2 data2) {
-            _listeners.Invoke();
-            _listenersValue.Invoke(data1, data2);
+        public void Send(T1 value1, T2 value2) {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listenersValue.isDirty) {
+                _listenersValue.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_listenersValue.Count > 0) {
+                foreach (ActionListener<T1, T2> listener in _listenersValue) {
+                    listener.Invoke(value1, value2);
+                }
+            }
         }
         
     #region Add
@@ -214,13 +275,13 @@ namespace TinyReactive.Fields {
 #endif
     public sealed class InputListener<T1, T2, T3> : IUnload {
         private readonly int _id;
-        private readonly List<ActionListener> _listeners;
-        private readonly List<ActionListener<T1, T2, T3>> _listenersValue;
+        private readonly LazyList<ActionListener> _listeners;
+        private readonly LazyList<ActionListener<T1, T2, T3>> _listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
             _id = Observed.globalId++;
-            _listeners = new List<ActionListener>(capacity);
-            _listenersValue = new List<ActionListener<T1, T2, T3>>(capacity);
+            _listeners = new LazyList<ActionListener>(capacity);
+            _listenersValue = new LazyList<ActionListener<T1, T2, T3>>(capacity);
         }
         
         public InputListener(ActionListener action) : this() => AddListener(action);
@@ -234,9 +295,26 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR
         [Button]
     #endif
-        public void Send(T1 data1, T2 data2, T3 data3) {
-            _listeners.Invoke();
-            _listenersValue.Invoke(data1, data2, data3);
+        public void Send(T1 value1, T2 value2, T3 value3) {
+            if (_listeners.isDirty) {
+                _listeners.Apply();
+            }
+            
+            if (_listenersValue.isDirty) {
+                _listenersValue.Apply();
+            }
+            
+            if (_listeners.Count > 0) {
+                foreach (ActionListener listener in _listeners) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_listenersValue.Count > 0) {
+                foreach (ActionListener<T1, T2, T3> listener in _listenersValue) {
+                    listener.Invoke(value1, value2, value3);
+                }
+            }
         }
         
     #region Add
