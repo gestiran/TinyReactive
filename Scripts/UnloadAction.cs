@@ -9,6 +9,10 @@ namespace TinyReactive {
         
         public UnloadAction(Action action) => _action = action;
         
+        public static implicit operator Action(UnloadAction unload) => unload._action;
+        
+        public static implicit operator UnloadAction(Action action) => new UnloadAction(action);
+        
         public void Unload() => _action.Invoke();
     }
 }

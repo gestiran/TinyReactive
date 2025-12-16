@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using TinyReactive.Extensions;
 using TinyUtilities;
 using UnityEngine;
 
@@ -25,11 +24,11 @@ namespace TinyReactive.Fields {
         public T Current => list[_currentId];
         object IEnumerator.Current => list[_currentId];
         
-        private readonly List<ActionListener> _onAdd;
-        private readonly List<ActionListener<T>> _onAddWithValue;
-        private readonly List<ActionListener> _onRemove;
-        private readonly List<ActionListener<T>> _onRemoveWithValue;
-        private readonly List<ActionListener> _onClear;
+        private readonly LazyList<ActionListener> _onAdd;
+        private readonly LazyList<ActionListener<T>> _onAddWithValue;
+        private readonly LazyList<ActionListener> _onRemove;
+        private readonly LazyList<ActionListener<T>> _onRemoveWithValue;
+        private readonly LazyList<ActionListener> _onClear;
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [ShowInInspector, HideReferenceObjectPicker, HideDuplicateReferenceBox]
@@ -48,24 +47,58 @@ namespace TinyReactive.Fields {
         
         public ObservedList(List<T> value, int capacity = Observed.CAPACITY) {
             list = value;
-            _onAdd = new List<ActionListener>(capacity);
-            _onAddWithValue = new List<ActionListener<T>>(capacity);
-            _onRemove = new List<ActionListener>(capacity);
-            _onRemoveWithValue = new List<ActionListener<T>>(capacity);
-            _onClear = new List<ActionListener>(capacity);
+            _onAdd = new LazyList<ActionListener>(capacity);
+            _onAddWithValue = new LazyList<ActionListener<T>>(capacity);
+            _onRemove = new LazyList<ActionListener>(capacity);
+            _onRemoveWithValue = new LazyList<ActionListener<T>>(capacity);
+            _onClear = new LazyList<ActionListener>(capacity);
             _currentId = -1;
         }
         
         public T this[int index] {
             get => list[index];
             set {
-                _onRemove.Invoke();
-                _onRemoveWithValue.Invoke(this.list[index]);
+                if (_onRemove.isDirty) {
+                    _onRemove.Apply();
+                }
                 
-                this.list[index] = value;
+                if (_onRemoveWithValue.isDirty) {
+                    _onRemoveWithValue.Apply();
+                }
                 
-                _onAdd.Invoke();
-                _onAddWithValue.Invoke(value);
+                if (_onRemove.Count > 0) {
+                    foreach (ActionListener listener in _onRemove) {
+                        listener.Invoke();
+                    }
+                }
+                
+                if (_onRemoveWithValue.Count > 0) {
+                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
+                        listener.Invoke(list[index]);
+                    }
+                }
+                
+                list[index] = value;
+                
+                if (_onAdd.isDirty) {
+                    _onAdd.Apply();
+                }
+                
+                if (_onAddWithValue.isDirty) {
+                    _onAddWithValue.Apply();
+                }
+                
+                if (_onAdd.Count > 0) {
+                    foreach (ActionListener listener in _onAdd) {
+                        listener.Invoke();
+                    }
+                }
+                
+                if (_onAddWithValue.Count > 0) {
+                    foreach (ActionListener<T> listener in _onAddWithValue) {
+                        listener.Invoke(value);
+                    }
+                }
             }
         }
         
@@ -76,14 +109,52 @@ namespace TinyReactive.Fields {
         
         public void Add([NotNull] params T[] values) {
             list.AddRange(values);
-            _onAdd.Invoke();
-            _onAddWithValue.Invoke(values);
+            
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
+            
+            if (_onAdd.Count > 0) {
+                foreach (ActionListener listener in _onAdd) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_onAddWithValue.Count > 0) {
+                foreach (T value in values) {
+                    foreach (ActionListener<T> listener in _onAddWithValue) {
+                        listener.Invoke(value);
+                    }
+                }
+            }
         }
         
         public void Add([NotNull] T value) {
-            this.list.Add(value);
-            _onAdd.Invoke();
-            _onAddWithValue.Invoke(value);
+            list.Add(value);
+            
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
+            
+            if (_onAdd.Count > 0) {
+                foreach (ActionListener listener in _onAdd) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_onAddWithValue.Count > 0) {
+                foreach (ActionListener<T> listener in _onAddWithValue) {
+                    listener.Invoke(value);
+                }
+            }
         }
         
         [Obsolete("Can't add nothing!", true)]
@@ -159,7 +230,7 @@ namespace TinyReactive.Fields {
             }
             
             _lock = true;
-            this.list.Add(value);
+            list.Add(value);
             DateTime now = DateTime.Now;
             
             for (int i = _onAdd.Count - 1; i >= 0; i--) {
@@ -201,18 +272,60 @@ namespace TinyReactive.Fields {
         }
         
         public void Remove([NotNull] params T[] values) {
-            for (int i = values.Length - 1; i >= 0; i--) {
-                list.Remove(values[i]);
+            if (_onRemove.isDirty) {
+                _onRemove.Apply();
             }
             
-            _onRemove.Invoke();
-            _onRemoveWithValue.Invoke(values);
+            if (_onRemoveWithValue.isDirty) {
+                _onRemoveWithValue.Apply();
+            }
+            
+            foreach (T value in values) {
+                int index = list.IndexOf(value);
+                
+                if (index >= 0) {
+                    if (_onRemove.Count > 0) {
+                        foreach (ActionListener listener in _onRemove) {
+                            listener.Invoke();
+                        }
+                    }
+                    
+                    if (_onRemoveWithValue.Count > 0) {
+                        foreach (ActionListener<T> listener in _onRemoveWithValue) {
+                            listener.Invoke(value);
+                        }
+                    }
+                    
+                    list.RemoveAt(index);
+                }
+            }
         }
         
         public bool Remove([NotNull] T value) {
-            if (this.list.Remove(value)) {
-                _onRemove.Invoke();
-                _onRemoveWithValue.Invoke(value);
+            int index = list.IndexOf(value);
+            
+            if (index >= 0) {
+                if (_onRemove.isDirty) {
+                    _onRemove.Apply();
+                }
+                
+                if (_onRemoveWithValue.isDirty) {
+                    _onRemoveWithValue.Apply();
+                }
+                
+                if (_onRemove.Count > 0) {
+                    foreach (ActionListener listener in _onRemove) {
+                        listener.Invoke();
+                    }
+                }
+                
+                if (_onRemoveWithValue.Count > 0) {
+                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
+                        listener.Invoke(value);
+                    }
+                }
+                
+                list.RemoveAt(index);
                 return true;
             }
             
@@ -221,10 +334,29 @@ namespace TinyReactive.Fields {
         
         public void RemoveAll() {
             for (int i = count - 1; i >= 0; i--) {
-                T value = this.list[i];
-                this.list.RemoveAt(i);
-                _onRemove.Invoke();
-                _onRemoveWithValue.Invoke(value);
+                T value = list[i];
+                
+                if (_onRemove.isDirty) {
+                    _onRemove.Apply();
+                }
+                
+                if (_onRemoveWithValue.isDirty) {
+                    _onRemoveWithValue.Apply();
+                }
+                
+                if (_onRemove.Count > 0) {
+                    foreach (ActionListener listener in _onRemove) {
+                        listener.Invoke();
+                    }
+                }
+                
+                if (_onRemoveWithValue.Count > 0) {
+                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
+                        listener.Invoke(value);
+                    }
+                }
+                
+                list.RemoveAt(i);
             }
         }
         
@@ -296,7 +428,7 @@ namespace TinyReactive.Fields {
             }
             
             _lock = true;
-            this.list.Remove(value);
+            list.Remove(value);
             DateTime now = DateTime.Now;
             
             for (int i = _onRemove.Count - 1; i >= 0; i--) {
@@ -333,8 +465,17 @@ namespace TinyReactive.Fields {
         }
         
         public void Clear() {
+            if (_onClear.isDirty) {
+                _onClear.Apply();
+            }
+            
+            if (_onClear.Count > 0) {
+                foreach (ActionListener listener in _onClear) {
+                    listener.Invoke();
+                }
+            }
+            
             list.Clear();
-            _onClear.Invoke();
         }
         
         public int IndexOf(T element) => list.IndexOf(element);
@@ -343,9 +484,28 @@ namespace TinyReactive.Fields {
         
         public void RemoveAt(int id) {
             T element = list[id];
+            
+            if (_onRemove.isDirty) {
+                _onRemove.Apply();
+            }
+            
+            if (_onRemoveWithValue.isDirty) {
+                _onRemoveWithValue.Apply();
+            }
+            
+            if (_onRemove.Count > 0) {
+                foreach (ActionListener listener in _onRemove) {
+                    listener.Invoke();
+                }
+            }
+            
+            if (_onRemoveWithValue.Count > 0) {
+                foreach (ActionListener<T> listener in _onRemoveWithValue) {
+                    listener.Invoke(element);
+                }
+            }
+            
             list.RemoveAt(id);
-            _onRemove.Invoke();
-            _onRemoveWithValue.Invoke(element);
         }
         
         // Resharper disable Unity.ExpensiveCode
@@ -418,7 +578,6 @@ namespace TinyReactive.Fields {
         
         public bool MoveNext() {
             _currentId++;
-            
             return _currentId < list.Count;
         }
         
