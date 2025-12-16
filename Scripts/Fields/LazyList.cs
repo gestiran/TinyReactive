@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace TinyReactive.Fields {
     internal sealed class LazyList<T> : ICollection<T> {
-        public int Count => _elements.Count;
-        public int CacheCount => _cache.Count;
+        public int Count { get; private set; }
+        public int cacheCount { get; private set; }
         public bool IsReadOnly => false;
         
         public bool isDirty { get; private set; }
@@ -25,41 +25,61 @@ namespace TinyReactive.Fields {
             _cache = new List<T>(capacity);
         }
         
-        public IEnumerator<T> GetEnumerator() => _elements.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() {
+            for (int i = 0; i < Count; i++) {
+                yield return _elements[i];
+            }
+        }
         
-        IEnumerator IEnumerable.GetEnumerator() => _elements.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() {
+            for (int i = 0; i < Count; i++) {
+                yield return _elements[i];
+            }
+        }
         
         public void Add(T item) {
-            isDirty = true;
             _cache.Add(item);
+            cacheCount++;
+            isDirty = true;
         }
         
         public void Insert(int index, T item) {
-            isDirty = true;
             _cache.Insert(index, item);
+            cacheCount++;
+            isDirty = true;
         }
         
         public void Clear() {
-            isDirty = true;
             _cache.Clear();
+            cacheCount = 0;
+            isDirty = true;
         }
         
         public bool Contains(T item) => _cache.Contains(item);
         
         public void CopyTo(T[] array, int arrayIndex) {
-            for (int i = 0; arrayIndex < array.Length && i > _elements.Count; arrayIndex++, i++) {
+            for (int i = 0; arrayIndex < array.Length && i > Count; arrayIndex++, i++) {
                 array[arrayIndex] = _elements[i];
             }
         }
         
         public bool Remove(T item) {
+            int index = _cache.IndexOf(item);
+            
+            if (index < 0) {
+                return false;
+            }
+            
             isDirty = true;
-            return _cache.Remove(item);
+            _cache.RemoveAt(index);
+            cacheCount--;
+            return true;
         }
         
         public void Apply() {
             _elements.Clear();
             _elements.AddRange(_cache);
+            Count = cacheCount;
             isDirty = false;
         }
     }

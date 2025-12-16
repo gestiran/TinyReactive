@@ -120,7 +120,7 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerFirst(ActionListener listener) {
-            if (_listeners.CacheCount > 0) {
+            if (_listeners.cacheCount > 0) {
                 _listeners.Insert(0, listener);
             } else {
                 AddListener(listener);
@@ -135,7 +135,7 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerFirst(ActionListener<T> listener) {
-            if (_listenersValue.CacheCount > 0) {
+            if (_listenersValue.cacheCount > 0) {
                 _listenersValue.Insert(0, listener);
             } else {
                 AddListener(listener);
@@ -150,8 +150,8 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerLast(ActionListener listener) {
-            if (_listeners.CacheCount > 0) {
-                _listeners.Insert(_listeners.CacheCount - 1, listener);
+            if (_listeners.cacheCount > 0) {
+                _listeners.Insert(_listeners.cacheCount - 1, listener);
             } else {
                 AddListener(listener);
             }
@@ -165,8 +165,8 @@ namespace TinyReactive.Fields {
         
         // Resharper disable Unity.ExpensiveCode
         public void AddListenerLast(ActionListener<T> listener) {
-            if (_listenersValue.CacheCount > 0) {
-                _listenersValue.Insert(_listenersValue.CacheCount - 1, listener);
+            if (_listenersValue.cacheCount > 0) {
+                _listenersValue.Insert(_listenersValue.cacheCount - 1, listener);
             } else {
                 AddListener(listener);
             }
