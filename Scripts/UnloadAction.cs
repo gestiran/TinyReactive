@@ -4,6 +4,7 @@
 using System;
 
 namespace TinyReactive {
+    /// <summary> Container for Action participating in Unload resources. </summary>
     public sealed class UnloadAction : IUnload {
         private readonly Action _action;
         

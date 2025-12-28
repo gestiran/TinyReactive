@@ -3,12 +3,12 @@
 
 using System;
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
 
 namespace TinyReactive.Fields {
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputSingleListener : IUnload {
@@ -20,7 +20,7 @@ namespace TinyReactive.Fields {
         
         public InputSingleListener(Func<bool> action, UnloadPool unload) : this() => AddListener(action, unload);
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
         public void Send(bool expectedResult = true) {

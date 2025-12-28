@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 #if UNITASK_ENABLE

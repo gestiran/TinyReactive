@@ -3,12 +3,12 @@
 
 using System;
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
 
 namespace TinyReactive.Fields {
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputListener : IUnload {
@@ -24,7 +24,7 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener action, UnloadPool unload) : this() => AddListener(action, unload);
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
         public void Send() {
@@ -65,7 +65,7 @@ namespace TinyReactive.Fields {
         public override int GetHashCode() => _id;
     }
     
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputListener<T> : IUnload {
@@ -92,7 +92,7 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
         public void Send(T value) {
@@ -182,7 +182,7 @@ namespace TinyReactive.Fields {
         public override int GetHashCode() => _id;
     }
     
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputListener<T1, T2> : IUnload {
@@ -204,7 +204,7 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener<T1, T2> action, UnloadPool unload) : this() => AddListener(action, unload);
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
         public void Send(T1 value1, T2 value2) {
@@ -270,7 +270,7 @@ namespace TinyReactive.Fields {
         public override int GetHashCode() => _id;
     }
     
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputListener<T1, T2, T3> : IUnload {
@@ -292,7 +292,7 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener<T1, T2, T3> action, UnloadPool unload) : this() => AddListener(action, unload);
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
         public void Send(T1 value1, T2 value2, T3 value3) {

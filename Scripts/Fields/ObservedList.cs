@@ -31,8 +31,8 @@ namespace TinyReactive.Fields {
         private readonly LazyList<ActionListener> _onClear;
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
-        [ShowInInspector, HideReferenceObjectPicker, HideDuplicateReferenceBox]
-         [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, DraggableItems = false, DefaultExpandedState = false)]
+        [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, DraggableItems = false, DefaultExpandedState = false, ListElementLabelName = "@ToString()")]
+        [ShowInInspector, HideInEditorMode, HideReferenceObjectPicker, HideDuplicateReferenceBox, LabelText("@ToString()"), Searchable]
     #endif
         internal List<T> list;
         
@@ -592,5 +592,7 @@ namespace TinyReactive.Fields {
             _onRemoveWithValue.Clear();
             _onClear.Clear();
         }
+        
+        public override string ToString() => $"ObservedList<{typeof(T).Name}>";
     }
 }

@@ -3,26 +3,18 @@
 
 using System;
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
 
 namespace TinyReactive.Fields {
-    public static class Observed {
-        internal static int globalId;
-        
-        internal const int CAPACITY = 4;
-        
-        static Observed() => globalId = 0;
-    }
-    
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
     [ShowInInspector, InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public class Observed<T> : IEquatable<Observed<T>>, IEquatable<T>, IUnload {
         public T value => _value;
         
-    #if ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         [ShowInInspector, HorizontalGroup, HideLabel, OnValueChanged("@Set(_value)"), HideDuplicateReferenceBox, HideReferenceObjectPicker]
     #endif
         protected T _value;
@@ -205,7 +197,7 @@ namespace TinyReactive.Fields {
         
         public override int GetHashCode() => _id;
         
-    #if UNITY_EDITOR && ODIN_INSPECTOR
+    #if ODIN_INSPECTOR && UNITY_EDITOR
         private static readonly bool _isInt = typeof(T) == typeof(int);
         private static readonly bool _isFloat = typeof(T) == typeof(float);
         
@@ -275,5 +267,13 @@ namespace TinyReactive.Fields {
         public bool Equals(T other) => other != null && other.Equals(value);
         
         public override bool Equals(object obj) => obj is Observed<T> other && other._id == _id;
+    }
+    
+    internal static class Observed {
+        internal static int globalId;
+        
+        internal const int CAPACITY = 4;
+        
+        static Observed() => globalId = 0;
     }
 }
