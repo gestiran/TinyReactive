@@ -182,6 +182,14 @@ namespace TinyReactive.Fields {
             list.AddRange(values);
             DateTime now = DateTime.Now;
             
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
+            
             for (int i = _onAdd.Count - 1; i >= 0; i--) {
                 _onAdd[i].Invoke();
                 
@@ -232,6 +240,14 @@ namespace TinyReactive.Fields {
             _lock = true;
             list.Add(value);
             DateTime now = DateTime.Now;
+            
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
             
             for (int i = _onAdd.Count - 1; i >= 0; i--) {
                 _onAdd[i].Invoke();
@@ -380,6 +396,14 @@ namespace TinyReactive.Fields {
             
             DateTime now = DateTime.Now;
             
+            if (_onRemove.isDirty) {
+                _onRemove.Apply();
+            }
+            
+            if (_onRemoveWithValue.isDirty) {
+                _onRemoveWithValue.Apply();
+            }
+            
             for (int i = _onRemove.Count - 1; i >= 0; i--) {
                 _onRemove[i].Invoke();
                 
@@ -430,6 +454,14 @@ namespace TinyReactive.Fields {
             _lock = true;
             list.Remove(value);
             DateTime now = DateTime.Now;
+            
+            if (_onRemove.isDirty) {
+                _onRemove.Apply();
+            }
+            
+            if (_onRemoveWithValue.isDirty) {
+                _onRemoveWithValue.Apply();
+            }
             
             for (int i = _onRemove.Count - 1; i >= 0; i--) {
                 _onRemove[i].Invoke();
