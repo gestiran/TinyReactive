@@ -1,14 +1,12 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
-using System.Collections;
 using System.Collections.Generic;
 
 namespace TinyReactive.Fields {
-    internal sealed class LazyList<T> : ICollection<T> {
-        public int Count { get; private set; }
+    internal sealed class LazyList<T> {
+        public int count { get; private set; }
         public int cacheCount { get; private set; }
-        public bool IsReadOnly => false;
         
         public bool isDirty { get; private set; }
         
@@ -23,18 +21,6 @@ namespace TinyReactive.Fields {
         public LazyList(int capacity = 64) {
             _elements = new List<T>(capacity);
             _cache = new List<T>(capacity);
-        }
-        
-        public IEnumerator<T> GetEnumerator() {
-            for (int i = 0; i < Count; i++) {
-                yield return _elements[i];
-            }
-        }
-        
-        IEnumerator IEnumerable.GetEnumerator() {
-            for (int i = 0; i < Count; i++) {
-                yield return _elements[i];
-            }
         }
         
         public void Add(T item) {
@@ -58,7 +44,7 @@ namespace TinyReactive.Fields {
         public bool Contains(T item) => _cache.Contains(item);
         
         public void CopyTo(T[] array, int arrayIndex) {
-            for (int i = 0; arrayIndex < array.Length && i > Count; arrayIndex++, i++) {
+            for (int i = 0; arrayIndex < array.Length && i > count; arrayIndex++, i++) {
                 array[arrayIndex] = _elements[i];
             }
         }
@@ -79,7 +65,7 @@ namespace TinyReactive.Fields {
         public void Apply() {
             _elements.Clear();
             _elements.AddRange(_cache);
-            Count = cacheCount;
+            count = cacheCount;
             isDirty = false;
         }
     }

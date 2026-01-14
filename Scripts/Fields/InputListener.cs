@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
+using System.Runtime.CompilerServices;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -32,16 +33,15 @@ namespace TinyReactive.Fields {
                 _listeners.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
         }
         
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddListener(ActionListener listener) => _listeners.Add(listener);
         
         // Resharper disable Unity.ExpensiveCode
@@ -104,16 +104,12 @@ namespace TinyReactive.Fields {
                 _listenersValue.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
             
-            if (_listenersValue.Count > 0) {
-                foreach (ActionListener<T> listener in _listenersValue) {
-                    listener.Invoke(value);
-                }
+            for (int i = 0; i < _listenersValue.count; i++) {
+                _listenersValue[i].Invoke(value);
             }
         }
         
@@ -126,17 +122,15 @@ namespace TinyReactive.Fields {
                 _listenersValue.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
             
-            if (_listenersValue.Count > 0) {
-                foreach (T value in values) {
-                    foreach (ActionListener<T> listener in _listenersValue) {
-                        listener.Invoke(value);
-                    }   
+            for (int valueId = 0; valueId < values.Length; valueId++) {
+                T value = values[valueId];
+                
+                for (int i = 0; i < _listenersValue.count; i++) {
+                    _listenersValue[i].Invoke(value);
                 }
             }
         }
@@ -216,16 +210,12 @@ namespace TinyReactive.Fields {
                 _listenersValue.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
             
-            if (_listenersValue.Count > 0) {
-                foreach (ActionListener<T1, T2> listener in _listenersValue) {
-                    listener.Invoke(value1, value2);
-                }
+            for (int i = 0; i < _listenersValue.count; i++) {
+                _listenersValue[i].Invoke(value1, value2);
             }
         }
         
@@ -304,16 +294,12 @@ namespace TinyReactive.Fields {
                 _listenersValue.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
             
-            if (_listenersValue.Count > 0) {
-                foreach (ActionListener<T1, T2, T3> listener in _listenersValue) {
-                    listener.Invoke(value1, value2, value3);
-                }
+            for (int i = 0; i < _listenersValue.count; i++) {
+                _listenersValue[i].Invoke(value1, value2, value3);
             }
         }
         

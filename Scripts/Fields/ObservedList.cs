@@ -66,16 +66,12 @@ namespace TinyReactive.Fields {
                     _onRemoveWithValue.Apply();
                 }
                 
-                if (_onRemove.Count > 0) {
-                    foreach (ActionListener listener in _onRemove) {
-                        listener.Invoke();
-                    }
+                for (int i = 0; i < _onRemove.count; i++) {
+                    _onRemove[i].Invoke();
                 }
                 
-                if (_onRemoveWithValue.Count > 0) {
-                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
-                        listener.Invoke(list[index]);
-                    }
+                for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                    _onRemoveWithValue[i].Invoke(list[index]);
                 }
                 
                 list[index] = value;
@@ -88,16 +84,12 @@ namespace TinyReactive.Fields {
                     _onAddWithValue.Apply();
                 }
                 
-                if (_onAdd.Count > 0) {
-                    foreach (ActionListener listener in _onAdd) {
-                        listener.Invoke();
-                    }
+                for (int i = 0; i < _onAdd.count; i++) {
+                    _onAdd[i].Invoke();
                 }
                 
-                if (_onAddWithValue.Count > 0) {
-                    foreach (ActionListener<T> listener in _onAddWithValue) {
-                        listener.Invoke(value);
-                    }
+                for (int i = 0; i < _onAddWithValue.count; i++) {
+                    _onAddWithValue[i].Invoke(value);
                 }
             }
         }
@@ -118,17 +110,15 @@ namespace TinyReactive.Fields {
                 _onAddWithValue.Apply();
             }
             
-            if (_onAdd.Count > 0) {
-                foreach (ActionListener listener in _onAdd) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _onAdd.count; i++) {
+                _onAdd[i].Invoke();
             }
             
-            if (_onAddWithValue.Count > 0) {
-                foreach (T value in values) {
-                    foreach (ActionListener<T> listener in _onAddWithValue) {
-                        listener.Invoke(value);
-                    }
+            for (int valueId = 0; valueId < values.Length; valueId++) {
+                T value = values[valueId];
+                
+                for (int i = 0; i < _onAddWithValue.count; i++) {
+                    _onAddWithValue[i].Invoke(value);
                 }
             }
         }
@@ -144,16 +134,12 @@ namespace TinyReactive.Fields {
                 _onAddWithValue.Apply();
             }
             
-            if (_onAdd.Count > 0) {
-                foreach (ActionListener listener in _onAdd) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _onAdd.count; i++) {
+                _onAdd[i].Invoke();
             }
             
-            if (_onAddWithValue.Count > 0) {
-                foreach (ActionListener<T> listener in _onAddWithValue) {
-                    listener.Invoke(value);
-                }
+            for (int i = 0; i < _onAddWithValue.count; i++) {
+                _onAddWithValue[i].Invoke(value);
             }
         }
         
@@ -190,7 +176,7 @@ namespace TinyReactive.Fields {
                 _onAddWithValue.Apply();
             }
             
-            for (int i = _onAdd.Count - 1; i >= 0; i--) {
+            for (int i = _onAdd.count - 1; i >= 0; i--) {
                 _onAdd[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -205,7 +191,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = _onAddWithValue.Count - 1; i >= 0; i--) {
+            for (int i = _onAddWithValue.count - 1; i >= 0; i--) {
                 for (int j = 0; j < values.Length; j++) {
                     _onAddWithValue[i].Invoke(values[j]);
                 }
@@ -249,7 +235,7 @@ namespace TinyReactive.Fields {
                 _onAddWithValue.Apply();
             }
             
-            for (int i = _onAdd.Count - 1; i >= 0; i--) {
+            for (int i = _onAdd.count - 1; i >= 0; i--) {
                 _onAdd[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -264,7 +250,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = _onAddWithValue.Count - 1; i >= 0; i--) {
+            for (int i = _onAddWithValue.count - 1; i >= 0; i--) {
                 _onAddWithValue[i].Invoke(value);
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -300,16 +286,12 @@ namespace TinyReactive.Fields {
                 int index = list.IndexOf(value);
                 
                 if (index >= 0) {
-                    if (_onRemove.Count > 0) {
-                        foreach (ActionListener listener in _onRemove) {
-                            listener.Invoke();
-                        }
+                    for (int i = 0; i < _onRemove.count; i++) {
+                        _onRemove[i].Invoke();
                     }
                     
-                    if (_onRemoveWithValue.Count > 0) {
-                        foreach (ActionListener<T> listener in _onRemoveWithValue) {
-                            listener.Invoke(value);
-                        }
+                    for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                        _onRemoveWithValue[i].Invoke(value);
                     }
                     
                     list.RemoveAt(index);
@@ -329,16 +311,12 @@ namespace TinyReactive.Fields {
                     _onRemoveWithValue.Apply();
                 }
                 
-                if (_onRemove.Count > 0) {
-                    foreach (ActionListener listener in _onRemove) {
-                        listener.Invoke();
-                    }
+                for (int i = 0; i < _onRemove.count; i++) {
+                    _onRemove[i].Invoke();
                 }
                 
-                if (_onRemoveWithValue.Count > 0) {
-                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
-                        listener.Invoke(value);
-                    }
+                for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                    _onRemoveWithValue[i].Invoke(value);
                 }
                 
                 list.RemoveAt(index);
@@ -360,16 +338,12 @@ namespace TinyReactive.Fields {
                     _onRemoveWithValue.Apply();
                 }
                 
-                if (_onRemove.Count > 0) {
-                    foreach (ActionListener listener in _onRemove) {
-                        listener.Invoke();
-                    }
+                for (int j = 0; j < _onRemove.count; j++) {
+                    _onRemove[j].Invoke();
                 }
                 
-                if (_onRemoveWithValue.Count > 0) {
-                    foreach (ActionListener<T> listener in _onRemoveWithValue) {
-                        listener.Invoke(value);
-                    }
+                for (int j = 0; j < _onRemoveWithValue.count; j++) {
+                    _onRemoveWithValue[j].Invoke(value);
                 }
                 
                 list.RemoveAt(i);
@@ -404,7 +378,7 @@ namespace TinyReactive.Fields {
                 _onRemoveWithValue.Apply();
             }
             
-            for (int i = _onRemove.Count - 1; i >= 0; i--) {
+            for (int i = _onRemove.count - 1; i >= 0; i--) {
                 _onRemove[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -419,7 +393,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = _onRemoveWithValue.Count - 1; i >= 0; i--) {
+            for (int i = _onRemoveWithValue.count - 1; i >= 0; i--) {
                 for (int j = 0; j < values.Length; j++) {
                     _onRemoveWithValue[i].Invoke(values[j]);
                 }
@@ -463,7 +437,7 @@ namespace TinyReactive.Fields {
                 _onRemoveWithValue.Apply();
             }
             
-            for (int i = _onRemove.Count - 1; i >= 0; i--) {
+            for (int i = _onRemove.count - 1; i >= 0; i--) {
                 _onRemove[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -478,7 +452,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = _onRemoveWithValue.Count - 1; i >= 0; i--) {
+            for (int i = _onRemoveWithValue.count - 1; i >= 0; i--) {
                 _onRemoveWithValue[i].Invoke(value);
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -501,9 +475,9 @@ namespace TinyReactive.Fields {
                 _onClear.Apply();
             }
             
-            if (_onClear.Count > 0) {
-                foreach (ActionListener listener in _onClear) {
-                    listener.Invoke();
+            if (_onClear.count > 0) {
+                for (int i = 0; i < _onClear.count; i++) {
+                    _onClear[i].Invoke();
                 }
             }
             
@@ -525,15 +499,15 @@ namespace TinyReactive.Fields {
                 _onRemoveWithValue.Apply();
             }
             
-            if (_onRemove.Count > 0) {
-                foreach (ActionListener listener in _onRemove) {
-                    listener.Invoke();
+            if (_onRemove.count > 0) {
+                for (int i = 0; i < _onRemove.count; i++) {
+                    _onRemove[i].Invoke();
                 }
             }
             
-            if (_onRemoveWithValue.Count > 0) {
-                foreach (ActionListener<T> listener in _onRemoveWithValue) {
-                    listener.Invoke(element);
+            if (_onRemoveWithValue.count > 0) {
+                for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                    _onRemoveWithValue[i].Invoke(element);
                 }
             }
             

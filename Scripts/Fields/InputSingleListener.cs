@@ -28,11 +28,9 @@ namespace TinyReactive.Fields {
                 _listeners.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (Func<bool> listener in _listeners) {
-                    if (listener.Invoke() == expectedResult) {
-                        return;
-                    }
+            for (int i = 0; i < _listeners.count; i++) {
+                if (_listeners[i].Invoke() == expectedResult) {
+                    return;
                 }
             }
         }

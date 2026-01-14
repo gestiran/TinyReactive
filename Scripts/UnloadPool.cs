@@ -46,8 +46,8 @@ namespace TinyReactive {
         /// <summary> Remove objects from the pool. </summary>
         /// <param name="unloads"> Any unload objects. </param>
         public void Remove([NotNull] params IUnload[] unloads) {
-            foreach (IUnload unload in unloads) {
-                _pool.Remove(unload);
+            for (int i = 0; i < unloads.Length; i++) {
+                _pool.Remove(unloads[i]);
             }
         }
         
@@ -59,8 +59,10 @@ namespace TinyReactive {
         
         /// <summary> Call Unload on all objects. </summary>
         public void Unload() {
-            foreach (IUnload unload in _pool) {
-                unload.Unload();
+            int count = _pool.Count;
+            
+            for (int i = 0; i < count; i++) {
+                _pool[i].Unload();
             }
             
             isUnloaded = true;
@@ -103,8 +105,8 @@ namespace TinyReactive {
         /// <summary> Remove objects from the pool. </summary>
         /// <param name="unloads"> Any unload objects. </param>
         public void Remove([NotNull] params T[] unloads) {
-            foreach (T unload in unloads) {
-                _pool.Remove(unload);
+            for (int i = 0; i < unloads.Length; i++) {
+                _pool.Remove(unloads[i]);
             }
         }
         
@@ -116,8 +118,10 @@ namespace TinyReactive {
         
         /// <summary> Call Unload on all objects. </summary>
         public void Unload() {
-            foreach (T unload in _pool) {
-                unload.Unload();
+            int count = _pool.Count;
+            
+            for (int i = 0; i < count; i++) {
+                _pool[i].Unload();
             }
             
             isUnloaded = true;

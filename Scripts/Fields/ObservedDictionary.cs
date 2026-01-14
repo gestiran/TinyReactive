@@ -57,16 +57,12 @@ namespace TinyReactive.Fields {
                 _onAddWithValue.Apply();
             }
             
-            if (_onAdd.Count > 0) {
-                foreach (ActionListener listener in _onAdd) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _onAdd.count; i++) {
+                _onAdd[i].Invoke();
             }
             
-            if (_onAddWithValue.Count > 0) {
-                foreach (ActionListener<TValue> listener in _onAddWithValue) {
-                    listener.Invoke(value);
-                }
+            for (int i = 0; i < _onAddWithValue.count; i++) {
+                _onAddWithValue[i].Invoke(value);
             }
             
         #if ODIN_INSPECTOR && UNITY_EDITOR
@@ -87,16 +83,12 @@ namespace TinyReactive.Fields {
                 _onRemoveWithValue.Apply();
             }
             
-            if (_onRemove.Count > 0) {
-                foreach (ActionListener listener in _onRemove) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _onRemove.count; i++) {
+                _onRemove[i].Invoke();
             }
             
-            if (_onRemoveWithValue.Count > 0) {
-                foreach (ActionListener<TValue> listener in _onRemoveWithValue) {
-                    listener.Invoke(value);
-                }
+            for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                _onRemoveWithValue[i].Invoke(value);
             }
             
         #if ODIN_INSPECTOR && UNITY_EDITOR
@@ -132,16 +124,12 @@ namespace TinyReactive.Fields {
                         _onRemoveWithValue.Apply();
                     }
                     
-                    if (_onRemove.Count > 0) {
-                        foreach (ActionListener listener in _onRemove) {
-                            listener.Invoke();
-                        }
+                    for (int i = 0; i < _onRemove.count; i++) {
+                        _onRemove[i].Invoke();
                     }
                     
-                    if (_onRemoveWithValue.Count > 0) {
-                        foreach (ActionListener<TValue> listener in _onRemoveWithValue) {
-                            listener.Invoke(value);
-                        }
+                    for (int i = 0; i < _onRemoveWithValue.count; i++) {
+                        _onRemoveWithValue[i].Invoke(value);
                     }
                     
                 #if ODIN_INSPECTOR && UNITY_EDITOR

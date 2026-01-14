@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
+using System.Runtime.CompilerServices;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -58,28 +59,23 @@ namespace TinyReactive.Fields {
                 _listenersChange.Apply();
             }
             
-            if (_listeners.Count > 0) {
-                foreach (ActionListener listener in _listeners) {
-                    listener.Invoke();
-                }
+            for (int i = 0; i < _listeners.count; i++) {
+                _listeners[i].Invoke();
             }
             
-            if (_listenersValue.Count > 0) {
-                foreach (ActionListener<T> listener in _listenersValue) {
-                    listener.Invoke(newValue);
-                }
+            for (int i = 0; i < _listenersValue.count; i++) {
+                _listenersValue[i].Invoke(newValue);
             }
             
-            if (_listenersChange.Count > 0) {
-                foreach (ActionListener<T, T> listener in _listenersChange) {
-                    listener.Invoke(current, newValue);
-                }
+            for (int i = 0; i < _listenersChange.count; i++) {
+                _listenersChange[i].Invoke(current, newValue);
             }
         }
         
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddListener(ActionListener listener) => _listeners.Add(listener);
         
         // Resharper disable Unity.ExpensiveCode
@@ -92,12 +88,14 @@ namespace TinyReactive.Fields {
         public void AddListener(ActionListener<T> listener) => _listenersValue.Add(listener);
         
         // Resharper disable Unity.ExpensiveCode
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddListener(ActionListener<T> listener, UnloadPool unload) {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddListener(ActionListener<T, T> listener) => _listenersChange.Add(listener);
         
         // Resharper disable Unity.ExpensiveCode
