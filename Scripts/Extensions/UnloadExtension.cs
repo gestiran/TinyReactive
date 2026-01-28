@@ -33,7 +33,7 @@ namespace TinyReactive.Extensions {
                 try {
                     obj.Unload();
                 } catch (Exception exception) {
-                    Debug.LogException(exception);
+                    Debug.LogError(new Exception($"Unload.Exception - {(obj != null ? obj.GetType().Name : typeof(T).Name)}", exception));
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace TinyReactive.Extensions {
                     unload.Key.Unload();
                     unload.Value.Unload();
                 } catch (Exception exception) {
-                    Debug.LogException(exception);
+                    Debug.LogError(new Exception($"Unload.Exception - {typeof(TUnload).Name}", exception));
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace TinyReactive.Extensions {
                 try {
                     unload.Unload();
                 } catch (Exception exception) {
-                    Debug.LogException(exception);
+                    Debug.LogError(new Exception($"UnloadKeys.Exception - {typeof(TUnload).Name}",exception));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace TinyReactive.Extensions {
                 try {
                     other.Unload();
                 } catch (Exception exception) {
-                    Debug.LogException(exception);
+                    Debug.LogError(new Exception($"Unload.Exception - {obj.GetType().Name}", exception));
                 }
             }
         }
@@ -94,7 +94,6 @@ namespace TinyReactive.Extensions {
             }
             
             return new UnloadPool();
-            
         }
         
         [Pure]
