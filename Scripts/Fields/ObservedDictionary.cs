@@ -170,40 +170,68 @@ namespace TinyReactive.Fields {
             }
         }
         
-        public void AddOnAddListener(ActionListener listener) => _onAdd.Add(listener);
+        public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener listener) {
+            _onAdd.Add(listener);
+            return this;
+        }
         
-        public void AddOnAddListener(ActionListener listener, UnloadPool unload) {
+        public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onAdd.Add(listener);
             unload.Add(new UnloadAction(() => _onAdd.Remove(listener)));
+            return this;
         }
         
-        public void AddOnAddListener(ActionListener<TValue> listener) => _onAddWithValue.Add(listener);
+        public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener<TValue> listener) {
+            _onAddWithValue.Add(listener);
+            return this;
+        }
         
-        public void AddOnAddListener(ActionListener<TValue> listener, UnloadPool unload) {
+        public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onAddWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onAddWithValue.Remove(listener)));
+            return this;
         }
         
-        public void RemoveOnAddListener(ActionListener listener) => _onAdd.Remove(listener);
+        public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener listener) {
+            _onAdd.Remove(listener);
+            return this;
+        }
         
-        public void RemoveOnAddListener(ActionListener<TValue> listener) => _onAddWithValue.Remove(listener);
+        public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener<TValue> listener) {
+            _onAddWithValue.Remove(listener);
+            return this;
+        }
         
-        public void AddOnRemoveListener(ActionListener listener) => _onRemove.Add(listener);
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener listener) {
+            _onRemove.Add(listener);
+            return this;
+        }
         
-        public void AddOnRemoveListener(ActionListener listener, UnloadPool unload) {
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemove.Add(listener);
             unload.Add(new UnloadAction(() => _onRemove.Remove(listener)));
+            return this;
         }
         
-        public void AddOnRemoveListener(ActionListener<TValue> listener) => _onRemoveWithValue.Add(listener);
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener<TValue> listener) {
+            _onRemoveWithValue.Add(listener);
+            return this;
+        }
         
-        public void AddOnRemoveListener(ActionListener<TValue> listener, UnloadPool unload) {
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemoveWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onRemoveWithValue.Remove(listener)));
+            return this;
         }
         
-        public void RemoveOnRemoveListener(ActionListener listener) => _onRemove.Remove(listener);
+        public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener listener) {
+            _onRemove.Remove(listener);
+            return this;
+        }
         
-        public void RemoveOnRemoveListener(ActionListener<TValue> listener) => _onRemoveWithValue.Remove(listener);
+        public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener<TValue> listener) {
+            _onRemoveWithValue.Remove(listener);
+            return this;
+        }
     }
 }

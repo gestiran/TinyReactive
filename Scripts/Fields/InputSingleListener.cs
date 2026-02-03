@@ -18,7 +18,7 @@ namespace TinyReactive.Fields {
         
         public InputSingleListener(Func<bool> action) : this() => AddListener(action);
         
-        public InputSingleListener(Func<bool> action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputSingleListener(Func<bool> action, IUnloadLink unload) : this() => AddListener(action, unload);
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
@@ -38,12 +38,16 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(Func<bool> listener) => _listeners.Add(listener);
+        public InputSingleListener AddListener(Func<bool> listener) {
+            _listeners.Add(listener);
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(Func<bool> listener, UnloadPool unload) {
+        public InputSingleListener AddListener<TUnload>(Func<bool> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+            return this;
         }
         
     #endregion
@@ -51,7 +55,10 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(Func<bool> listener) => _listeners.Remove(listener);
+        public InputSingleListener RemoveListener(Func<bool> listener) {
+            _listeners.Remove(listener);
+            return this;
+        }
         
     #endregion
         

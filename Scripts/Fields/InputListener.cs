@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
-using System.Runtime.CompilerServices;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -23,7 +22,7 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener action) : this() => AddListener(action);
         
-        public InputListener(ActionListener action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener action, IUnloadLink unload) : this() => AddListener(action, unload);
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
@@ -41,13 +40,16 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddListener(ActionListener listener) => _listeners.Add(listener);
+        public InputListener AddListener(ActionListener listener) {
+            _listeners.Add(listener);
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener, UnloadPool unload) {
+        public InputListener AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+            return this;
         }
         
     #endregion
@@ -55,7 +57,10 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener listener) => _listeners.Remove(listener);
+        public InputListener RemoveListener(ActionListener listener) {
+            _listeners.Remove(listener);
+            return this;
+        }
         
     #endregion
         
@@ -83,9 +88,9 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener<T> action) : this() => AddListener(action);
         
-        public InputListener(ActionListener action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener action, IUnloadLink unload) : this() => AddListener(action, unload);
         
-        public InputListener(ActionListener<T> action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener<T> action, IUnloadLink unload) : this() => AddListener(action, unload);
         
         [Obsolete("Can't use without parameters!", true)]
         public void Send() {
@@ -138,21 +143,29 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener) => _listeners.Add(listener);
-        
-        // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener, UnloadPool unload) {
-            AddListener(listener);
-            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+        public InputListener<T> AddListener(ActionListener listener) {
+            _listeners.Add(listener);
+            return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T> listener) => _listenersValue.Add(listener);
+        public InputListener<T> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
+            AddListener(listener);
+            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T> listener, UnloadPool unload) {
+        public InputListener<T> AddListener(ActionListener<T> listener) {
+            _listenersValue.Add(listener);
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T> AddListener<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
+            return this;
         }
         
     #endregion
@@ -160,10 +173,16 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener listener) => _listeners.Remove(listener);
+        public InputListener<T> RemoveListener(ActionListener listener) {
+            _listeners.Remove(listener);
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener<T> listener) => _listenersValue.Remove(listener);
+        public InputListener<T> RemoveListener(ActionListener<T> listener) {
+            _listenersValue.Remove(listener);
+            return this;
+        }
         
     #endregion Remove
         
@@ -194,9 +213,9 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener<T1, T2> action) : this() => AddListener(action);
         
-        public InputListener(ActionListener action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener action, IUnloadLink unload) : this() => AddListener(action, unload);
         
-        public InputListener(ActionListener<T1, T2> action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener<T1, T2> action, IUnloadLink unload) : this() => AddListener(action, unload);
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
@@ -222,21 +241,29 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener) => _listeners.Add(listener);
-        
-        // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener, UnloadPool unload) {
-            AddListener(listener);
-            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+        public InputListener<T1, T2> AddListener(ActionListener listener) {
+            _listeners.Add(listener);
+            return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T1, T2> listener) => _listenersValue.Add(listener);
+        public InputListener<T1, T2> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
+            AddListener(listener);
+            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T1, T2> listener, UnloadPool unload) {
+        public InputListener<T1, T2> AddListener(ActionListener<T1, T2> listener) {
+            _listenersValue.Add(listener);
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T1, T2> AddListener<TUnload>(ActionListener<T1, T2> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
+            return this;
         }
         
     #endregion
@@ -244,10 +271,16 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener listener) => _listeners.Remove(listener);
+        public InputListener<T1, T2> RemoveListener(ActionListener listener) {
+            _listeners.Remove(listener);
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener<T1, T2> listener) => _listenersValue.Remove(listener);
+        public InputListener<T1, T2> RemoveListener(ActionListener<T1, T2> listener) {
+            _listenersValue.Remove(listener);
+            return this;
+        }
         
     #endregion
         
@@ -278,9 +311,9 @@ namespace TinyReactive.Fields {
         
         public InputListener(ActionListener<T1, T2, T3> action) : this() => AddListener(action);
         
-        public InputListener(ActionListener action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener action, IUnloadLink unload) : this() => AddListener(action, unload);
         
-        public InputListener(ActionListener<T1, T2, T3> action, UnloadPool unload) : this() => AddListener(action, unload);
+        public InputListener(ActionListener<T1, T2, T3> action, IUnloadLink unload) : this() => AddListener(action, unload);
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
@@ -306,21 +339,29 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener) => _listeners.Add(listener);
-        
-        // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener listener, UnloadPool unload) {
-            AddListener(listener);
-            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+        public InputListener<T1, T2, T3> AddListener(ActionListener listener) {
+            _listeners.Add(listener);
+            return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T1, T2, T3> listener) => _listenersValue.Add(listener);
+        public InputListener<T1, T2, T3> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
+            AddListener(listener);
+            unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void AddListener(ActionListener<T1, T2, T3> listener, UnloadPool unload) {
+        public InputListener<T1, T2, T3> AddListener(ActionListener<T1, T2, T3> listener) {
+            _listenersValue.Add(listener);
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T1, T2, T3> AddListener<TUnload>(ActionListener<T1, T2, T3> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
+            return this;
         }
         
     #endregion
@@ -328,10 +369,16 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener listener) => _listeners.Remove(listener);
+        public InputListener<T1, T2, T3> RemoveListener(ActionListener listener) {
+            _listeners.Remove(listener);
+            return this;
+        }
         
         // Resharper disable Unity.ExpensiveCode
-        public void RemoveListener(ActionListener<T1, T2, T3> listener) => _listenersValue.Remove(listener);
+        public InputListener<T1, T2, T3> RemoveListener(ActionListener<T1, T2, T3> listener) {
+            _listenersValue.Remove(listener);
+            return this;
+        }
         
     #endregion
         
