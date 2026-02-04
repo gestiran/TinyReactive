@@ -13,15 +13,6 @@ using Cysharp.Threading.Tasks;
 
 namespace TinyReactive.Fields {
     public static class ObservedExtension {
-        public static void AddListenerValue<T1, T2>(this Observed<T1> obj, ActionListener<T2> listener, IUnloadLink unload) where T2 : T1 {
-            obj.AddListener(value =>
-            {
-                if (value is T2 target) {
-                    listener.Invoke(target);
-                }
-            }, unload);
-        }
-        
         public static void Increment(this Observed<int> obj) => obj.Set(obj.value + 1);
         
         public static void Increment(this Observed<float> obj) => obj.Set(obj.value + 1);
