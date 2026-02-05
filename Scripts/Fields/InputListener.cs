@@ -180,6 +180,18 @@ namespace TinyReactive.Fields {
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
+            AddListener(value =>
+            {
+                if (value is TV) {
+                    listener.Invoke();
+                }
+            }, unload);
+            
+            return this;
+        }
+        
     #endregion
         
     #region Remove
@@ -290,6 +302,18 @@ namespace TinyReactive.Fields {
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
+            AddListener((value1, value2) =>
+            {
+                if (value1 is TV1 && value2 is TV2) {
+                    listener.Invoke();
+                }
+            }, unload);
+            
+            return this;
+        }
+        
     #endregion
         
     #region Remove
@@ -394,6 +418,18 @@ namespace TinyReactive.Fields {
             {
                 if (value1 is TV1 target1 && value2 is TV2 target2 && value3 is TV3 target3) {
                     listener.Invoke(target1, target2, target3);
+                }
+            }, unload);
+            
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
+            AddListener((value1, value2, value3) =>
+            {
+                if (value1 is TV1 && value2 is TV2 && value3 is TV3) {
+                    listener.Invoke();
                 }
             }, unload);
             

@@ -124,6 +124,18 @@ namespace TinyReactive.Fields {
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
+        public Observed<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
+            AddListener(v =>
+            {
+                if (v is TV) {
+                    listener.Invoke();
+                }
+            }, unload);
+            
+            return this;
+        }
+        
     #endregion
         
     #region ByPriority
