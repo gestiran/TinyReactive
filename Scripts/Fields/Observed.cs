@@ -113,11 +113,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
+        public Observed<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
             {
-                if (v is TV target) {
-                    listener.Invoke(target);
+                if (v is TV) {
+                    listener.Invoke();
                 }
             }, unload);
             
@@ -125,11 +125,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
+        public Observed<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
             {
-                if (v is TV) {
-                    listener.Invoke();
+                if (v is TV target) {
+                    listener.Invoke(target);
                 }
             }, unload);
             

@@ -169,11 +169,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
+        public InputListener<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
             AddListener(value =>
             {
-                if (value is TV target) {
-                    listener.Invoke(target);
+                if (value is TV) {
+                    listener.Invoke();
                 }
             }, unload);
             
@@ -181,11 +181,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
+        public InputListener<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
             AddListener(value =>
             {
-                if (value is TV) {
-                    listener.Invoke();
+                if (value is TV target) {
+                    listener.Invoke(target);
                 }
             }, unload);
             
@@ -291,11 +291,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener<TV1, TV2> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
+        public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
             AddListener((value1, value2) =>
             {
-                if (value1 is TV1 target1 && value2 is TV2 target2) {
-                    listener.Invoke(target1, target2);
+                if (value1 is TV1 && value2 is TV2) {
+                    listener.Invoke();
                 }
             }, unload);
             
@@ -303,11 +303,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
+        public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener<TV1, TV2> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
             AddListener((value1, value2) =>
             {
-                if (value1 is TV1 && value2 is TV2) {
-                    listener.Invoke();
+                if (value1 is TV1 target1 && value2 is TV2 target2) {
+                    listener.Invoke(target1, target2);
                 }
             }, unload);
             
@@ -413,11 +413,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener<TV1, TV2, TV3> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
+        public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
             AddListener((value1, value2, value3) =>
             {
-                if (value1 is TV1 target1 && value2 is TV2 target2 && value3 is TV3 target3) {
-                    listener.Invoke(target1, target2, target3);
+                if (value1 is TV1 && value2 is TV2 && value3 is TV3) {
+                    listener.Invoke();
                 }
             }, unload);
             
@@ -425,11 +425,11 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
-        public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
+        public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener<TV1, TV2, TV3> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
             AddListener((value1, value2, value3) =>
             {
-                if (value1 is TV1 && value2 is TV2 && value3 is TV3) {
-                    listener.Invoke();
+                if (value1 is TV1 target1 && value2 is TV2 target2 && value3 is TV3 target3) {
+                    listener.Invoke(target1, target2, target3);
                 }
             }, unload);
             

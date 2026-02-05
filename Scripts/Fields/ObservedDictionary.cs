@@ -170,65 +170,125 @@ namespace TinyReactive.Fields {
             }
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener listener) {
             _onAdd.Add(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onAdd.Add(listener);
             unload.Add(new UnloadAction(() => _onAdd.Remove(listener)));
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Add(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onAddWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onAddWithValue.Remove(listener)));
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
+        public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
+            AddOnAddListener(v =>
+            {
+                if (v is TV) {
+                    listener.Invoke();
+                }
+            }, unload);
+            
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
+            AddOnAddListener(v =>
+            {
+                if (v is TV target) {
+                    listener.Invoke(target);
+                }
+            }, unload);
+            
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener listener) {
             _onAdd.Remove(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Remove(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener listener) {
             _onRemove.Add(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemove.Add(listener);
             unload.Add(new UnloadAction(() => _onRemove.Remove(listener)));
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Add(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemoveWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onRemoveWithValue.Remove(listener)));
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
+            AddOnRemoveListener(v =>
+            {
+                if (v is TV) {
+                    listener.Invoke();
+                }
+            }, unload);
+            
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
+        public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
+            AddOnRemoveListener(v =>
+            {
+                if (v is TV target) {
+                    listener.Invoke(target);
+                }
+            }, unload);
+            
+            return this;
+        }
+        
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener listener) {
             _onRemove.Remove(listener);
             return this;
         }
         
+        // Resharper disable Unity.ExpensiveCode
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Remove(listener);
             return this;
