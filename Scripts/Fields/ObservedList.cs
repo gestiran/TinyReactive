@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using TinyUtilities;
+using Unity.Profiling;
 using UnityEngine;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
@@ -99,6 +100,7 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Add([NotNull] params T[] values) {
             list.AddRange(values);
             
@@ -123,6 +125,7 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Add([NotNull] T value) {
             list.Add(value);
             
@@ -146,16 +149,19 @@ namespace TinyReactive.Fields {
         [Obsolete("Can't add nothing!", true)]
         public UniTask AddAsync() => default;
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask AddAsync([NotNull] params T[] values) => AddAsync(_ASYNC_ANR_MS, AsyncUtility.token, values);
         
         [Obsolete("Can't add nothing!", true)]
         public UniTask AddAsync(CancellationToken cancellation) => default;
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask AddAsync(CancellationToken cancellation, [NotNull] params T[] values) => AddAsync(_ASYNC_ANR_MS, cancellation, values);
         
         [Obsolete("Can't add nothing!", true)]
         public UniTask AddAsync(int anr, CancellationToken cancellation) => default;
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public async UniTask AddAsync(int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock) {
             #if UNITY_EDITOR || PERFORMANCE_DEBUG
@@ -211,10 +217,13 @@ namespace TinyReactive.Fields {
             _lock = false;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask AddAsync([NotNull] T value) => AddAsync(_ASYNC_ANR_MS, AsyncUtility.token, value);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask AddAsync(CancellationToken cancellation, [NotNull] T value) => AddAsync(_ASYNC_ANR_MS, cancellation, value);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public async UniTask AddAsync(int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock) {
             #if UNITY_EDITOR || PERFORMANCE_DEBUG
@@ -273,6 +282,7 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Remove([NotNull] params T[] values) {
             if (_onRemove.isDirty) {
                 _onRemove.Apply();
@@ -299,6 +309,7 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool Remove([NotNull] T value) {
             int index = list.IndexOf(value);
             
@@ -326,6 +337,7 @@ namespace TinyReactive.Fields {
             return false;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void RemoveAll() {
             for (int i = count - 1; i >= 0; i--) {
                 T value = list[i];
@@ -350,10 +362,13 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask RemoveAsync([NotNull] params T[] values) => RemoveAsync(_ASYNC_ANR_MS, AsyncUtility.token, values);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask RemoveAsync(CancellationToken cancellation, [NotNull] params T[] values) => RemoveAsync(_ASYNC_ANR_MS, cancellation, values);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public async UniTask RemoveAsync(int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock) {
             #if UNITY_EDITOR || PERFORMANCE_DEBUG
@@ -413,10 +428,13 @@ namespace TinyReactive.Fields {
             _lock = false;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask RemoveAsync([NotNull] T value) => RemoveAsync(_ASYNC_ANR_MS, AsyncUtility.token, value);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public UniTask RemoveAsync(CancellationToken cancellation, [NotNull] T value) => RemoveAsync(_ASYNC_ANR_MS, cancellation, value);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public async UniTask RemoveAsync(int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock) {
             #if UNITY_EDITOR || PERFORMANCE_DEBUG
@@ -470,6 +488,7 @@ namespace TinyReactive.Fields {
             _lock = false;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Clear() {
             if (_onClear.isDirty) {
                 _onClear.Apply();
@@ -484,10 +503,13 @@ namespace TinyReactive.Fields {
             list.Clear();
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public int IndexOf(T element) => list.IndexOf(element);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool Contains(T element) => list.Contains(element);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void RemoveAt(int id) {
             T element = list[id];
             
@@ -515,12 +537,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnAddListener(ActionListener listener) {
             _onAdd.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnAddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onAdd.Add(listener);
             unload.Add(new UnloadAction(() => _onAdd.Remove(listener)));
@@ -528,12 +552,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnAddListener(ActionListener<T> listener) {
             _onAddWithValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnAddListener<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             _onAddWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onAddWithValue.Remove(listener)));
@@ -541,24 +567,28 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> RemoveOnAddListener(ActionListener listener) {
             _onAdd.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> RemoveOnAddListener(ActionListener<T> listener) {
             _onAddWithValue.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnRemoveListener(ActionListener listener) {
             _onRemove.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnRemoveListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemove.Add(listener);
             unload.Add(new UnloadAction(() => _onRemove.Remove(listener)));
@@ -566,12 +596,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnRemoveListener(ActionListener<T> listener) {
             _onRemoveWithValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnRemoveListener<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemoveWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onRemoveWithValue.Remove(listener)));
@@ -579,24 +611,28 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> RemoveOnRemoveListener(ActionListener listener) {
             _onRemove.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> RemoveOnRemoveListener(ActionListener<T> listener) {
             _onRemoveWithValue.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnClearListener(ActionListener listener) {
             _onClear.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> AddOnClearListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onClear.Add(listener);
             unload.Add(new UnloadAction(() => _onClear.Remove(listener)));
@@ -604,6 +640,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedList<T> RemoveOnClearListener(ActionListener listener) {
             _onClear.Remove(listener);
             return this;
@@ -617,13 +654,16 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool MoveNext() {
             _currentId++;
             return _currentId < list.Count;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Reset() => _currentId = -1;
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Dispose() {
             Reset();
             list = null;
@@ -634,6 +674,7 @@ namespace TinyReactive.Fields {
             _onClear.Clear();
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public override string ToString() => $"ObservedList<{typeof(T).Name}>";
     }
 }

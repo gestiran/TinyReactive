@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
+using Unity.Profiling;
+using UnityEngine;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -27,6 +29,7 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send() {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -40,12 +43,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener AddListener(ActionListener listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -57,6 +62,7 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener RemoveListener(ActionListener listener) {
             _listeners.Remove(listener);
             return this;
@@ -65,6 +71,7 @@ namespace TinyReactive.Fields {
     #endregion
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Unload() => _listeners.Clear();
         
         public override int GetHashCode() => _id;
@@ -100,6 +107,7 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send(T value) {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -118,6 +126,7 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send(params T[] values) {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -143,12 +152,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListener(ActionListener listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -156,12 +167,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListener(ActionListener<T> listener) {
             _listenersValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListener<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -169,6 +182,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
             AddListener(value =>
             {
@@ -181,6 +195,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
             AddListener(value =>
             {
@@ -197,12 +212,14 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> RemoveListener(ActionListener listener) {
             _listeners.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T> RemoveListener(ActionListener<T> listener) {
             _listenersValue.Remove(listener);
             return this;
@@ -211,6 +228,7 @@ namespace TinyReactive.Fields {
     #endregion Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Unload() {
             _listeners.Clear();
             _listenersValue.Clear();
@@ -244,6 +262,7 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send(T1 value1, T2 value2) {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -265,12 +284,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListener(ActionListener listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -278,12 +299,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListener(ActionListener<T1, T2> listener) {
             _listenersValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListener<TUnload>(ActionListener<T1, T2> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -291,6 +314,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
             AddListener((value1, value2) =>
             {
@@ -303,6 +327,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> AddListenerValue<TV1, TV2>(ActionListener<TV1, TV2> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 {
             AddListener((value1, value2) =>
             {
@@ -319,12 +344,14 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> RemoveListener(ActionListener listener) {
             _listeners.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2> RemoveListener(ActionListener<T1, T2> listener) {
             _listenersValue.Remove(listener);
             return this;
@@ -333,6 +360,7 @@ namespace TinyReactive.Fields {
     #endregion
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Unload() {
             _listeners.Clear();
             _listenersValue.Clear();
@@ -366,6 +394,7 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send(T1 value1, T2 value2, T3 value3) {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -387,12 +416,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListener(ActionListener listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -400,12 +431,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListener(ActionListener<T1, T2, T3> listener) {
             _listenersValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListener<TUnload>(ActionListener<T1, T2, T3> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -413,6 +446,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
             AddListener((value1, value2, value3) =>
             {
@@ -425,6 +459,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> AddListenerValue<TV1, TV2, TV3>(ActionListener<TV1, TV2, TV3> listener, IUnloadLink unload) where TV1 : T1 where TV2 : T2 where TV3 : T3 {
             AddListener((value1, value2, value3) =>
             {
@@ -441,12 +476,14 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> RemoveListener(ActionListener listener) {
             _listeners.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputListener<T1, T2, T3> RemoveListener(ActionListener<T1, T2, T3> listener) {
             _listenersValue.Remove(listener);
             return this;
@@ -455,6 +492,7 @@ namespace TinyReactive.Fields {
     #endregion
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Unload() {
             _listeners.Clear();
             _listenersValue.Clear();

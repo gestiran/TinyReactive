@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
+using Unity.Profiling;
+using UnityEngine;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -40,8 +42,10 @@ namespace TinyReactive.Fields {
             _listenersChange = new LazyList<ActionListener<T, T>>(Observed.CAPACITY);
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void SetSilent(T newValue) => _value = newValue;
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public virtual void Set(T newValue) {
             T current = _value;
             _value = newValue;
@@ -74,12 +78,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener(ActionListener listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -87,12 +93,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener(ActionListener<T> listener) {
             _listenersValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -100,12 +108,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener(ActionListener<T, T> listener) {
             _listenersChange.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListener<TUnload>(ActionListener<T, T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersChange.Remove(listener)));
@@ -113,6 +123,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
             {
@@ -125,6 +136,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
             {
@@ -141,6 +153,7 @@ namespace TinyReactive.Fields {
     #region ByPriority
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerFirst(ActionListener listener) {
             if (_listeners.cacheCount > 0) {
                 _listeners.Insert(0, listener);
@@ -152,6 +165,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerFirst<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListenerFirst(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -159,6 +173,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerFirst(ActionListener<T> listener) {
             if (_listenersValue.cacheCount > 0) {
                 _listenersValue.Insert(0, listener);
@@ -170,6 +185,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerFirst<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListenerFirst(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -177,6 +193,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerLast(ActionListener listener) {
             if (_listeners.cacheCount > 0) {
                 _listeners.Insert(_listeners.cacheCount - 1, listener);
@@ -188,6 +205,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerLast<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             AddListenerLast(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -195,6 +213,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerLast(ActionListener<T> listener) {
             if (_listenersValue.cacheCount > 0) {
                 _listenersValue.Insert(_listenersValue.cacheCount - 1, listener);
@@ -206,6 +225,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerLast<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListenerLast(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -217,18 +237,21 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> RemoveListener(ActionListener listener) {
             _listeners.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> RemoveListener(ActionListener<T> listener) {
             _listenersValue.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> RemoveListener(ActionListener<T, T> listener) {
             _listenersChange.Remove(listener);
             return this;
@@ -236,6 +259,7 @@ namespace TinyReactive.Fields {
         
     #endregion
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public virtual void Unload() {
             _listeners.Clear();
             _listenersValue.Clear();

@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System.Collections.Generic;
+using Unity.Profiling;
+using UnityEngine;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -46,6 +48,7 @@ namespace TinyReactive.Fields {
         #endif
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Add(TKey key, TValue value) {
             root.Add(key, value);
             
@@ -70,6 +73,7 @@ namespace TinyReactive.Fields {
         #endif
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool Remove(TKey key) {
             if (root.Remove(key, out TValue value) == false) {
                 return false;
@@ -98,6 +102,7 @@ namespace TinyReactive.Fields {
             return true;
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void RemoveRange(List<TValue> values) {
             KeyValuePair<TKey, TValue>[] dataPair = new KeyValuePair<TKey, TValue>[root.Count];
             int dataId = 0;
@@ -140,8 +145,10 @@ namespace TinyReactive.Fields {
             }
         }
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool TryGetValue(TKey key, out TValue value) => root.TryGetValue(key, out value);
         
+        [HideInCallstack, IgnoredByDeepProfiler]
         public bool ContainsKey(TKey key) => root.ContainsKey(key);
         
         public IEnumerator<TKey> ForEachKeys() {
@@ -171,12 +178,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener listener) {
             _onAdd.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onAdd.Add(listener);
             unload.Add(new UnloadAction(() => _onAdd.Remove(listener)));
@@ -184,12 +193,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onAddWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onAddWithValue.Remove(listener)));
@@ -197,6 +208,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
             AddOnAddListener(v =>
             {
@@ -209,6 +221,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
             AddOnAddListener(v =>
             {
@@ -221,24 +234,28 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener listener) {
             _onAdd.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener listener) {
             _onRemove.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemove.Add(listener);
             unload.Add(new UnloadAction(() => _onRemove.Remove(listener)));
@@ -246,12 +263,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemoveWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onRemoveWithValue.Remove(listener)));
@@ -259,6 +278,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
             AddOnRemoveListener(v =>
             {
@@ -271,6 +291,7 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
             AddOnRemoveListener(v =>
             {
@@ -283,12 +304,14 @@ namespace TinyReactive.Fields {
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener listener) {
             _onRemove.Remove(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Remove(listener);
             return this;

@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
+using Unity.Profiling;
+using UnityEngine;
 
 #if ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
@@ -23,6 +25,7 @@ namespace TinyReactive.Fields {
     #if ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Send(bool expectedResult = true) {
             if (_listeners.isDirty) {
                 _listeners.Apply();
@@ -38,12 +41,14 @@ namespace TinyReactive.Fields {
     #region Add
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputSingleListener AddListener(Func<bool> listener) {
             _listeners.Add(listener);
             return this;
         }
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputSingleListener AddListener<TUnload>(Func<bool> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listeners.Remove(listener)));
@@ -55,6 +60,7 @@ namespace TinyReactive.Fields {
     #region Remove
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public InputSingleListener RemoveListener(Func<bool> listener) {
             _listeners.Remove(listener);
             return this;
@@ -63,6 +69,7 @@ namespace TinyReactive.Fields {
     #endregion
         
         // Resharper disable Unity.ExpensiveCode
+        [HideInCallstack, IgnoredByDeepProfiler]
         public void Unload() => _listeners.Clear();
     }
 }
