@@ -7,16 +7,16 @@ using System.Diagnostics.Contracts;
 using TinyReactive.Fields;
 
 namespace TinyReactive.Extensions {
-    /// <summary> List of extensions for ObservedList. </summary>
+    /// <summary> List of extensions for <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see>. </summary>
     public static class ObservedListExtension {
         /// <summary> Sorts the elements in the entire list using the default comparer. </summary>
-        /// <param name="list"> List with IComparable interface implementation. </param>
+        /// <param name="list"> ObservedList with IComparable interface implementation. </param>
         /// <typeparam name="T"> Any type with IComparable interface implementation. </typeparam>
         public static void Sort<T>(this ObservedList<T> list) where T : IComparable<T> => list.list.Sort();
         
-        /// <summary> Convert ObservedList to array. </summary>
-        /// <param name="list"> Any ObservedList. </param>
-        /// <typeparam name="T"> Any type. </typeparam>
+        /// <summary> Convert <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see> to array. </summary>
+        /// <param name="list"> Any ObservedList object. </param>
+        /// <typeparam name="T"> ObservedList object type. </typeparam>
         /// <returns> New array. </returns>
         [Pure]
         public static T[] ToArray<T>(this ObservedList<T> list) {
@@ -25,9 +25,9 @@ namespace TinyReactive.Extensions {
             return result;
         }
         
-        /// <summary> Convert ObservedList to System.List. </summary>
-        /// <param name="list"> Any ObservedList. </param>
-        /// <typeparam name="T"> Any type. </typeparam>
+        /// <summary> Convert <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see> to <see cref="System.Collections.Generic.List{T}">List</see>. </summary>
+        /// <param name="list"> Any ObservedList object. </param>
+        /// <typeparam name="T"> ObservedList object type. </typeparam>
         /// <returns> New list. </returns>
         [Pure]
         public static List<T> ToList<T>(this ObservedList<T> list) {

@@ -7,7 +7,7 @@ using System.Diagnostics.Contracts;
 using UnityEngine;
 
 namespace TinyReactive.Extensions {
-    /// <summary> List of extensions for UnloadPool. </summary>
+    /// <summary> List of extensions for <see cref="TinyReactive.UnloadPool">UnloadPool</see>. </summary>
     public static class UnloadExtension {
         public static bool TryUnload(this UnloadPool unload) {
             if (unload == null) {

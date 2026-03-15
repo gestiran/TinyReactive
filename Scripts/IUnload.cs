@@ -4,6 +4,7 @@
 namespace TinyReactive {
     /// <summary> A flag for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>
     public interface IUnload {
+        /// <summary> A place to unsubscribe from events and stop asynchronous actions. </summary>
         void Unload();
     }
 }

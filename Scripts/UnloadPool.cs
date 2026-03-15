@@ -11,8 +11,11 @@ namespace TinyReactive {
         /// <summary> Pool lifetime status. Becomes True after Unload, resets to False after Clear. </summary>
         public bool isUnloaded { get; private set; }
         
+        /// <summary> List of abstract references for unloading. </summary>
         private readonly List<IUnload> _pool;
-        
+            
+        /// <summary> Create empty unload pool. </summary>
+        /// <param name="capacity"> References unload <see cref="System.Collections.Generic.List{T}">List</see> capacity. </param>
         public UnloadPool(int capacity = 4) => _pool = new List<IUnload>(capacity);
         
         [Obsolete("Can`t use without parameters.", true)]
