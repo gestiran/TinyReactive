@@ -13,7 +13,7 @@ namespace TinyReactive.Fields {
 #if ODIN_INSPECTOR && UNITY_EDITOR
     [ShowInInspector, InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
-    public class Observed<T> : IEquatable<Observed<T>>, IEquatable<T>, IUnload {
+    public class Observed<T> : IValue<T>, IEquatable<Observed<T>>, IEquatable<T>, IUnload {
         public T value => _value;
         
     #if ODIN_INSPECTOR && UNITY_EDITOR
@@ -126,11 +126,12 @@ namespace TinyReactive.Fields {
         [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
-            {
-                if (v is TV) {
-                    listener.Invoke();
-                }
-            }, unload);
+                        {
+                            if (v is TV) {
+                                listener.Invoke();
+                            }
+                        },
+                        unload);
             
             return this;
         }
@@ -139,11 +140,12 @@ namespace TinyReactive.Fields {
         [HideInCallstack, IgnoredByDeepProfiler]
         public Observed<T> AddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : T {
             AddListener(v =>
-            {
-                if (v is TV target) {
-                    listener.Invoke(target);
-                }
-            }, unload);
+                        {
+                            if (v is TV target) {
+                                listener.Invoke(target);
+                            }
+                        },
+                        unload);
             
             return this;
         }
