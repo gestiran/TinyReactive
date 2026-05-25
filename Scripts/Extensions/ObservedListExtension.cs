@@ -20,7 +20,7 @@ namespace TinyReactive.Extensions {
         /// <returns> New array. </returns>
         [Pure]
         public static T[] ToArray<T>(this ObservedList<T> list) {
-            T[] result = new T[list.count];
+            T[] result = new T[list.Count];
             list.list.CopyTo(result, 0);
             return result;
         }
@@ -31,7 +31,7 @@ namespace TinyReactive.Extensions {
         /// <returns> New list. </returns>
         [Pure]
         public static List<T> ToList<T>(this ObservedList<T> list) {
-            List<T> result = new List<T>(list.count);
+            List<T> result = new List<T>(list.Count);
             result.AddRange(list.list);
             return result;
         }

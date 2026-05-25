@@ -20,10 +20,11 @@ namespace TinyReactive.Fields {
 #if ODIN_INSPECTOR && UNITY_EDITOR
     [ShowInInspector, InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
-    public sealed class ObservedList<T> : IEnumerable<T>, IEnumerator<T> {
-        public int count => list.Count;
+    public sealed class ObservedList<T> : IList<T>, IEnumerator<T> {
+        public int Count => list.Count;
         public T Current => list[_currentId];
         object IEnumerator.Current => list[_currentId];
+        public bool IsReadOnly => false;
         
         private readonly LazyList<ActionListener> _onAdd;
         private readonly LazyList<ActionListener<T>> _onAddWithValue;
@@ -339,7 +340,7 @@ namespace TinyReactive.Fields {
         
         [HideInCallstack, IgnoredByDeepProfiler]
         public void RemoveAll() {
-            for (int i = count - 1; i >= 0; i--) {
+            for (int i = Count - 1; i >= 0; i--) {
                 T value = list[i];
                 
                 if (_onRemove.isDirty) {
@@ -506,8 +507,30 @@ namespace TinyReactive.Fields {
         [HideInCallstack, IgnoredByDeepProfiler]
         public int IndexOf(T element) => list.IndexOf(element);
         
+        public void Insert(int index, T item) {
+            list.Insert(index, item);
+            
+            if (_onAdd.isDirty) {
+                _onAdd.Apply();
+            }
+            
+            if (_onAddWithValue.isDirty) {
+                _onAddWithValue.Apply();
+            }
+            
+            for (int i = 0; i < _onAdd.count; i++) {
+                _onAdd[i].Invoke();
+            }
+            
+            for (int i = 0; i < _onAddWithValue.count; i++) {
+                _onAddWithValue[i].Invoke(item);
+            }
+        }
+        
         [HideInCallstack, IgnoredByDeepProfiler]
         public bool Contains(T element) => list.Contains(element);
+        
+        public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
         
         [HideInCallstack, IgnoredByDeepProfiler]
         public void RemoveAt(int id) {
