@@ -80,7 +80,7 @@ namespace TinyReactive.Fields {
             }
             
             if (_onRemove.isDirty) {
-                _onAdd.Apply();
+                _onRemove.Apply();
             }
             
             if (_onRemoveWithValue.isDirty) {
@@ -122,7 +122,7 @@ namespace TinyReactive.Fields {
                     root.Remove(dataPair[dataId].Key);
                     
                     if (_onRemove.isDirty) {
-                        _onAdd.Apply();
+                        _onRemove.Apply();
                     }
                     
                     if (_onRemoveWithValue.isDirty) {
