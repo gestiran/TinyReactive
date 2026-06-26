@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<docs>
+    <UnloadPool>
+        <summary>
+            A pool of resources requiring unloading, for unsubscribing from events and stopping asynchronous actions in case of scene unloading.
+        </summary>
+    </UnloadPool>
+
+    <fields>
+        <isUnloaded>
+            <summary>
+                Pool lifetime status. Becomes True after Unload, resets to False after Clear.
+            </summary>
+        </isUnloaded>
+
+        <_pool>
+            <summary>
+                List of abstract references for unloading.
+            </summary>
+        </_pool>
+    </fields>
+
+    <constructor>
+        <main>
+            <summary>
+                Create empty unload pool.
+            </summary>
+
+            <param name="capacity">
+                References unload <see cref="T:System.Collections.Generic.List{T}">List</see> capacity.
+            </param>
+        </main>
+    </constructor>
+
+    <methods>
+        <Add_0>
+            <summary>Add an object to the Pool.</summary>
+            <param name="unload">Any unload object.</param>
+            <typeparam name="T">Any unload object type.</typeparam>
+            <returns>Current object.</returns>
+        </Add_0>
+
+        <Add_1>
+            <summary>Add objects to the pool.</summary>
+            <param name="unloads">Any unload objects.</param>
+        </Add_1>
+
+        <Remove_0>
+            <summary>Remove the object from the pool.</summary>
+            <param name="unload">Any unload object.</param>
+            <typeparam name="T">Any unload object type.</typeparam>
+            <returns>Current object.</returns>
+        </Remove_0>
+
+        <Remove_1>
+            <summary>Remove objects from the pool.</summary>
+            <param name="unloads">Any unload objects.</param>
+        </Remove_1>
+
+        <Clear>
+            <summary>Remove all objects from the pool and reset the unloaded status.</summary>
+        </Clear>
+
+        <Unload>
+            <summary>Call Unload on all objects.</summary>
+        </Unload>
+    </methods>
+</docs>

@@ -1,18 +1,21 @@
 ﻿// Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+#if UNITY_2017_1_OR_NEWER
+#define UNITY_ENGINE
+#endif
+
 using System;
 
 namespace TinyReactive {
-    /// <summary> Container for <see cref="System.Action">action</see> participating in <see cref="TinyReactive.IUnload">unload</see> resources. </summary>
+    /// <include file="../Documentation~/Scripts/UnloadAction.xml" path="docs/UnloadAction/*" />
     public sealed class UnloadAction : IUnload {
-        /// <summary> Reference to the unload event. </summary>
+        /// <include file="../Documentation~/Scripts/UnloadAction.xml" path="docs/fields/_action/*" />
         private readonly Action _action;
         
-        /// <summary> Create <see cref="System.Action">action</see> container. </summary>
-        /// <param name="action"> Default <see cref="System.Action">action</see>, can`t be null. </param>
+        /// <include file="../Documentation~/Scripts/UnloadAction.xml" path="docs/constructor/main/*" />
         public UnloadAction(Action action) {
-        #if UNITY_EDITOR
+        #if UNITY_ENGINE && UNITY_EDITOR
             if (action == null) {
                 throw new NullReferenceException("Action can`t be null!");
             }
@@ -25,7 +28,7 @@ namespace TinyReactive {
         
         public static implicit operator UnloadAction(Action action) => new UnloadAction(action);
         
-        /// <summary> Invoke referenced <see cref="TinyReactive.UnloadAction._action">action</see> event. </summary>
+        /// <include file="../Documentation~/Scripts/UnloadAction.xml" path="docs/methods/Unload/*" />
         public void Unload() => _action.Invoke();
     }
 }
