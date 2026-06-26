@@ -1,16 +1,23 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+#if UNITY_2017_1_OR_NEWER
+#define UNITY_ENGINE
+#endif
+
 using System;
+
+#if UNITY_ENGINE
 using Unity.Profiling;
 using UnityEngine;
+#endif
 
-#if ODIN_INSPECTOR && UNITY_EDITOR
+#if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
 
 namespace TinyReactive.Fields {
-#if ODIN_INSPECTOR && UNITY_EDITOR
+#if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
     [InlineProperty, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class InputChanger<T> : IUnload where T : unmanaged {
@@ -31,10 +38,12 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
-    #if ODIN_INSPECTOR && UNITY_EDITOR
+    #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
         [Button]
     #endif
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public void Send(ref T value) {
             if (_listenersValue.isDirty) {
                 _listenersValue.Apply();
@@ -45,7 +54,9 @@ namespace TinyReactive.Fields {
             }
         }
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public void Send(params T[] values) {
             if (_listenersValue.isDirty) {
                 _listenersValue.Apply();
@@ -60,15 +71,19 @@ namespace TinyReactive.Fields {
         
     #region Add
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public InputChanger<T> AddListener(ValueChanger<T> listener) {
             _listenersValue.Add(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public InputChanger<T> AddListener<TUnload>(ValueChanger<T> listener, TUnload unload) where TUnload : IUnloadLink {
             AddListener(listener);
             unload.Add(new UnloadAction(() => _listenersValue.Remove(listener)));
@@ -79,8 +94,10 @@ namespace TinyReactive.Fields {
         
     #region Remove
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public InputChanger<T> RemoveListener(ValueChanger<T> listener) {
             _listenersValue.Remove(listener);
             return this;
@@ -88,8 +105,10 @@ namespace TinyReactive.Fields {
         
     #endregion Remove
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public void Unload() => _listenersValue.Clear();
         
         public override int GetHashCode() => _id;

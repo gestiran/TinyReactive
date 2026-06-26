@@ -1,13 +1,20 @@
 ﻿// Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+#if UNITY_2017_1_OR_NEWER
+#define UNITY_ENGINE
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using UnityEngine;
-
-#if UNITASK_ENABLE
 using System.Threading;
+
+#if UNITY_ENGINE
+using UnityEngine;
+#endif
+
+#if UNITY_ENGINE && UNITASK_ENABLE
 using Cysharp.Threading.Tasks;
 #endif
 
@@ -150,7 +157,7 @@ namespace TinyReactive.Fields {
             obj.Set(value);
         }
         
-    #if UNITASK_ENABLE
+    #if UNITY_ENGINE && UNITASK_ENABLE
         public static async UniTask<T> GetFirstAsync<T>(this Observed<T> obj, CancellationToken cancellation) {
             T result = default;
             bool isCompleted = false;
@@ -158,10 +165,11 @@ namespace TinyReactive.Fields {
             UnloadPool unload = new UnloadPool();
             
             obj.AddListener(value =>
-            {
-                result = value;
-                isCompleted = true;
-            }, unload);
+                            {
+                                result = value;
+                                isCompleted = true;
+                            },
+                            unload);
             
             try {
                 await UniTask.WaitUntil(() => isCompleted, PlayerLoopTiming.Update, cancellation);

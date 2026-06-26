@@ -1,12 +1,19 @@
 ﻿// Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+#if UNITY_2017_1_OR_NEWER
+#define UNITY_ENGINE
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using UnityEngine;
 
-namespace TinyReactive.Extensions {
+#if UNITY_ENGINE
+using UnityEngine;
+#endif
+
+namespace TinyReactive.Fields {
     /// <summary> List of extensions for <see cref="TinyReactive.UnloadPool">UnloadPool</see>. </summary>
     public static class UnloadExtension {
         public static bool TryUnload(this UnloadPool unload) {
@@ -33,7 +40,9 @@ namespace TinyReactive.Extensions {
                 try {
                     obj.Unload();
                 } catch (Exception exception) {
+                #if UNITY_ENGINE
                     Debug.LogError(new Exception($"Unload.Exception - {(obj != null ? obj.GetType().Name : typeof(T).Name)}", exception));
+                #endif
                 }
             }
         }
@@ -44,7 +53,9 @@ namespace TinyReactive.Extensions {
                     unload.Key.Unload();
                     unload.Value.Unload();
                 } catch (Exception exception) {
+                #if UNITY_ENGINE
                     Debug.LogError(new Exception($"Unload.Exception - {typeof(TUnload).Name}", exception));
+                #endif
                 }
             }
         }
@@ -60,7 +71,9 @@ namespace TinyReactive.Extensions {
                 try {
                     unload.Unload();
                 } catch (Exception exception) {
-                    Debug.LogError(new Exception($"UnloadKeys.Exception - {typeof(TUnload).Name}",exception));
+                #if UNITY_ENGINE
+                    Debug.LogError(new Exception($"UnloadKeys.Exception - {typeof(TUnload).Name}", exception));
+                #endif
                 }
             }
         }
@@ -82,7 +95,9 @@ namespace TinyReactive.Extensions {
                 try {
                     other.Unload();
                 } catch (Exception exception) {
+                #if UNITY_ENGINE
                     Debug.LogError(new Exception($"Unload.Exception - {obj.GetType().Name}", exception));
+                #endif
                 }
             }
         }

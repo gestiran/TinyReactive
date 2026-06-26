@@ -1,16 +1,23 @@
 ﻿// Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+#if UNITY_2017_1_OR_NEWER
+#define UNITY_ENGINE
+#endif
+
 using System.Collections.Generic;
+
+#if UNITY_ENGINE
 using Unity.Profiling;
 using UnityEngine;
+#endif
 
-#if ODIN_INSPECTOR && UNITY_EDITOR
+#if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
 
 namespace TinyReactive.Fields {
-#if ODIN_INSPECTOR && UNITY_EDITOR
+#if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
     [ShowInInspector, HideReferenceObjectPicker, HideDuplicateReferenceBox]
 #endif
     public sealed class ObservedDictionary<TKey, TValue> {
@@ -21,7 +28,7 @@ namespace TinyReactive.Fields {
         private readonly LazyList<ActionListener> _onRemove;
         private readonly LazyList<ActionListener<TValue>> _onRemoveWithValue;
         
-    #if ODIN_INSPECTOR && UNITY_EDITOR
+    #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
         [ShowInInspector, LabelText("Elements")]
         [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, DraggableItems = false, ListElementLabelName = "@GetType().Name")]
         private List<TValue> _inspectorDisplay;
@@ -38,7 +45,7 @@ namespace TinyReactive.Fields {
             _onRemove = new LazyList<ActionListener>(capacity);
             _onRemoveWithValue = new LazyList<ActionListener<TValue>>(capacity);
             
-        #if ODIN_INSPECTOR && UNITY_EDITOR
+        #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay = new List<TValue>();
             
             foreach (TValue data in value.Values) {
@@ -48,7 +55,9 @@ namespace TinyReactive.Fields {
         #endif
         }
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public void Add(TKey key, TValue value) {
             root.Add(key, value);
             
@@ -68,12 +77,14 @@ namespace TinyReactive.Fields {
                 _onAddWithValue[i].Invoke(value);
             }
             
-        #if ODIN_INSPECTOR && UNITY_EDITOR
+        #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay.Add(value);
         #endif
         }
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public bool Remove(TKey key) {
             if (root.Remove(key, out TValue value) == false) {
                 return false;
@@ -95,14 +106,16 @@ namespace TinyReactive.Fields {
                 _onRemoveWithValue[i].Invoke(value);
             }
             
-        #if ODIN_INSPECTOR && UNITY_EDITOR
+        #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
             _inspectorDisplay.Remove(value);
         #endif
             
             return true;
         }
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public void RemoveRange(List<TValue> values) {
             KeyValuePair<TKey, TValue>[] dataPair = new KeyValuePair<TKey, TValue>[root.Count];
             int dataId = 0;
@@ -137,7 +150,7 @@ namespace TinyReactive.Fields {
                         _onRemoveWithValue[i].Invoke(value);
                     }
                     
-                #if ODIN_INSPECTOR && UNITY_EDITOR
+                #if UNITY_ENGINE && ODIN_INSPECTOR && UNITY_EDITOR
                     _inspectorDisplay.Remove(value);
                 #endif
                     break;
@@ -145,10 +158,14 @@ namespace TinyReactive.Fields {
             }
         }
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public bool TryGetValue(TKey key, out TValue value) => root.TryGetValue(key, out value);
         
+    #if UNITY_ENGINE
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public bool ContainsKey(TKey key) => root.ContainsKey(key);
         
         public IEnumerator<TKey> ForEachKeys() {
@@ -177,141 +194,177 @@ namespace TinyReactive.Fields {
             }
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener listener) {
             _onAdd.Add(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onAdd.Add(listener);
             unload.Add(new UnloadAction(() => _onAdd.Remove(listener)));
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Add(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onAddWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onAddWithValue.Remove(listener)));
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
             AddOnAddListener(v =>
-            {
-                if (v is TV) {
-                    listener.Invoke();
-                }
-            }, unload);
+                             {
+                                 if (v is TV) {
+                                     listener.Invoke();
+                                 }
+                             },
+                             unload);
             
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnAddListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
             AddOnAddListener(v =>
-            {
-                if (v is TV target) {
-                    listener.Invoke(target);
-                }
-            }, unload);
+                             {
+                                 if (v is TV target) {
+                                     listener.Invoke(target);
+                                 }
+                             },
+                             unload);
             
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener listener) {
             _onAdd.Remove(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> RemoveOnAddListener(ActionListener<TValue> listener) {
             _onAddWithValue.Remove(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener listener) {
             _onRemove.Add(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemove.Add(listener);
             unload.Add(new UnloadAction(() => _onRemove.Remove(listener)));
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Add(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListener<TUnload>(ActionListener<TValue> listener, TUnload unload) where TUnload : IUnloadLink {
             _onRemoveWithValue.Add(listener);
             unload.Add(new UnloadAction(() => _onRemoveWithValue.Remove(listener)));
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener listener, IUnloadLink unload) where TV : TValue {
             AddOnRemoveListener(v =>
-            {
-                if (v is TV) {
-                    listener.Invoke();
-                }
-            }, unload);
+                                {
+                                    if (v is TV) {
+                                        listener.Invoke();
+                                    }
+                                },
+                                unload);
             
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> AddOnRemoveListenerValue<TV>(ActionListener<TV> listener, IUnloadLink unload) where TV : TValue {
             AddOnRemoveListener(v =>
-            {
-                if (v is TV target) {
-                    listener.Invoke(target);
-                }
-            }, unload);
+                                {
+                                    if (v is TV target) {
+                                        listener.Invoke(target);
+                                    }
+                                },
+                                unload);
             
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener listener) {
             _onRemove.Remove(listener);
             return this;
         }
         
+    #if UNITY_ENGINE
         // Resharper disable Unity.ExpensiveCode
         [HideInCallstack, IgnoredByDeepProfiler]
+    #endif
         public ObservedDictionary<TKey, TValue> RemoveOnRemoveListener(ActionListener<TValue> listener) {
             _onRemoveWithValue.Remove(listener);
             return this;

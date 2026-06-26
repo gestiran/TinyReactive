@@ -3,16 +3,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-using TinyReactive.Fields;
 
-namespace TinyReactive.Extensions {
+namespace TinyReactive.Fields {
     /// <summary> List of extensions for <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see>. </summary>
     public static class ObservedListExtension {
-        /// <summary> Sorts the elements in the entire list using the default comparer. </summary>
-        /// <param name="list"> ObservedList with IComparable interface implementation. </param>
-        /// <typeparam name="T"> Any type with IComparable interface implementation. </typeparam>
-        public static void Sort<T>(this ObservedList<T> list) where T : IComparable<T> => list.list.Sort();
+        public static void Sort<T>(this ObservedList<T> list) where T : IComparable<T> {
+            list.list.Sort();
+        }
+        
+        public static void Sort<T>(this ObservedList<T> list, [NotNull] Comparison<T> comparison) {
+            list.list.Sort(comparison);
+        }
         
         /// <summary> Convert <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see> to array. </summary>
         /// <param name="list"> Any ObservedList object. </param>
