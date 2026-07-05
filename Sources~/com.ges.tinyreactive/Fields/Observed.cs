@@ -3,7 +3,15 @@
 
 using System;
 
+#if EXTERNAL_DEPENDENCIES
+using System.Text.Json.Serialization;
+using TinyReactive.JsonConverters;
+#endif
+
 namespace TinyReactive.Fields {
+#if EXTERNAL_DEPENDENCIES
+    [JsonConverter(typeof(ObservedJsonConverter))]
+#endif
     public class Observed<T> : IValue<T>, IEquatable<Observed<T>>, IEquatable<T>, IUnload {
         public T value { get; protected internal set; }
         

@@ -4,3 +4,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("TinyReactive.Runtime")]
 [assembly: InternalsVisibleTo("TinyMVC.Editor")]
 [assembly: InternalsVisibleTo("TinyMVC.Runtime")]
+[assembly: InternalsVisibleTo("TinyMVC")]
