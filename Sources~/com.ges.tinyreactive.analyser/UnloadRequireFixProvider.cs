@@ -1,0 +1,43 @@
+using System.Collections.Immutable;
+using System.Composition;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using TinyUtilities.Roslyn;
+using TinyUtilities.Roslyn.Extensions;
+
+namespace TinyReactive.Analyser {
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnloadRequireFixProvider)), Shared]
+    public sealed class UnloadRequireFixProvider : InterfaceRequireFixProvider {
+        public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(Labels.ID_UNLOAD);
+        
+        protected override string _title { get; }
+        protected override string _key { get; }
+        protected override string _namespace { get; }
+        
+        private readonly string _interfaceName;
+        
+        public UnloadRequireFixProvider() {
+            _title = "Add IUnload interface";
+            _key = nameof(UnloadRequireFixProvider);
+            _namespace = "TinyReactive";
+            _interfaceName = "IUnload";
+        }
+        
+        protected override ClassDeclarationSyntax ApplyFix(ClassDeclarationSyntax declaration, SemanticModel semantic) {
+            ClassDeclarationSyntax newClassDeclaration;
+            
+            if (declaration.BaseList == null) {
+                newClassDeclaration = declaration.AddInterface(_interfaceName);
+            } else if (declaration.BaseList.Types.TryFindAnyPlace(out int placeId, "IController", "IInit", "IApplyResolving", "IFixedTick", "ITick", "ILateTick")) {
+                newClassDeclaration = declaration.InsertInterface(_interfaceName, placeId + 1);
+            } else if (declaration.IsHaveParentClass(semantic)) {
+                newClassDeclaration = declaration.InsertInterface(_interfaceName, 1);
+            } else {
+                newClassDeclaration = declaration.InsertInterface(_interfaceName, 0);
+            }
+            
+            return newClassDeclaration;
+        }
+    }
+}

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Version>1.3.4</Version>
+        
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>TinyReactive</RootNamespace>
+        
+        <Nullable>disable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
+        
+        <PackageId>com.ges.tinyreactive</PackageId>
+        <Authors>Derek Sliman</Authors>
+        
+        <Description>Reactive fields and extensions.</Description>
+        <PackageTags>reactive;observed</PackageTags>
+        
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        
+        <ExternalDependencies Condition="'$(ExternalDependencies)' == ''">true</ExternalDependencies>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(ExternalDependencies)' == 'true'">
+        <DefineConstants>$(DefineConstants);EXTERNAL_DEPENDENCIES</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(ExternalDependencies)' == 'true'">
+        <PackageReference Include="System.Text.Json" Version="10.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="com.ges.tinyutilities" Version="1.3.6" />
+    </ItemGroup>
+    
+</Project>

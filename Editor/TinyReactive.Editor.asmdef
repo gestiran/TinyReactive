@@ -1,0 +1,23 @@
+{
+    "name": "TinyReactive.Editor",
+    "rootNamespace": "TinyReactive",
+    "references": [
+        "GUID:52e8ae13a5f06b247affb7808bc8d3ff"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "com.ges.tinyreactive.dll",
+        "Sirenix.OdinInspector.Attributes.dll",
+        "Sirenix.OdinInspector.Editor.dll",
+        "Sirenix.Utilities.Editor.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

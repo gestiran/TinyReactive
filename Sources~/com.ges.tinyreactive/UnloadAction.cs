@@ -1,0 +1,24 @@
+﻿// Copyright (c) 2023 Derek Sliman
+// Licensed under the MIT License. See LICENSE.md for details.
+
+using System;
+
+namespace TinyReactive {
+    public sealed class UnloadAction : IUnload {
+        private readonly Action _action;
+        
+        public UnloadAction(Action action) {
+            if (action == null) {
+                throw new NullReferenceException("Action can`t be null!");
+            }
+            
+            _action = action;
+        }
+        
+        public static implicit operator Action(UnloadAction unload) => unload._action;
+        
+        public static implicit operator UnloadAction(Action action) => new UnloadAction(action);
+        
+        public void Unload() => _action.Invoke();
+    }
+}
