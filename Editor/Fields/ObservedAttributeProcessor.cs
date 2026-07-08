@@ -11,7 +11,7 @@ using TinyReactive.Fields;
 namespace TinyReactive.Editor.Fields {
     public sealed class ObservedAttributeProcessor<T> : OdinAttributeProcessor<Observed<T>> {
         public override void ProcessChildMemberAttributes(InspectorProperty parentProperty, MemberInfo member, List<Attribute> attributes) {
-            if (member.Name == ObservedLabels.VALUE) {
+            if (member.Name == ObservedDrawer.VALUE) {
                 attributes.Add(new ShowInInspectorAttribute());
             }
         }

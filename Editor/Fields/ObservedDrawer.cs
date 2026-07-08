@@ -13,34 +13,36 @@ namespace TinyReactive.Editor.Fields {
             Observed<T> current = ValueEntry.SmartValue;
             
             if (current != null) {
-                InspectorProperty valueProperty = Property.Children[ObservedLabels.VALUE];
+                InspectorProperty valueProperty = Property.Children[ObservedDrawer.VALUE];
                 
                 if (valueProperty == null && Property.Children.Count > 0) {
                     valueProperty = Property.Children[0];
                 }
                 
                 if (valueProperty != null) {
-                    EditorGUILayout.BeginHorizontal();
-                    
-                    EditorGUI.BeginChangeCheck();
-                    valueProperty.Draw(label);
-                    
-                    if (EditorGUI.EndChangeCheck() && valueProperty.ValueEntry.WeakSmartValue is T newValue) {
-                        current.Set(newValue);
-                        ValueEntry.Values.ForceMarkDirty();
-                    }
-                    
                     if (current is Observed<int> observedInt) {
-                        if (DrawButtonsInt(observedInt, GUILayout.Width(64f))) {
+                        EditorGUILayout.BeginHorizontal();
+                        
+                        DrawValue(label, valueProperty, current);
+                        
+                        if (ObservedDrawer.DrawButtonsInt(observedInt, GUILayout.Width(64f))) {
                             ValueEntry.Values.ForceMarkDirty();
                         }
+                        
+                        EditorGUILayout.EndHorizontal();
                     } else if (current is Observed<float> observedFloat) {
-                        if (DrawButtonsFloat(observedFloat, GUILayout.Width(64f))) {
+                        EditorGUILayout.BeginHorizontal();
+                        
+                        DrawValue(label, valueProperty, current);
+                        
+                        if (ObservedDrawer.DrawButtonsFloat(observedFloat, GUILayout.Width(64f))) {
                             ValueEntry.Values.ForceMarkDirty();
                         }
+                        
+                        EditorGUILayout.EndHorizontal();
+                    } else {
+                        DrawValue(label, valueProperty, current);
                     }
-                    
-                    EditorGUILayout.EndHorizontal();
                 }
                 
                 return;
@@ -49,45 +51,55 @@ namespace TinyReactive.Editor.Fields {
             CallNextDrawer(label);
         }
         
-        private bool DrawButtonsInt(Observed<int> observedInt, GUILayoutOption width) {
-            if (GUILayout.Button(ObservedLabels.X2, width)) {
-                int value = observedInt.value;
+        private void DrawValue(GUIContent label, InspectorProperty property, Observed<T> current) {
+            EditorGUI.BeginChangeCheck();
+            property.Draw(label);
+            
+            if (EditorGUI.EndChangeCheck() && property.ValueEntry.WeakSmartValue is T newValue) {
+                current.Set(newValue);
+                ValueEntry.Values.ForceMarkDirty();
+            }
+        }
+    }
+    public static class ObservedDrawer {
+        public const string VALUE = "value";
+        public const string X2 = "x2";
+        public const string X0_5 = "x0.5";
+        
+        public static bool DrawButtonsInt<T>(T observed, GUILayoutOption width) where T : Observed<int> {
+            if (GUILayout.Button(X2, width)) {
+                int value = observed.value;
                 value = value == 0 ? 10 : value * 2;
-                observedInt.Set(value);
+                observed.Set(value);
                 return true;
             }
             
-            if (GUILayout.Button(ObservedLabels.X0_5, width)) {
-                int value = observedInt.value;
+            if (GUILayout.Button(X0_5, width)) {
+                int value = observed.value;
                 value = value > 0 && value <= 10 ? 0 : value / 2;
-                observedInt.Set(value);
+                observed.Set(value);
                 return true;
             }
             
             return false;
         }
         
-        private bool DrawButtonsFloat(Observed<float> observedFloat, GUILayoutOption width) {
-            if (GUILayout.Button(ObservedLabels.X2, width)) {
-                float value = observedFloat.value;
+        public static bool DrawButtonsFloat<T>(T observed, GUILayoutOption width) where T : Observed<float> {
+            if (GUILayout.Button(X2, width)) {
+                float value = observed.value;
                 value = value == 0f ? 10f : value * 2f;
-                observedFloat.Set(value);
+                observed.Set(value);
                 return true;
             }
             
-            if (GUILayout.Button(ObservedLabels.X0_5, width)) {
-                float value = observedFloat.value;
+            if (GUILayout.Button(X0_5, width)) {
+                float value = observed.value;
                 value = value > 0f && value <= 10f ? 0f : value * 0.5f;
-                observedFloat.Set(value);
+                observed.Set(value);
                 return true;
             }
             
             return false;
         }
-    }
-    public static class ObservedLabels {
-        public const string VALUE = "value";
-        public const string X2 = "x2";
-        public const string X0_5 = "x0.5";
     }
 }
