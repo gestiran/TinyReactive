@@ -41,30 +41,9 @@ namespace TinyReactive.Fields {
         public virtual void Set(T newValue) {
             T current = value;
             value = newValue;
-            
-            if (listeners.isDirty) {
-                listeners.Apply();
-            }
-            
-            if (listenersValue.isDirty) {
-                listenersValue.Apply();
-            }
-            
-            if (listenersChange.isDirty) {
-                listenersChange.Apply();
-            }
-            
-            for (int i = 0; i < listeners.count; i++) {
-                listeners[i].Invoke();
-            }
-            
-            for (int i = 0; i < listenersValue.count; i++) {
-                listenersValue[i].Invoke(newValue);
-            }
-            
-            for (int i = 0; i < listenersChange.count; i++) {
-                listenersChange[i].Invoke(current, newValue);
-            }
+            listeners.Invoke();
+            listenersValue.Invoke(newValue);
+            listenersChange.Invoke(current, newValue);
         }
         
         // Resharper disable Unity.ExpensiveCode

@@ -40,42 +40,15 @@ namespace TinyReactive.Fields {
             _currentId = -1;
         }
         
-        public T this[int index] {
+        public virtual T this[int index] {
             get => list[index];
             set {
-                if (onRemove.isDirty) {
-                    onRemove.Apply();
-                }
-                
-                if (onRemoveWithValue.isDirty) {
-                    onRemoveWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onRemove.count; i++) {
-                    onRemove[i].Invoke();
-                }
-                
-                for (int i = 0; i < onRemoveWithValue.count; i++) {
-                    onRemoveWithValue[i].Invoke(list[index]);
-                }
-                
+                T current = list[index];
                 list[index] = value;
-                
-                if (onAdd.isDirty) {
-                    onAdd.Apply();
-                }
-                
-                if (onAddWithValue.isDirty) {
-                    onAddWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onAdd.count; i++) {
-                    onAdd[i].Invoke();
-                }
-                
-                for (int i = 0; i < onAddWithValue.count; i++) {
-                    onAddWithValue[i].Invoke(value);
-                }
+                onRemove.Invoke();
+                onRemoveWithValue.Invoke(current);
+                onAdd.Invoke();
+                onAddWithValue.Invoke(value);
             }
         }
         
@@ -84,48 +57,19 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
-        public void Add([NotNull] params T[] values) {
+        public virtual void Add([NotNull] params T[] values) {
             list.AddRange(values);
             
-            if (onAdd.isDirty) {
-                onAdd.Apply();
-            }
-            
-            if (onAddWithValue.isDirty) {
-                onAddWithValue.Apply();
-            }
-            
-            for (int i = 0; i < onAdd.count; i++) {
-                onAdd[i].Invoke();
-            }
-            
             for (int valueId = 0; valueId < values.Length; valueId++) {
-                T value = values[valueId];
-                
-                for (int i = 0; i < onAddWithValue.count; i++) {
-                    onAddWithValue[i].Invoke(value);
-                }
+                onAdd.Invoke();
+                onAddWithValue.Invoke(values[valueId]);
             }
         }
         
-        public void Add([NotNull] T value) {
+        public virtual void Add([NotNull] T value) {
             list.Add(value);
-            
-            if (onAdd.isDirty) {
-                onAdd.Apply();
-            }
-            
-            if (onAddWithValue.isDirty) {
-                onAddWithValue.Apply();
-            }
-            
-            for (int i = 0; i < onAdd.count; i++) {
-                onAdd[i].Invoke();
-            }
-            
-            for (int i = 0; i < onAddWithValue.count; i++) {
-                onAddWithValue[i].Invoke(value);
-            }
+            onAdd.Invoke();
+            onAddWithValue.Invoke(value);
         }
         
         [Obsolete("Can't remove nothing!", true)]
@@ -133,147 +77,62 @@ namespace TinyReactive.Fields {
             // Do nothing
         }
         
-        public void Remove([NotNull] params T[] values) {
-            if (onRemove.isDirty) {
-                onRemove.Apply();
-            }
-            
-            if (onRemoveWithValue.isDirty) {
-                onRemoveWithValue.Apply();
-            }
-            
+        public virtual void Remove([NotNull] params T[] values) {
             foreach (T value in values) {
                 int index = list.IndexOf(value);
                 
                 if (index >= 0) {
-                    for (int i = 0; i < onRemove.count; i++) {
-                        onRemove[i].Invoke();
-                    }
-                    
-                    for (int i = 0; i < onRemoveWithValue.count; i++) {
-                        onRemoveWithValue[i].Invoke(value);
-                    }
-                    
                     list.RemoveAt(index);
+                    onRemove.Invoke();
+                    onRemoveWithValue.Invoke(value);
                 }
             }
         }
         
-        public bool Remove([NotNull] T value) {
+        public virtual bool Remove([NotNull] T value) {
             int index = list.IndexOf(value);
             
             if (index >= 0) {
-                if (onRemove.isDirty) {
-                    onRemove.Apply();
-                }
-                
-                if (onRemoveWithValue.isDirty) {
-                    onRemoveWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onRemove.count; i++) {
-                    onRemove[i].Invoke();
-                }
-                
-                for (int i = 0; i < onRemoveWithValue.count; i++) {
-                    onRemoveWithValue[i].Invoke(value);
-                }
-                
                 list.RemoveAt(index);
+                onRemove.Invoke();
+                onRemoveWithValue.Invoke(value);
                 return true;
             }
             
             return false;
         }
         
-        public void RemoveAll() {
+        public virtual void RemoveAll() {
             for (int i = Count - 1; i >= 0; i--) {
                 T value = list[i];
-                
-                if (onRemove.isDirty) {
-                    onRemove.Apply();
-                }
-                
-                if (onRemoveWithValue.isDirty) {
-                    onRemoveWithValue.Apply();
-                }
-                
-                for (int j = 0; j < onRemove.count; j++) {
-                    onRemove[j].Invoke();
-                }
-                
-                for (int j = 0; j < onRemoveWithValue.count; j++) {
-                    onRemoveWithValue[j].Invoke(value);
-                }
-                
                 list.RemoveAt(i);
+                onRemove.Invoke();
+                onRemoveWithValue.Invoke(value);
             }
         }
         
-        public void Clear() {
-            if (onClear.isDirty) {
-                onClear.Apply();
-            }
-            
-            if (onClear.count > 0) {
-                for (int i = 0; i < onClear.count; i++) {
-                    onClear[i].Invoke();
-                }
-            }
-            
+        public virtual void Clear() {
             list.Clear();
+            onClear.Invoke();
         }
         
         public int IndexOf(T element) => list.IndexOf(element);
         
-        public void Insert(int index, T item) {
+        public virtual void Insert(int index, T item) {
             list.Insert(index, item);
-            
-            if (onAdd.isDirty) {
-                onAdd.Apply();
-            }
-            
-            if (onAddWithValue.isDirty) {
-                onAddWithValue.Apply();
-            }
-            
-            for (int i = 0; i < onAdd.count; i++) {
-                onAdd[i].Invoke();
-            }
-            
-            for (int i = 0; i < onAddWithValue.count; i++) {
-                onAddWithValue[i].Invoke(item);
-            }
+            onAdd.Invoke();
+            onAddWithValue.Invoke(item);
         }
         
         public bool Contains(T element) => list.Contains(element);
         
         public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
         
-        public void RemoveAt(int index) {
+        public virtual void RemoveAt(int index) {
             T element = list[index];
-            
-            if (onRemove.isDirty) {
-                onRemove.Apply();
-            }
-            
-            if (onRemoveWithValue.isDirty) {
-                onRemoveWithValue.Apply();
-            }
-            
-            if (onRemove.count > 0) {
-                for (int i = 0; i < onRemove.count; i++) {
-                    onRemove[i].Invoke();
-                }
-            }
-            
-            if (onRemoveWithValue.count > 0) {
-                for (int i = 0; i < onRemoveWithValue.count; i++) {
-                    onRemoveWithValue[i].Invoke(element);
-                }
-            }
-            
             list.RemoveAt(index);
+            onRemove.Invoke();
+            onAddWithValue.Invoke(element);
         }
         
         // Resharper disable Unity.ExpensiveCode
