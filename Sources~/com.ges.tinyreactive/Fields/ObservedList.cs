@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace TinyReactive.Fields {
-    public sealed class ObservedList<T> : IList<T>, IEnumerator<T>, IEquatable<ObservedList<T>> {
+    public class ObservedList<T> : IList<T>, IEnumerator<T>, IEquatable<ObservedList<T>> {
         public int Count => list.Count;
         public T Current => list[_currentId];
         object IEnumerator.Current => list[_currentId];
@@ -250,8 +250,8 @@ namespace TinyReactive.Fields {
         
         public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
         
-        public void RemoveAt(int id) {
-            T element = list[id];
+        public void RemoveAt(int index) {
+            T element = list[index];
             
             if (onRemove.isDirty) {
                 onRemove.Apply();
@@ -273,7 +273,7 @@ namespace TinyReactive.Fields {
                 }
             }
             
-            list.RemoveAt(id);
+            list.RemoveAt(index);
         }
         
         // Resharper disable Unity.ExpensiveCode
