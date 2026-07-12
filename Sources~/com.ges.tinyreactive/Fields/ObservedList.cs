@@ -7,7 +7,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
+#if EXTERNAL_DEPENDENCIES
+using System.Text.Json.Serialization;
+using TinyReactive.JsonConverters;
+#endif
+
 namespace TinyReactive.Fields {
+#if EXTERNAL_DEPENDENCIES
+    [JsonConverter(typeof(ObservedListJsonConverter))]
+#endif
     public class ObservedList<T> : IList<T>, IEnumerator<T>, IEquatable<ObservedList<T>> {
         public int Count => list.Count;
         public T Current => list[_currentId];
