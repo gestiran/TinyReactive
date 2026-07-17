@@ -1,0 +1,500 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.ges.tinyreactive</name>
+    </assembly>
+    <members>
+        <member name="T:TinyReactive.Fields.ActionListenerExtension">
+            <summary>
+            Added the option to call <see cref="M:System.Action.Invoke">Invoke</see>
+            for all <see cref="T:System.Action">Action</see> nested within
+            a <see cref="T:TinyReactive.Fields.LazyList`1">LazyList</see>.
+            </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ActionListenerExtension.Invoke(TinyReactive.Fields.LazyList{TinyReactive.Fields.ActionListener})">
+            <summary> Apply the changes to the LazyList and invoke all nested ActionListeners. </summary>
+            <param name="actions"> Current. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ActionListenerExtension.Invoke``1(TinyReactive.Fields.LazyList{TinyReactive.Fields.ActionListener{``0}},``0)">
+            <summary> Apply the changes to the LazyList and invoke all nested ActionListeners. </summary>
+            <param name="actions"> Current. </param>
+            <param name="value"> Passed value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ActionListenerExtension.Invoke``2(TinyReactive.Fields.LazyList{TinyReactive.Fields.ActionListener{``0,``1}},``0,``1)">
+            <summary> Apply the changes to the LazyList and invoke all nested ActionListeners. </summary>
+            <param name="actions"> Current. </param>
+            <param name="value1"> Passed value. </param>
+            <param name="value2"> Passed value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ActionListenerExtension.Invoke``3(TinyReactive.Fields.LazyList{TinyReactive.Fields.ActionListener{``0,``1,``2}},``0,``1,``2)">
+            <summary> Apply the changes to the LazyList and invoke all nested ActionListeners. </summary>
+            <param name="actions"> Current. </param>
+            <param name="value1"> Passed value. </param>
+            <param name="value2"> Passed value. </param>
+            <param name="value3"> Passed value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.Equals(TinyReactive.Fields.InputChanger{`0})">
+            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.Equals(System.Object)">
+            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.IValue`1">
+            <summary> Wrapper for returning a specific type of value. </summary>
+            <typeparam name="T"> Return type. </typeparam>
+        </member>
+        <member name="P:TinyReactive.Fields.IValue`1.value">
+            <summary> Target type. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.Observed`1">
+            <summary> Observable value T, allows subscribing to changes. </summary>
+            <typeparam name="T"> The type of the stored value. </typeparam>
+        </member>
+        <member name="P:TinyReactive.Fields.Observed`1.value">
+            <summary> Current value, can be changed via <see cref="M:TinyReactive.Fields.Observed`1.Set(`0)"/> or <see cref="M:TinyReactive.Fields.Observed`1.SetSilent(`0)"/>. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed`1.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed`1.listeners">
+            <summary> List of parameterless listeners invoked on any value change. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed`1.listenersValue">
+            <summary> List of listeners that receive the new value on change. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed`1.listenersChange">
+            <summary> List of listeners that receive both the old and new value on change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.#ctor(`0,System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="data"> The initial <see cref="P:TinyReactive.Fields.Observed`1.value"/>. </param>
+            <param name="capacity"> Initial capacity of the <see cref="T:System.Collections.Generic.List`1">List</see>. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.SetSilent(`0)">
+            <summary> Sets a new value without notifying any listeners. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.Set(`0)">
+            <summary> Sets a new value and notifies all subscribed listeners. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener(TinyReactive.Fields.ActionListener{`0,`0})">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListener``1(TinyReactive.Fields.ActionListener{`0,`0},``0)">
+            <summary> Adds a listener that will be invoked when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerValue``1(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the value changes to the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of T that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerValue``1(TinyReactive.Fields.ActionListener{``0},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the value changes to the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of T that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerFirst(TinyReactive.Fields.ActionListener)">
+            <summary> Adds the listener to the beginning of the list that will be called when the value changes. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerFirst``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds the listener to the beginning of the list that will be called when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerFirst(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds the listener to the beginning of the list that will be called when the value changes. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerFirst``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds the listener to the beginning of the list that will be called when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerLast(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerLast``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerLast(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.AddListenerLast``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.RemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.RemoveListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.RemoveListener(TinyReactive.Fields.ActionListener{`0,`0})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.op_Implicit(TinyReactive.Fields.Observed{`0})~`0">
+            <summary> Returns the current <see cref="P:TinyReactive.Fields.Observed`1.value"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.ToString">
+            <summary> Returns the string representation of the current <see cref="P:TinyReactive.Fields.Observed`1.value"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.Equals(TinyReactive.Fields.Observed{`0})">
+            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.Equals(`0)">
+            <summary> Compares an object by <see cref="P:TinyReactive.Fields.Observed`1.value"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.Observed`1.Equals(System.Object)">
+            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.Observed">
+            <summary>
+            Helper class holding the global identifier counter shared by all <see cref="T:TinyReactive.Fields.Observed`1">observed</see> instances
+            and the default listener list capacity constant.
+            </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed._globalId">
+            <summary> Global counter used to assign unique identifiers. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.Observed.CAPACITY">
+            <summary> Default capacity for the internal listener lists. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.ObservedExtension">
+            <summary> Extension methods for <see cref="T:TinyReactive.Fields.Observed`1">Observed</see>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.Increment(TinyReactive.Fields.Observed{System.Int32})">
+            <summary> Increases the current value by 1. </summary>
+            <param name="obj"> Current. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.Increment(TinyReactive.Fields.Observed{System.Single})">
+            <summary> Increases the current value by 1. </summary>
+            <param name="obj"> Current. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.Decrement(TinyReactive.Fields.Observed{System.Int32})">
+            <summary> Decreases the current value by 1. </summary>
+            <param name="obj"> Current. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.Decrement(TinyReactive.Fields.Observed{System.Single})">
+            <summary> Decreases the current value by 1. </summary>
+            <param name="obj"> Current. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValue(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Increases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValueSilent(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Increases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValueIfAvailable(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Increases the current value if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValueMax(TinyReactive.Fields.Observed{System.Int32},System.Int32,System.Int32)">
+            <summary> Increases the current value to the specified maximum limit. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+            <param name="maxValue"> Maximum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValue(TinyReactive.Fields.Observed{System.Int32},System.Int32[])">
+            <summary> Increases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Amounts to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValue(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Increases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValueIfAvailable(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Increases the current value if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValueMax(TinyReactive.Fields.Observed{System.Single},System.Single,System.Single)">
+            <summary> Increases the current value to the specified maximum limit. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to add. </param>
+            <param name="maxValue"> Maximum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.AddValue(TinyReactive.Fields.Observed{System.Single},System.Single[])">
+            <summary> Increases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Amounts to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValue(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Decreases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueSilent(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Decreases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueIfAvailable(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Decreases the current value if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueIfAvailableLimit(TinyReactive.Fields.Observed{System.Int32},System.Int32,System.Int32)">
+            <summary> Decreases the current value to the specified minimum limit if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+            <param name="minValue"> Minimum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueLimit(TinyReactive.Fields.Observed{System.Int32},System.Int32,System.Int32)">
+            <summary> Decreases the current value to the specified minimum limit. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+            <param name="minValue"> Minimum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValue(TinyReactive.Fields.Observed{System.Int32},System.Int32[])">
+            <summary> Decreases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Amounts to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValue(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Decreases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueIfAvailable(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Decreases the current value if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueIfAvailableLimit(TinyReactive.Fields.Observed{System.Single},System.Single,System.Single)">
+            <summary> Decreases the current value to the specified minimum limit if it is not equal to 0. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+            <param name="minValue"> Minimum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValueLimit(TinyReactive.Fields.Observed{System.Single},System.Single,System.Single)">
+            <summary> Decreases the current value to the specified minimum limit. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Amount to subtract. </param>
+            <param name="minValue"> Minimum value. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractValue(TinyReactive.Fields.Observed{System.Single},System.Single[])">
+            <summary> Decreases the current value. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Amounts to subtract. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.GetFirstAsync``1(TinyReactive.Fields.Observed{``0},System.Threading.CancellationToken)">
+            <summary> Get the value after it has been changed. </summary>
+            <typeparam name="T"> The type of the stored value. </typeparam>
+            <param name="obj"> Current. </param>
+            <param name="cancellation"> Token to cancel the wait. </param>
+            <returns> A new value. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySet``1(TinyReactive.Fields.Observed{``0},``0)">
+            <summary> Set a new value if it is not equal to the current one. </summary>
+            <typeparam name="T"> The type of the stored value. </typeparam>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.SubtractSecond(TinyReactive.Fields.Observed{System.TimeSpan},System.Int32)">
+            <summary> Subtract the specified number of seconds. </summary>
+            <param name="obj"> Current. </param>
+            <param name="seconds"> Number of seconds. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetWhen``1(TinyReactive.Fields.Observed{``0},``0,``0)">
+            <summary> Set a new value if the current value is equal to the expected value. </summary>
+            <typeparam name="T"> The type of the stored value. </typeparam>
+            <param name="obj"> Current. </param>
+            <param name="expected"> Expected value. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetNext(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Set the value if it is greater than the current one. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetNext(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Set the value if it is greater than the current one. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetMin(TinyReactive.Fields.Observed{System.Single},System.Single[])">
+            <summary> Set the minimum value from the passed array. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Target values. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetMin(TinyReactive.Fields.Observed{System.Int32},System.Int32[])">
+            <summary> Set the minimum value from the passed array. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Target values. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetClamp(TinyReactive.Fields.Observed{System.Int32},System.Int32,System.Int32,System.Int32)">
+            <summary> Set the value to a value between the specified values. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <param name="min"> Minimum value. </param>
+            <param name="max"> Maximum value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetMax(TinyReactive.Fields.Observed{System.Single},System.Single[])">
+            <summary> Set the maximum value from the passed array. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Target values. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetMax(TinyReactive.Fields.Observed{System.Int32},System.Int32[])">
+            <summary> Set the maximum value from the passed array. </summary>
+            <param name="obj"> Current. </param>
+            <param name="values"> Target values. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetPrevious(TinyReactive.Fields.Observed{System.Int32},System.Int32)">
+            <summary> Set the value if it is less than the current one. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.TrySetPrevious(TinyReactive.Fields.Observed{System.Single},System.Single)">
+            <summary> Set the value if it is less than the current one. </summary>
+            <param name="obj"> Current. </param>
+            <param name="value"> Target value. </param>
+            <returns> Operation status. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedExtension.Toggle(TinyReactive.Fields.Observed{System.Boolean})">
+            <summary> Flips the current boolean value. </summary>
+            <param name="obj"> Current. </param>
+        </member>
+        <member name="T:TinyReactive.IUnload">
+            <summary> Flag for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>
+        </member>
+        <member name="M:TinyReactive.IUnload.Unload">
+            <summary> Place to unsubscribe from events and stop asynchronous actions. </summary>
+        </member>
+        <member name="T:TinyReactive.IUnloadLink">
+            <summary> Designates the object as a pool for <see cref="T:TinyReactive.IUnload">unloading</see> objects. </summary>
+        </member>
+        <member name="M:TinyReactive.IUnloadLink.Add``1(``0)">
+            <summary> Add an object to the Pool. </summary>
+            <param name="unload"> Any unload object. </param>
+            <typeparam name="T"> Any unload object type. </typeparam>
+            <returns> Current object. </returns>
+        </member>
+        <member name="T:TinyReactive.UnloadAction">
+            <summary> Container for <see cref="T:System.Action">action</see> participating in <see cref="T:TinyReactive.IUnload">unload</see> resources. </summary>
+        </member>
+        <member name="F:TinyReactive.UnloadAction._action">
+            <summary> Reference to the unload event. </summary>
+        </member>
+        <member name="M:TinyReactive.UnloadAction.#ctor(System.Action)">
+            <summary> Create <see cref="T:System.Action">action</see> container. </summary>
+            <param name="action"> Default <see cref="T:System.Action">action</see>, can`t be null. </param>
+        </member>
+        <member name="M:TinyReactive.UnloadAction.Unload">
+            <summary> Invoke referenced <see cref="F:TinyReactive.UnloadAction._action">action</see> event. </summary>
+        </member>
+        <member name="T:TinyReactive.UnloadPool">
+            <summary> Pool of resources requiring unloading, for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>
+        </member>
+        <member name="P:TinyReactive.UnloadPool.isUnloaded">
+            <summary>
+            Pool lifetime status. Becomes True after <see cref="M:TinyReactive.IUnload.Unload">Unload</see>,
+            resets to False after <see cref="M:TinyReactive.UnloadPool.Clear">Clear</see>.
+            </summary>
+        </member>
+        <member name="F:TinyReactive.UnloadPool._pool">
+            <summary> List of abstract references for unloading. </summary>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.#ctor(System.Int32)">
+            <summary> Create empty unload pool. </summary>
+            <param name="capacity"> References an unload <see cref="T:System.Collections.Generic.List`1">List</see> capacity. </param>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.Add(TinyReactive.IUnload[])">
+            <summary> Add an object to the Pool. </summary>
+            <param name="unloads"> Any unload objects. </param>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.Remove``1(``0)">
+            <summary> Remove the object from the pool. </summary>
+            <param name="unload"> Any unload object. </param>
+            <typeparam name="T"> Any unload object type. </typeparam>
+            <returns> Current object. </returns>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.Remove(TinyReactive.IUnload[])">
+            <summary> Remove objects from the pool. </summary>
+            <param name="unloads"> Any unload objects. </param>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.Clear">
+            <summary> Remove all objects from the pool and reset the unloaded status. </summary>
+        </member>
+        <member name="M:TinyReactive.UnloadPool.Unload">
+            <summary> Call <see cref="M:TinyReactive.IUnload.Unload">Unload</see> on all objects. </summary>
+        </member>
+    </members>
+</doc>

@@ -51,7 +51,7 @@ namespace TinyReactive.Fields {
                 current.onAddWithValue.Apply();
             }
             
-            for (int i = current.onAdd.count - 1; i >= 0; i--) {
+            for (int i = current.onAdd.Count - 1; i >= 0; i--) {
                 current.onAdd[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -66,7 +66,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = current.onAddWithValue.count - 1; i >= 0; i--) {
+            for (int i = current.onAddWithValue.Count - 1; i >= 0; i--) {
                 for (int j = 0; j < values.Length; j++) {
                     current.onAddWithValue[i].Invoke(values[j]);
                 }
@@ -110,7 +110,7 @@ namespace TinyReactive.Fields {
                 current.onAddWithValue.Apply();
             }
             
-            for (int i = current.onAdd.count - 1; i >= 0; i--) {
+            for (int i = current.onAdd.Count - 1; i >= 0; i--) {
                 current.onAdd[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -125,7 +125,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = current.onAddWithValue.count - 1; i >= 0; i--) {
+            for (int i = current.onAddWithValue.Count - 1; i >= 0; i--) {
                 current.onAddWithValue[i].Invoke(value);
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -170,7 +170,7 @@ namespace TinyReactive.Fields {
                 current.onRemoveWithValue.Apply();
             }
             
-            for (int i = current.onRemove.count - 1; i >= 0; i--) {
+            for (int i = current.onRemove.Count - 1; i >= 0; i--) {
                 current.onRemove[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -185,7 +185,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = current.onRemoveWithValue.count - 1; i >= 0; i--) {
+            for (int i = current.onRemoveWithValue.Count - 1; i >= 0; i--) {
                 for (int j = 0; j < values.Length; j++) {
                     current.onRemoveWithValue[i].Invoke(values[j]);
                 }
@@ -229,7 +229,7 @@ namespace TinyReactive.Fields {
                 current.onRemoveWithValue.Apply();
             }
             
-            for (int i = current.onRemove.count - 1; i >= 0; i--) {
+            for (int i = current.onRemove.Count - 1; i >= 0; i--) {
                 current.onRemove[i].Invoke();
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
@@ -244,7 +244,7 @@ namespace TinyReactive.Fields {
                 now = DateTime.Now;
             }
             
-            for (int i = current.onRemoveWithValue.count - 1; i >= 0; i--) {
+            for (int i = current.onRemoveWithValue.Count - 1; i >= 0; i--) {
                 current.onRemoveWithValue[i].Invoke(value);
                 
                 if (DateTime.Now.Subtract(now).TotalMilliseconds < anr) {
