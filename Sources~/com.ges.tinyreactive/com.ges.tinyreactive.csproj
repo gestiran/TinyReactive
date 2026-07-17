@@ -9,6 +9,7 @@
         <Nullable>disable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <IncludeBuildOutput>true</IncludeBuildOutput>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         
         <PackageId>com.ges.tinyreactive</PackageId>
         <Authors>Derek Sliman</Authors>
@@ -17,7 +18,8 @@
         <PackageTags>reactive;observed</PackageTags>
         
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        
+
+        <NoWarn>$(NoWarn);1591</NoWarn>
         <ExternalDependencies Condition="'$(ExternalDependencies)' == ''">true</ExternalDependencies>
     </PropertyGroup>
 

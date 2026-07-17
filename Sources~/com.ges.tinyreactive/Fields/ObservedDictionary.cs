@@ -23,7 +23,7 @@ namespace TinyReactive.Fields {
         
         public ObservedDictionary(Dictionary<TKey, TValue> value, int capacity = Observed.CAPACITY) {
             dictionary = value;
-            id = Observed.globalId++;
+            id = Observed.GetID();
             onAdd = new LazyList<ActionListener>(capacity);
             onAddWithValue = new LazyList<ActionListener<TValue>>(capacity);
             onRemove = new LazyList<ActionListener>(capacity);
@@ -43,11 +43,11 @@ namespace TinyReactive.Fields {
                         onRemoveWithValue.Apply();
                     }
                     
-                    for (int i = 0; i < onRemove.count; i++) {
+                    for (int i = 0; i < onRemove.Count; i++) {
                         onRemove[i].Invoke();
                     }
                     
-                    for (int i = 0; i < onRemoveWithValue.count; i++) {
+                    for (int i = 0; i < onRemoveWithValue.Count; i++) {
                         onRemoveWithValue[i].Invoke(current);
                     }   
                 }
@@ -62,11 +62,11 @@ namespace TinyReactive.Fields {
                     onAddWithValue.Apply();
                 }
                 
-                for (int i = 0; i < onAdd.count; i++) {
+                for (int i = 0; i < onAdd.Count; i++) {
                     onAdd[i].Invoke();
                 }
                 
-                for (int i = 0; i < onAddWithValue.count; i++) {
+                for (int i = 0; i < onAddWithValue.Count; i++) {
                     onAddWithValue[i].Invoke(value);
                 }
             }
@@ -86,11 +86,11 @@ namespace TinyReactive.Fields {
                     onAddWithValue.Apply();
                 }
                 
-                for (int i = 0; i < onAdd.count; i++) {
+                for (int i = 0; i < onAdd.Count; i++) {
                     onAdd[i].Invoke();
                 }
                 
-                for (int i = 0; i < onAddWithValue.count; i++) {
+                for (int i = 0; i < onAddWithValue.Count; i++) {
                     onAddWithValue[i].Invoke(value);
                 }
             }
@@ -110,11 +110,11 @@ namespace TinyReactive.Fields {
                     onRemoveWithValue.Apply();
                 }
                 
-                for (int i = 0; i < onRemove.count; i++) {
+                for (int i = 0; i < onRemove.Count; i++) {
                     onRemove[i].Invoke();
                 }
                 
-                for (int i = 0; i < onRemoveWithValue.count; i++) {
+                for (int i = 0; i < onRemoveWithValue.Count; i++) {
                     onRemoveWithValue[i].Invoke(value);
                 }
                 
@@ -148,11 +148,11 @@ namespace TinyReactive.Fields {
                             onRemoveWithValue.Apply();
                         }
                         
-                        for (int i = 0; i < onRemove.count; i++) {
+                        for (int i = 0; i < onRemove.Count; i++) {
                             onRemove[i].Invoke();
                         }
                         
-                        for (int i = 0; i < onRemoveWithValue.count; i++) {
+                        for (int i = 0; i < onRemoveWithValue.Count; i++) {
                             onRemoveWithValue[i].Invoke(value);
                         }
                         

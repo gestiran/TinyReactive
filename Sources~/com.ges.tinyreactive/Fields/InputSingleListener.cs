@@ -19,7 +19,7 @@ namespace TinyReactive.Fields {
                 _listeners.Apply();
             }
             
-            for (int i = 0; i < _listeners.count; i++) {
+            for (int i = 0; i < _listeners.Count; i++) {
                 if (_listeners[i].Invoke() == expectedResult) {
                     return;
                 }

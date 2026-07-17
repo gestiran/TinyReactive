@@ -9,7 +9,7 @@ namespace TinyReactive.Fields {
         internal readonly LazyList<ActionListener> listeners;
         
         public InputListener(int capacity = Observed.CAPACITY) {
-            id = Observed.globalId++;
+            id = Observed.GetID();
             listeners = new LazyList<ActionListener>(capacity);
         }
         
@@ -52,7 +52,7 @@ namespace TinyReactive.Fields {
         internal readonly LazyList<ActionListener<T>> listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
-            id = Observed.globalId++;
+            id = Observed.GetID();
             listeners = new LazyList<ActionListener>(capacity);
             listenersValue = new LazyList<ActionListener<T>>(capacity);
         }
@@ -163,7 +163,7 @@ namespace TinyReactive.Fields {
         internal readonly LazyList<ActionListener<T1, T2>> listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
-            id = Observed.globalId++;
+            id = Observed.GetID();
             listeners = new LazyList<ActionListener>(capacity);
             listenersValue = new LazyList<ActionListener<T1, T2>>(capacity);
         }
@@ -262,7 +262,7 @@ namespace TinyReactive.Fields {
         internal readonly LazyList<ActionListener<T1, T2, T3>> listenersValue;
         
         public InputListener(int capacity = Observed.CAPACITY) {
-            id = Observed.globalId++;
+            id = Observed.GetID();
             listeners = new LazyList<ActionListener>(capacity);
             listenersValue = new LazyList<ActionListener<T1, T2, T3>>(capacity);
         }

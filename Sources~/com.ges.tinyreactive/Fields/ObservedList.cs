@@ -39,7 +39,7 @@ namespace TinyReactive.Fields {
         
         public ObservedList(List<T> value, int capacity = Observed.CAPACITY) {
             list = value;
-            id = Observed.globalId++;
+            id = Observed.GetID();
             onAdd = new LazyList<ActionListener>(capacity);
             onAddWithValue = new LazyList<ActionListener<T>>(capacity);
             onRemove = new LazyList<ActionListener>(capacity);

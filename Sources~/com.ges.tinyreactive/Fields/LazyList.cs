@@ -1,14 +1,16 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+using System.Collections;
 using System.Collections.Generic;
+// ReSharper disable InconsistentNaming
 
 namespace TinyReactive.Fields {
-    internal sealed class LazyList<T> {
-        public int count { get; private set; }
-        public int cacheCount { get; private set; }
-        
+    internal sealed class LazyList<T> : IList<T> {
+        public int Count { get; private set; }
+        public int CountCache { get; private set; }
         public bool isDirty { get; private set; }
+        public bool IsReadOnly => false;
         
         private readonly List<T> _elements;
         private readonly List<T> _cache;
@@ -23,30 +25,54 @@ namespace TinyReactive.Fields {
             _cache = new List<T>(capacity);
         }
         
+        public IEnumerator<T> GetEnumerator() {
+            for (int elementId = 0; elementId < _elements.Count; elementId++) {
+                yield return _elements[elementId];
+            }
+        }
+        
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        
         public void Add(T item) {
             _cache.Add(item);
-            cacheCount++;
+            CountCache++;
             isDirty = true;
         }
         
+        public int IndexOf(T item) => _cache.IndexOf(item);
+        
         public void Insert(int index, T item) {
+            if (index < 0 || index >= CountCache) {
+                return;
+            }
+            
             _cache.Insert(index, item);
-            cacheCount++;
+            CountCache++;
             isDirty = true;
         }
         
         public void Clear() {
             _cache.Clear();
-            cacheCount = 0;
+            CountCache = 0;
             isDirty = true;
         }
         
         public bool Contains(T item) => _cache.Contains(item);
         
         public void CopyTo(T[] array, int arrayIndex) {
-            for (int i = 0; arrayIndex < array.Length && i > count; arrayIndex++, i++) {
+            for (int i = 0; arrayIndex < array.Length && i > Count; arrayIndex++, i++) {
                 array[arrayIndex] = _elements[i];
             }
+        }
+        
+        public void RemoveAt(int index) {
+            if (index < 0 || index >= CountCache) {
+                return;
+            }
+            
+            isDirty = true;
+            _cache.RemoveAt(index);
+            CountCache--;
         }
         
         public bool Remove(T item) {
@@ -58,14 +84,14 @@ namespace TinyReactive.Fields {
             
             isDirty = true;
             _cache.RemoveAt(index);
-            cacheCount--;
+            CountCache--;
             return true;
         }
         
         public void Apply() {
             _elements.Clear();
             _elements.AddRange(_cache);
-            count = cacheCount;
+            Count = CountCache;
             isDirty = false;
         }
     }

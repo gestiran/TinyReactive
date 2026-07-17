@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 using TinyReactive.Fields;
 
 namespace TinyReactive.JsonConverters {
+    /// <summary> Serializes the <see cref="TinyReactive.Fields.Observed{T}">observed</see> class as a T value. </summary>
+    /// <typeparam name="T"> Type of observed <see cref="TinyReactive.Fields.Observed{T}.value">value</see>. </typeparam>
     public sealed class ObservedJsonConverter<T> : JsonConverter<Observed<T>> {
         public override Observed<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
             return new Observed<T>(JsonSerializer.Deserialize<T>(ref reader, options));
@@ -23,6 +25,7 @@ namespace TinyReactive.JsonConverters {
         }
     }
     
+    /// <summary> Defining a generic type for serialization. </summary>
     public sealed class ObservedJsonConverter : JsonConverterFactory {
         public override bool CanConvert(Type typeToConvert) {
             return typeToConvert.IsGenericType && typeToConvert.GetGenericTypeDefinition() == typeof(Observed<>);
