@@ -14,7 +14,7 @@ A lightweight reactive programming library for C#, optimized for use in Unity an
     - [Unity](#unity-openupm-or-tgz)
     - [NuGet](#nuget---without-unity-dependency)
 - [Usage](#usage)
-    - [`Observed<T>`](#observed)
+    - [`Observed<T>`](#observedt)
     - [`InputListener` and `InputListener<T>`](#inputlistener-and-inputlistenert)
     - [`InputChanger<T>`](#inputchangert)
     - [`ObservedList<T>`](#observedlistt)

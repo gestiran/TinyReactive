@@ -1,41 +1,68 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
-#if UNITASK_ENABLE
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+
+#if UNITASK_ENABLE
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
+using Task = System.Threading.Tasks.Task;
+#endif
 
 namespace TinyReactive.Fields {
+    /// <summary> Added async add and remove options to <see cref="TinyReactive.Fields.ObservedList{T}">ObservedList</see> with UniTask. </summary>
     public static class ObservedListUnityExtension {
-        private static readonly Dictionary<int, bool> _lock;
+        /// <summary> Maximum allowable ANR when performing asynchronous operations. </summary>
+        public static int asyncAnrMS { get; private set; }
         
-        private const int _ASYNC_ANR_MS = 64;
+        /// <summary> Locking multiple requests to a single object. </summary>
+        private static readonly Dictionary<int, bool> _lock;
         
         static ObservedListUnityExtension() {
             _lock = new Dictionary<int, bool>(32);
+            asyncAnrMS = 64;
+        }
+        
+        /// <summary> Set the allowable ANR value when performing asynchronous operations. </summary>
+        /// <param name="ms"> Value in milliseconds. </param>
+        public static void OverrideDefaultANR(int ms) => asyncAnrMS = ms;
+        
+        [Obsolete("Can't add nothing!", true)]
+        public static Task AddAsync<T>(this ObservedList<T> current) => default;
+        
+        /// <summary> Add items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="values"> The items that need to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task AddAsync<T>(this ObservedList<T> current, [NotNull] params T[] values) {
+            return current.AddAsync(asyncAnrMS, CancellationToken.None, values);
         }
         
         [Obsolete("Can't add nothing!", true)]
-        public static UniTask AddAsync<T>(this ObservedList<T> current) => default;
+        public static Task AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation) => default;
         
-        public static UniTask AddAsync<T>(this ObservedList<T> current, [NotNull] params T[] values) {
-            return AddAsync(current, _ASYNC_ANR_MS, CancellationToken.None, values);
+        /// <summary> Add items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="values"> The items that need to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] params T[] values) {
+            return current.AddAsync(asyncAnrMS, cancellation, values);
         }
         
         [Obsolete("Can't add nothing!", true)]
-        public static UniTask AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation) => default;
+        public static Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation) => default;
         
-        public static UniTask AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] params T[] values) {
-            return AddAsync(current, _ASYNC_ANR_MS, cancellation, values);
-        }
-        
-        [Obsolete("Can't add nothing!", true)]
-        public static UniTask AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation) => default;
-        
-        public static async UniTask AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
+        /// <summary> Add items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="anr"> Maximum allowable ANR when performing asynchronous operations. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="values"> The items that need to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static async Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock.TryAdd(current.id, true) == false) {
                 return;
             }
@@ -62,7 +89,12 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
@@ -79,22 +111,42 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
             _lock.Remove(current.id);
         }
         
-        public static UniTask AddAsync<T>(this ObservedList<T> current, [NotNull] T value) {
-            return AddAsync(current, _ASYNC_ANR_MS, CancellationToken.None, value);
+        /// <summary> Add an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="value"> The item to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task AddAsync<T>(this ObservedList<T> current, [NotNull] T value) {
+            return current.AddAsync(asyncAnrMS, CancellationToken.None, value);
         }
         
-        public static UniTask AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] T value) {
-            return AddAsync(current, _ASYNC_ANR_MS, cancellation, value);
+        /// <summary> Add an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="value"> The item to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] T value) {
+            return current.AddAsync(asyncAnrMS, cancellation, value);
         }
         
-        public static async UniTask AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
+        /// <summary> Add an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="anr"> Maximum allowable ANR when performing asynchronous operations. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="value"> The item to be added. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static async Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock.TryAdd(current.id, true) == false) {
                 return;
             }
@@ -121,7 +173,12 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
@@ -136,22 +193,42 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
             _lock.Remove(current.id);
         }
         
-        public static UniTask RemoveAsync<T>(ObservedList<T> current, [NotNull] params T[] values) {
-            return RemoveAsync(current, _ASYNC_ANR_MS, CancellationToken.None, values);
+        /// <summary> Remove items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="values"> The items that need to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task RemoveAsync<T>(this ObservedList<T> current, [NotNull] params T[] values) {
+            return current.RemoveAsync(asyncAnrMS, CancellationToken.None, values);
         }
         
-        public static UniTask RemoveAsync<T>(ObservedList<T> current, CancellationToken cancellation, [NotNull] params T[] values) {
-            return RemoveAsync(current, _ASYNC_ANR_MS, cancellation, values);
+        /// <summary> Remove items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="values"> The items that need to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task RemoveAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] params T[] values) {
+            return current.RemoveAsync(asyncAnrMS, cancellation, values);
         }
         
-        public static async UniTask RemoveAsync<T>(ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
+        /// <summary> Remove items to the list based on the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="anr"> Maximum allowable ANR when performing asynchronous operations. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="values"> The items that need to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static async Task RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock.TryAdd(current.id, true) == false) {
                 return;
             }
@@ -181,7 +258,12 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
@@ -198,22 +280,42 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
             _lock.Remove(current.id);
         }
         
-        public static UniTask RemoveAsync<T>(this ObservedList<T> current, [NotNull] T value) {
-            return RemoveAsync(current, _ASYNC_ANR_MS, CancellationToken.None, value);
+        /// <summary> Remove an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="value"> The item to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task RemoveAsync<T>(this ObservedList<T> current, [NotNull] T value) {
+            return current.RemoveAsync(asyncAnrMS, CancellationToken.None, value);
         }
         
-        public static UniTask RemoveAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] T value) {
-            return RemoveAsync(current, _ASYNC_ANR_MS, cancellation, value);
+        /// <summary> Remove an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="value"> The item to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static Task RemoveAsync<T>(this ObservedList<T> current, CancellationToken cancellation, [NotNull] T value) {
+            return current.RemoveAsync(asyncAnrMS, cancellation, value);
         }
         
-        public static async UniTask RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
+        /// <summary> Remove an item to the list, taking into account the app's ANR. </summary>
+        /// <param name="current"> Current list. </param>
+        /// <param name="anr"> Maximum allowable ANR when performing asynchronous operations. </param>
+        /// <param name="cancellation"> Stop the operation. </param>
+        /// <param name="value"> The item to be removed. </param>
+        /// <typeparam name="T"> The type of the stored value. </typeparam>
+        public static async Task RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock.TryAdd(current.id, true) == false) {
                 return;
             }
@@ -240,7 +342,12 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
@@ -255,7 +362,12 @@ namespace TinyReactive.Fields {
                     continue;
                 }
                 
-                await UniTask.Yield(cancellation);
+            #if UNITASK_ENABLE
+                await Task.Yield(cancellation);
+            #else
+                await Task.Delay(16, cancellation);
+            #endif
+                
                 now = DateTime.Now;
             }
             
@@ -263,4 +375,3 @@ namespace TinyReactive.Fields {
         }
     }
 }
-#endif

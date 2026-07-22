@@ -4,6 +4,9 @@
         <name>com.ges.tinyreactive</name>
     </assembly>
     <members>
+        <member name="T:TinyReactive.Exceptions.UnloadException">
+            <summary> Error unloading the object. </summary>
+        </member>
         <member name="T:TinyReactive.Fields.ActionListenerExtension">
             <summary>
             Added the option to call <see cref="M:System.Action.Invoke">Invoke</see>
@@ -432,6 +435,97 @@
             <summary> Flips the current boolean value. </summary>
             <param name="obj"> Current. </param>
         </member>
+        <member name="T:TinyReactive.Fields.UnloadExtension">
+            <summary>
+            Extension methods for <see cref="T:TinyReactive.UnloadPool">UnloadPool</see> and <see cref="T:TinyReactive.IUnload">IUnload</see>.
+            </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.TryUnload(TinyReactive.UnloadPool)">
+            <summary> Unloads the list if needed. </summary>
+            <param name="unload"> List for unloading. </param>
+            <returns> Returns False if the list does not exist or has been unloaded earlier. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.TryUnload``1(System.Collections.Generic.ICollection{``0})">
+            <summary> Unload all items in the collection, if needed. </summary>
+            <param name="collection"> Collection for verification and unloading. </param>
+            <typeparam name="T"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Unload``1(System.Collections.Generic.ICollection{``0})">
+            <summary> Unload all items in the collection. </summary>
+            <param name="collection"> Collection for unloading. </param>
+            <typeparam name="TUnload"> Type to be unloaded. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Unload``1(System.Collections.Generic.Dictionary{``0,``0})">
+            <summary> Unload all keys and values in the dictionary. </summary>
+            <param name="dictionary"> Dictionary for unloading. </param>
+            <typeparam name="TUnload"> Type to be unloaded. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.TryUnloadKeys``2(System.Collections.Generic.Dictionary{``0,``1})">
+            <summary> Unload all keys in the dictionary, if needed. </summary>
+            <param name="dictionary"> Dictionary for unloading. </param>
+            <typeparam name="T1"> Any object type. </typeparam>
+            <typeparam name="T2"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.UnloadKeys``2(System.Collections.Generic.Dictionary{``0,``1})">
+            <summary> Unload all keys in the dictionary. </summary>
+            <param name="dictionary"> Dictionary for unloading. </param>
+            <typeparam name="TUnload"> Type to be unloaded. </typeparam>
+            <typeparam name="T"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.TryUnloadValues``2(System.Collections.Generic.Dictionary{``0,``1})">
+            <summary> Unload all values in the dictionary, if needed. </summary>
+            <param name="dictionary"> Dictionary for unloading. </param>
+            <typeparam name="T1"> Any object type. </typeparam>
+            <typeparam name="T2"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.UnloadValues``2(System.Collections.Generic.Dictionary{``0,``1})">
+            <summary> Unload all values in the dictionary. </summary>
+            <param name="dictionary"> Dictionary for unloading. </param>
+            <typeparam name="T"> Any object type. </typeparam>
+            <typeparam name="TUnload"> Type to be unloaded. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.TryUnloadSingle``1(``0)">
+            <summary> Unload the current item, if needed. </summary>
+            <param name="obj"> Any object. </param>
+            <typeparam name="T"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Reset(TinyReactive.UnloadPool)">
+            <summary> Unloads the current list and returns null. </summary>
+            <param name="unload"> List for unloading. </param>
+            <returns> Null. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Recreate(TinyReactive.UnloadPool,TinyReactive.UnloadPool@)">
+            <summary> Unload the current list, if it exists, and return a new object. </summary>
+            <param name="unload"> List for unloading. </param>
+            <param name="result"> A new or cleared unload list. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Update(TinyReactive.UnloadPool,TinyReactive.UnloadPool@,TinyReactive.UnloadPool@)">
+            <summary> Unload the current list and return the reference. </summary>
+            <param name="unload"> List for unloading. </param>
+            <param name="result"> The reference unload list. </param>
+            <param name="reference"> Reference list. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Update(TinyReactive.UnloadPool,TinyReactive.UnloadPool@)">
+            <summary>
+            Unload the current list and return the reference.
+            To simplify potential single-line expressions.
+            </summary>
+            <param name="unload"> List for unloading. </param>
+            <param name="reference"> Reference list. </param>
+            <returns> The reference unload list. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.Recreate(TinyReactive.UnloadPool)">
+            <summary> Unload the current list, if it exists, and return a new object. </summary>
+            <param name="unload"> List for unloading. </param>
+            <returns> A new or cleared unload list. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.UnloadExtension.WithUnload``1(``0,TinyReactive.IUnloadLink)">
+            <summary> Add the item to the list for unloading. </summary>
+            <param name="obj"> Current item. </param>
+            <param name="unload"> A reference to the list for unloading. </param>
+            <typeparam name="TUnload"> Type to be unloaded. </typeparam>
+            <returns> Current. </returns>
+        </member>
         <member name="T:TinyReactive.IUnload">
             <summary> Flag for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>
         </member>
@@ -466,7 +560,7 @@
         <member name="P:TinyReactive.UnloadPool.isUnloaded">
             <summary>
             Pool lifetime status. Becomes True after <see cref="M:TinyReactive.IUnload.Unload">Unload</see>,
-            resets to False after <see cref="M:TinyReactive.UnloadPool.Clear">Clear</see>.
+            resets to False after <see cref="M:TinyReactive.UnloadPool.ResetStatus">ResetStatus</see>.
             </summary>
         </member>
         <member name="F:TinyReactive.UnloadPool._pool">
@@ -490,8 +584,8 @@
             <summary> Remove objects from the pool. </summary>
             <param name="unloads"> Any unload objects. </param>
         </member>
-        <member name="M:TinyReactive.UnloadPool.Clear">
-            <summary> Remove all objects from the pool and reset the unloaded status. </summary>
+        <member name="M:TinyReactive.UnloadPool.ResetStatus">
+            <summary> Reset the unloaded status. </summary>
         </member>
         <member name="M:TinyReactive.UnloadPool.Unload">
             <summary> Call <see cref="M:TinyReactive.IUnload.Unload">Unload</see> on all objects. </summary>

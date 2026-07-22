@@ -10,7 +10,7 @@ namespace TinyReactive {
     public sealed class UnloadPool : IUnload, IUnloadLink {
         /// <summary>
         /// Pool lifetime status. Becomes True after <see cref="TinyReactive.IUnload.Unload">Unload</see>,
-        /// resets to False after <see cref="Clear">Clear</see>.
+        /// resets to False after <see cref="ResetStatus">ResetStatus</see>.
         /// </summary>
         public bool isUnloaded { get; private set; }
         
@@ -53,11 +53,8 @@ namespace TinyReactive {
             }
         }
         
-        /// <summary> Remove all objects from the pool and reset the unloaded status. </summary>
-        public void Clear() {
-            _pool.Clear();
-            isUnloaded = false;
-        }
+        /// <summary> Reset the unloaded status. </summary>
+        public void ResetStatus() => isUnloaded = false;
         
         /// <summary> Call <see cref="TinyReactive.IUnload.Unload">Unload</see> on all objects. </summary>
         public void Unload() {
@@ -67,6 +64,7 @@ namespace TinyReactive {
                 _pool[i].Unload();
             }
             
+            _pool.Clear();
             isUnloaded = true;
         }
     }

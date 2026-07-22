@@ -7,22 +7,22 @@
   "targets": {
     ".NETStandard,Version=v2.1": {},
     ".NETStandard,Version=v2.1/": {
-      "com.ges.tinyreactive/1.3.10": {
+      "com.ges.tinyreactive/1.3.11": {
         "dependencies": {
-          "com.ges.tinyutilities": "1.3.7"
+          "com.ges.tinyutilities": "1.3.13"
         },
         "runtime": {
           "com.ges.tinyreactive.dll": {}
         }
       },
-      "com.ges.tinyutilities/1.3.7": {
+      "com.ges.tinyutilities/1.3.13": {
         "dependencies": {
           "System.Text.Json": "10.0.9"
         },
         "runtime": {
           "lib/netstandard2.1/com.ges.tinyutilities.dll": {
-            "assemblyVersion": "1.3.7.0",
-            "fileVersion": "1.3.7.0"
+            "assemblyVersion": "1.3.13.0",
+            "fileVersion": "1.3.13.0"
           }
         }
       },
@@ -78,17 +78,17 @@
     }
   },
   "libraries": {
-    "com.ges.tinyreactive/1.3.10": {
+    "com.ges.tinyreactive/1.3.11": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "com.ges.tinyutilities/1.3.7": {
+    "com.ges.tinyutilities/1.3.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-nKJNbhbQD43q9lNIeDHo9vjCtYtC6hfx97sAapRX0JTfuCNihim9Q4o+igC8Y05eX3PXkRlX5SH7Hu0WhhC2Bw==",
-      "path": "com.ges.tinyutilities/1.3.7",
-      "hashPath": "com.ges.tinyutilities.1.3.7.nupkg.sha512"
+      "sha512": "sha512-83PDoxCdvzBJGCNfRoRO23EQgrKsfbX0X1Gx7E2An/ZHh68zkUTV3KJikaFUAQO79ngy/28iIHrlpijONuEnFw==",
+      "path": "com.ges.tinyutilities/1.3.13",
+      "hashPath": "com.ges.tinyutilities.1.3.13.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/10.0.9": {
       "type": "package",
