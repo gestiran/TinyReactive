@@ -279,6 +279,7 @@ namespace TinyReactive.Fields {
         }
         
         /// <summary> Clears all listener lists. </summary>
+        // Resharper disable Unity.ExpensiveCode
         public virtual void Unload() {
             listeners.Clear();
             listenersValue.Clear();
@@ -294,13 +295,13 @@ namespace TinyReactive.Fields {
         /// <summary> Returns the current unique <see cref="id"/>. </summary>
         public override int GetHashCode() => id;
         
-        /// <summary> Compares an object by its <see cref="id"/>. </summary>
+        /// <summary> Compares an object by <see cref="id"/>. </summary>
         public bool Equals(Observed<T> other) => other != null && other.id == id;
         
         /// <summary> Compares an object by <see cref="value"/>. </summary>
         public bool Equals(T other) => other != null && other.Equals(value);
         
-        /// <summary> Compares an object by its <see cref="id"/>. </summary>
+        /// <summary> Compares an object by <see cref="id"/>. </summary>
         public override bool Equals(object obj) => obj is Observed<T> other && other.id == id;
     }
     

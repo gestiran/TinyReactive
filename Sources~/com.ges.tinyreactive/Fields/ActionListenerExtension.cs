@@ -4,8 +4,8 @@
 namespace TinyReactive.Fields {
     /// <summary>
     /// Added the option to call <see cref="System.Action.Invoke">Invoke</see>
-    /// for all <see cref="System.Action">Action</see> nested within
-    /// a <see cref="TinyReactive.Fields.LazyList{T}">LazyList</see>.
+    /// for all <see cref="System.Action">Action</see>
+    /// nested within a <see cref="TinyReactive.Fields.LazyList{T}">LazyList</see>.
     /// </summary>
     public static class ActionListenerExtension {
         /// <summary> Apply the changes to the LazyList and invoke all nested ActionListeners. </summary>

@@ -5,13 +5,34 @@
     </assembly>
     <members>
         <member name="T:TinyReactive.Exceptions.UnloadException">
-            <summary> Error unloading the object. </summary>
+            <summary>
+            Error <see cref="M:TinyReactive.IUnload.Unload">unloading</see> the object. <br/>
+            Used in <see cref="T:TinyReactive.Fields.UnloadExtension">extensions</see>.
+            </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.ActionListener">
+            <summary> Used in all reactive objects as a reference to the listener method. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.ActionListener`1">
+            <summary> Used in all reactive objects as a reference to the listener method. </summary>
+            <typeparam name="T"> Any object type. </typeparam>
+        </member>
+        <member name="T:TinyReactive.Fields.ActionListener`2">
+            <summary> Used in all reactive objects as a reference to the listener method. </summary>
+            <typeparam name="T1"> Any object type. </typeparam>
+            <typeparam name="T2"> Any object type. </typeparam>
+        </member>
+        <member name="T:TinyReactive.Fields.ActionListener`3">
+            <summary> Used in all reactive objects as a reference to the listener method. </summary>
+            <typeparam name="T1"> Any object type. </typeparam>
+            <typeparam name="T2"> Any object type. </typeparam>
+            <typeparam name="T3"> Any object type. </typeparam>
         </member>
         <member name="T:TinyReactive.Fields.ActionListenerExtension">
             <summary>
             Added the option to call <see cref="M:System.Action.Invoke">Invoke</see>
-            for all <see cref="T:System.Action">Action</see> nested within
-            a <see cref="T:TinyReactive.Fields.LazyList`1">LazyList</see>.
+            for all <see cref="T:System.Action">Action</see>
+            nested within a <see cref="T:TinyReactive.Fields.LazyList`1">LazyList</see>.
             </summary>
         </member>
         <member name="M:TinyReactive.Fields.ActionListenerExtension.Invoke(TinyReactive.Fields.LazyList{TinyReactive.Fields.ActionListener})">
@@ -36,14 +57,454 @@
             <param name="value2"> Passed value. </param>
             <param name="value3"> Passed value. </param>
         </member>
+        <member name="T:TinyReactive.Fields.InputChanger`1">
+            <summary> Modifies the value passed by reference. </summary>
+            <typeparam name="T"> Any unmanaged type. </typeparam>
+        </member>
+        <member name="F:TinyReactive.Fields.InputChanger`1.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputChanger`1.listeners">
+            <summary> List of listeners that receive the new value on change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the <see cref="T:System.Collections.Generic.List`1">List</see>. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.Send(`0@)">
+            <summary> Invoke all subscribed listeners. </summary>
+            <param name="value"> The value that needs to be modified. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.Send(`0[])">
+            <summary> Invoke all subscribed listeners. </summary>
+            <param name="values"> Values that need to be modified. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.AddListener(TinyReactive.Fields.ValueChanger{`0})">
+            <summary> Adds a listener that will be invoked when a Send request. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.AddListener``1(TinyReactive.Fields.ValueChanger{`0},``0)">
+            <summary> Adds a listener that will be invoked when a Send request. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.RemoveListener(TinyReactive.Fields.ValueChanger{`0})">
+            <summary> Removes a previously added listener. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputChanger`1.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
         <member name="M:TinyReactive.Fields.InputChanger`1.GetHashCode">
             <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
         </member>
         <member name="M:TinyReactive.Fields.InputChanger`1.Equals(TinyReactive.Fields.InputChanger{`0})">
-            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
         </member>
         <member name="M:TinyReactive.Fields.InputChanger`1.Equals(System.Object)">
-            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputChanger`1.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.InputListener">
+            <summary> A parameterless listener that allows subscribing and triggering actions. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener.listeners">
+            <summary> List of parameterless listeners invoked on any value change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener list. </summary>
+            <param name="capacity"> Initial capacity of the internal listener list. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.#ctor(TinyReactive.Fields.ActionListener)">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.#ctor(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.Send">
+            <summary> Invokes all subscribed listeners. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.AddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.AddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.RemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.ToString">
+            <summary> Returns the string representation of the listener. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputListener.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener.Equals(TinyReactive.Fields.InputListener)">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputListener.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.InputListener`1">
+            <summary> A listener that allows subscribing and triggering actions with a single value. </summary>
+            <typeparam name="T"> The type of the value. </typeparam>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`1.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`1.listeners">
+            <summary> List of parameterless listeners invoked on any value change. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`1.listenersValue">
+            <summary> List of listeners that receive the new value on change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.#ctor(TinyReactive.Fields.ActionListener)">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.#ctor(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.#ctor(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.#ctor(TinyReactive.Fields.ActionListener{`0},TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.Send(`0)">
+            <summary> Invokes all subscribed listeners with the specified value. </summary>
+            <param name="value"> The value to pass to the listeners. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.Send(`0[])">
+            <summary> Invokes all subscribed listeners for each specified value. </summary>
+            <param name="values"> The values to pass to the listeners. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds a listener that will be invoked when triggered, receiving the value. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListener``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds a listener that will be invoked when triggered, receiving the value. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListenerValue``1(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of T that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.AddListenerValue``1(TinyReactive.Fields.ActionListener{``0},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of T that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.RemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.RemoveListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.ToString">
+            <summary> Returns the string representation of the listener. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputListener`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.Equals(TinyReactive.Fields.InputListener{`0})">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputListener`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`1.Send">
+            <summary> Obsolete method. Cannot send without parameters. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.InputListener`2">
+            <summary> A listener that allows subscribing and triggering actions with two values. </summary>
+            <typeparam name="T1"> The type of the first value. </typeparam>
+            <typeparam name="T2"> The type of the second value. </typeparam>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`2.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`2.listeners">
+            <summary> List of parameterless listeners invoked on any value change. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`2.listenersValue">
+            <summary> List of listeners that receive the new values on change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.#ctor(TinyReactive.Fields.ActionListener)">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.#ctor(TinyReactive.Fields.ActionListener{`0,`1})">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.#ctor(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.#ctor(TinyReactive.Fields.ActionListener{`0,`1},TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.Send(`0,`1)">
+            <summary> Invokes all subscribed listeners with the specified values. </summary>
+            <param name="value1"> The first value to pass to the listeners. </param>
+            <param name="value2"> The second value to pass to the listeners. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListener(TinyReactive.Fields.ActionListener{`0,`1})">
+            <summary> Adds a listener that will be invoked when triggered, receiving the values. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListener``1(TinyReactive.Fields.ActionListener{`0,`1},``0)">
+            <summary> Adds a listener that will be invoked when triggered, receiving the values. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListenerValue``2(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered values are of the specified types. </summary>
+            <typeparam name="TV1"> The expected subtype of T1 that triggers the listener. </typeparam>
+            <typeparam name="TV2"> The expected subtype of T2 that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.AddListenerValue``2(TinyReactive.Fields.ActionListener{``0,``1},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered values are of the specified types. </summary>
+            <typeparam name="TV1"> The expected subtype of T1 that triggers the listener. </typeparam>
+            <typeparam name="TV2"> The expected subtype of T2 that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.RemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.RemoveListener(TinyReactive.Fields.ActionListener{`0,`1})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.ToString">
+            <summary> Returns the string representation of the listener. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputListener`2.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`2.Equals(TinyReactive.Fields.InputListener{`0,`1})">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputListener`2.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.InputListener`3">
+            <summary> A listener that allows subscribing and triggering actions with three values. </summary>
+            <typeparam name="T1"> The type of the first value. </typeparam>
+            <typeparam name="T2"> The type of the second value. </typeparam>
+            <typeparam name="T3"> The type of the third value. </typeparam>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`3.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`3.listeners">
+            <summary> List of parameterless listeners invoked on any value change. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputListener`3.listenersValue">
+            <summary> List of listeners that receive the new values on change. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.#ctor(TinyReactive.Fields.ActionListener)">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.#ctor(TinyReactive.Fields.ActionListener{`0,`1,`2})">
+            <summary> Creates a new instance and adds the specified listener. </summary>
+            <param name="action"> The listener to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.#ctor(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.#ctor(TinyReactive.Fields.ActionListener{`0,`1,`2},TinyReactive.IUnloadLink)">
+            <summary> Creates a new instance, adds the specified listener, and links it to an unload pool. </summary>
+            <param name="action"> The listener to add. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.Send(`0,`1,`2)">
+            <summary> Invokes all subscribed listeners with the specified values. </summary>
+            <param name="value1"> The first value to pass to the listeners. </param>
+            <param name="value2"> The second value to pass to the listeners. </param>
+            <param name="value3"> The third value to pass to the listeners. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when triggered. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListener(TinyReactive.Fields.ActionListener{`0,`1,`2})">
+            <summary> Adds a listener that will be invoked when triggered, receiving the values. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListener``1(TinyReactive.Fields.ActionListener{`0,`1,`2},``0)">
+            <summary> Adds a listener that will be invoked when triggered, receiving the values. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListenerValue``3(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered values are of the specified types. </summary>
+            <typeparam name="TV1"> The expected subtype of T1 that triggers the listener. </typeparam>
+            <typeparam name="TV2"> The expected subtype of T2 that triggers the listener. </typeparam>
+            <typeparam name="TV3"> The expected subtype of T3 that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.AddListenerValue``3(TinyReactive.Fields.ActionListener{``0,``1,``2},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the triggered values are of the specified types. </summary>
+            <typeparam name="TV1"> The expected subtype of T1 that triggers the listener. </typeparam>
+            <typeparam name="TV2"> The expected subtype of T2 that triggers the listener. </typeparam>
+            <typeparam name="TV3"> The expected subtype of T3 that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.RemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.RemoveListener(TinyReactive.Fields.ActionListener{`0,`1,`2})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.ToString">
+            <summary> Returns the string representation of the listener. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputListener`3.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputListener`3.Equals(TinyReactive.Fields.InputListener{`0,`1,`2})">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputListener`3.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.InputSingleListener">
+            <summary> Invokes listeners sequentially until one returns the expected result. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputSingleListener.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.InputSingleListener.listeners">
+            <summary> List of listeners that return a boolean value. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener list. </summary>
+            <param name="capacity"> Initial capacity of the internal listener list. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.Send(System.Boolean)">
+            <summary> Invokes all subscribed listeners until one returns the expected result. </summary>
+            <param name="expectedResult"> The boolean result that stops further listener invocation. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.AddListener(System.Func{System.Boolean})">
+            <summary> Adds a listener that will be invoked. </summary>
+            <param name="listener"> Listener that will be invoked. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.AddListener``1(System.Func{System.Boolean},``0)">
+            <summary> Adds a listener that will be invoked. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.RemoveListener(System.Func{System.Boolean})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.InputSingleListener.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.InputSingleListener.Equals(TinyReactive.Fields.InputSingleListener)">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.InputSingleListener.id"/>. </summary>
         </member>
         <member name="T:TinyReactive.Fields.IValue`1">
             <summary> Wrapper for returning a specific type of value. </summary>
@@ -51,6 +512,83 @@
         </member>
         <member name="P:TinyReactive.Fields.IValue`1.value">
             <summary> Target type. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.LazyList`1">
+            <summary> Internal list that defers synchronization until Apply is called, optimizing batch operations. </summary>
+            <typeparam name="T"> The type of the stored elements. </typeparam>
+        </member>
+        <member name="P:TinyReactive.Fields.LazyList`1.Count">
+            <summary> Gets the number of synchronized elements. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.LazyList`1.CountCache">
+            <summary> Gets the number of elements including pending changes. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.LazyList`1.isDirty">
+            <summary> Gets a value indicating whether the cache has un-applied changes. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.LazyList`1.IsReadOnly">
+            <summary> Always returns False. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.LazyList`1._elements">
+            <summary> Internal list storing the synchronized elements. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.LazyList`1._cache">
+            <summary> Internal list storing the pending changes. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.LazyList`1.Item(System.Int32)">
+            <summary> Gets or sets the element at the specified index in the synchronized list. </summary>
+            <param name="index"> The zero-based index of the element to get or set. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the internal lists. </summary>
+            <param name="capacity"> Initial capacity of the internal lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.GetEnumerator">
+            <summary> Returns an enumerator that iterates through the synchronized elements. </summary>
+            <returns> An enumerator for the synchronized elements. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary> Returns an enumerator that iterates through the synchronized elements. </summary>
+            <returns> An enumerator for the synchronized elements. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Add(`0)">
+            <summary> Adds an element to the pending cache and marks the list as dirty. </summary>
+            <param name="item"> The element to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.IndexOf(`0)">
+            <summary> Determines the index of a specific element in the pending cache. </summary>
+            <param name="item"> The object to locate in the cache. </param>
+            <returns> The index of the element if found; otherwise, -1. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Insert(System.Int32,`0)">
+            <summary> Inserts an element into the pending cache at the specified index and marks the list as dirty. </summary>
+            <param name="index"> The zero-based index at which the element should be inserted. </param>
+            <param name="item"> The element to insert. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Clear">
+            <summary> Clears the pending cache and marks the list as dirty. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Contains(`0)">
+            <summary> Determines whether the pending cache contains a specific element. </summary>
+            <param name="item"> The object to locate in the cache. </param>
+            <returns> True if the element is found in the cache; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.CopyTo(`0[],System.Int32)">
+            <summary> Copies the synchronized elements to an array, starting at a particular array index. </summary>
+            <param name="array"> The one-dimensional array that is the destination of the elements. </param>
+            <param name="arrayIndex"> The zero-based index in the array at which copying begins. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.RemoveAt(System.Int32)">
+            <summary> Removes the element at the specified index from the pending cache and marks the list as dirty. </summary>
+            <param name="index"> The zero-based index of the element to remove. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Remove(`0)">
+            <summary> Removes the first occurrence of a specific element from the pending cache and marks the list as dirty. </summary>
+            <param name="item"> The element to remove. </param>
+            <returns> True if the element was successfully removed; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.LazyList`1.Apply">
+            <summary> Synchronizes the pending cache to the main list and clears the dirty flag. </summary>
         </member>
         <member name="T:TinyReactive.Fields.Observed`1">
             <summary> Observable value T, allows subscribing to changes. </summary>
@@ -203,13 +741,13 @@
             <summary> Returns the current unique <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
         </member>
         <member name="M:TinyReactive.Fields.Observed`1.Equals(TinyReactive.Fields.Observed{`0})">
-            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
         </member>
         <member name="M:TinyReactive.Fields.Observed`1.Equals(`0)">
             <summary> Compares an object by <see cref="P:TinyReactive.Fields.Observed`1.value"/>. </summary>
         </member>
         <member name="M:TinyReactive.Fields.Observed`1.Equals(System.Object)">
-            <summary> Compares an object by its <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.Observed`1.id"/>. </summary>
         </member>
         <member name="T:TinyReactive.Fields.Observed">
             <summary>
@@ -222,6 +760,206 @@
         </member>
         <member name="F:TinyReactive.Fields.Observed.CAPACITY">
             <summary> Default capacity for the internal listener lists. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.ObservedDictionary`2">
+            <summary> Observable dictionary, allows subscribing to add and remove operations. </summary>
+            <typeparam name="TKey"> The type of the keys in the dictionary. </typeparam>
+            <typeparam name="TValue"> The type of the values in the dictionary. </typeparam>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedDictionary`2.Count">
+            <summary> Gets the number of elements contained in the dictionary. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedDictionary`2.Keys">
+            <summary> Gets a collection containing the keys of the dictionary. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedDictionary`2.Values">
+            <summary> Gets a collection containing the values of the dictionary. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedDictionary`2.IsReadOnly">
+            <summary> Always returns False. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.onAdd">
+            <summary> List of parameterless listeners invoked on add operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.onAddWithValue">
+            <summary> List of listeners that receive the added value on add operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.onRemove">
+            <summary> List of parameterless listeners invoked on remove operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.onRemoveWithValue">
+            <summary> List of listeners that receive the removed value on remove operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedDictionary`2.dictionary">
+            <summary> Internal dictionary storing the elements. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the internal dictionary and listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.#ctor(System.Collections.Generic.Dictionary{`0,`1},System.Int32)">
+            <summary> Creates a new instance from a dictionary and initializes the listener lists. </summary>
+            <param name="value"> The initial elements. </param>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedDictionary`2.Item(`0)">
+            <summary> Gets or sets the value associated with the specified key. Setting a value notifies listeners. </summary>
+            <param name="key"> The key of the value to get or set. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary> Adds an element with the provided key and value to the dictionary and notifies listeners. </summary>
+            <param name="item"> The key-value pair to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Add(`0,`1)">
+            <summary> Adds an element with the provided key and value to the dictionary and notifies listeners. </summary>
+            <param name="key"> The key of the element to add. </param>
+            <param name="value"> The value of the element to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary> Removes the element with the specified key from the dictionary and notifies listeners. </summary>
+            <param name="item"> The key-value pair to remove. </param>
+            <returns> True if the element is successfully removed; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Remove(`0)">
+            <summary> Removes the element with the specified key from the dictionary and notifies listeners. </summary>
+            <param name="key"> The key of the element to remove. </param>
+            <returns> True if the element is successfully removed; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.RemoveRange(System.Collections.Generic.List{`1})">
+            <summary> Removes elements matching the specified values from the dictionary and notifies listeners. </summary>
+            <param name="values"> The values to remove. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Clear">
+            <summary> Removes all elements from the dictionary and resets the count. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+            <summary> Determines whether the dictionary contains a specific key-value pair. </summary>
+            <param name="item"> The key-value pair to locate in the dictionary. </param>
+            <returns> True if the key-value pair is found; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.TryGetValue(`0,`1@)">
+            <summary> Gets the value associated with the specified key. </summary>
+            <param name="key"> The key whose value to get. </param>
+            <param name="value"> When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter. </param>
+            <returns> True if the dictionary contains an element with the specified key; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.ContainsKey(`0)">
+            <summary> Determines whether the dictionary contains the specified key. </summary>
+            <param name="key"> The key to locate in the dictionary. </param>
+            <returns> True if the dictionary contains an element with the key; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+            <summary> Copies the elements of the dictionary to an array, starting at a particular array index. </summary>
+            <param name="array"> The one-dimensional array that is the destination of the elements. </param>
+            <param name="arrayIndex"> The zero-based index in the array at which copying begins. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.GetEnumerator">
+            <summary> Returns an enumerator that iterates through the dictionary. </summary>
+            <returns> An enumerator for the dictionary. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.System#Collections#IEnumerable#GetEnumerator">
+            <summary> Returns an enumerator that iterates through the dictionary. </summary>
+            <returns> An enumerator for the dictionary. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when an element is added. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when an element is added. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListener(TinyReactive.Fields.ActionListener{`1})">
+            <summary> Adds a listener that will be invoked when an element is added, receiving the added value. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListener``1(TinyReactive.Fields.ActionListener{`1},``0)">
+            <summary> Adds a listener that will be invoked when an element is added, receiving the added value. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListenerValue``1(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the added value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of TValue that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnAddListenerValue``1(TinyReactive.Fields.ActionListener{``0},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the added value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of TValue that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.RemoveOnAddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.RemoveOnAddListener(TinyReactive.Fields.ActionListener{`1})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when an element is removed. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when an element is removed. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListener(TinyReactive.Fields.ActionListener{`1})">
+            <summary> Adds a listener that will be invoked when an element is removed, receiving the removed value. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListener``1(TinyReactive.Fields.ActionListener{`1},``0)">
+            <summary> Adds a listener that will be invoked when an element is removed, receiving the removed value. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListenerValue``1(TinyReactive.Fields.ActionListener,TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the removed value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of TValue that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.AddOnRemoveListenerValue``1(TinyReactive.Fields.ActionListener{``0},TinyReactive.IUnloadLink)">
+            <summary> Adds a listener that will be called when the removed value is of the specified type. </summary>
+            <typeparam name="TV"> The expected subtype of TValue that triggers the listener. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.RemoveOnRemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.RemoveOnRemoveListener(TinyReactive.Fields.ActionListener{`1})">
+            <summary> Removes a previously added listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Unload">
+            <summary> Clears all listener lists and the internal dictionary. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.ObservedDictionary`2.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedDictionary`2.Equals(TinyReactive.Fields.ObservedDictionary{`0,`1})">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.ObservedDictionary`2.id"/>. </summary>
         </member>
         <member name="T:TinyReactive.Fields.ObservedExtension">
             <summary> Extension methods for <see cref="T:TinyReactive.Fields.Observed`1">Observed</see>. </summary>
@@ -435,6 +1173,242 @@
             <summary> Flips the current boolean value. </summary>
             <param name="obj"> Current. </param>
         </member>
+        <member name="T:TinyReactive.Fields.ObservedList`1">
+            <summary> Observable list, allows subscribing to add, remove, and clear operations. </summary>
+            <typeparam name="T"> The type of the stored elements. </typeparam>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedList`1.Count">
+            <summary> Gets the number of elements contained in the list. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedList`1.Current">
+            <summary> Gets the element in the collection at the current position of the enumerator. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedList`1.System#Collections#IEnumerator#Current">
+            <summary> Gets the element in the collection at the current position of the enumerator. </summary>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedList`1.IsReadOnly">
+            <summary> Always returns False. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.id">
+            <summary> Unique identifier automatically assigned to this instance. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.onAdd">
+            <summary> List of parameterless listeners invoked on add operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.onAddWithValue">
+            <summary> List of listeners that receive the added value on add operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.onRemove">
+            <summary> List of parameterless listeners invoked on remove operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.onRemoveWithValue">
+            <summary> List of listeners that receive the removed value on remove operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.onClear">
+            <summary> List of parameterless listeners invoked on clear operation. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1.list">
+            <summary> Internal list storing the elements. </summary>
+        </member>
+        <member name="F:TinyReactive.Fields.ObservedList`1._currentId">
+            <summary> Current index for the enumerator. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.#ctor(System.Int32)">
+            <summary> Creates a new instance and initializes the listener lists. </summary>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.#ctor(`0[],System.Int32)">
+            <summary> Creates a new instance from an array and initializes the listener lists. </summary>
+            <param name="value"> The initial elements. </param>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.#ctor(System.Collections.Generic.List{`0},System.Int32)">
+            <summary> Creates a new instance from a list and initializes the listener lists. </summary>
+            <param name="value"> The initial elements. </param>
+            <param name="capacity"> Initial capacity of the internal listener lists. </param>
+        </member>
+        <member name="P:TinyReactive.Fields.ObservedList`1.Item(System.Int32)">
+            <summary> Gets or sets the element at the specified index. Setting a value notifies listeners. </summary>
+            <param name="index"> The zero-based index of the element to get or set. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Add(`0[])">
+            <summary> Adds an array of elements to the end of the list and notifies listeners. </summary>
+            <param name="values"> The elements to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Add(`0)">
+            <summary> Adds an element to the end of the list and notifies listeners. </summary>
+            <param name="value"> The element to add. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Remove(`0[])">
+            <summary> Removes the first occurrence of specific elements from the list and notifies listeners. </summary>
+            <param name="values"> The elements to remove. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Remove(`0)">
+            <summary> Removes the first occurrence of a specific element from the list and notifies listeners. </summary>
+            <param name="value"> The element to remove. </param>
+            <returns> True if the element was successfully removed; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveAll">
+            <summary> Removes all elements individually and notifies listeners for each removal. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Clear">
+            <summary> Removes all elements from the list and notifies listeners. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.IndexOf(`0)">
+            <summary> Determines the index of a specific element in the list. </summary>
+            <param name="element"> The object to locate in the list. </param>
+            <returns> The index of the element if found; otherwise, -1. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Insert(System.Int32,`0)">
+            <summary> Inserts an element into the list at the specified index and notifies listeners. </summary>
+            <param name="index"> The zero-based index at which the element should be inserted. </param>
+            <param name="item"> The element to insert. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Contains(`0)">
+            <summary> Determines whether the list contains a specific element. </summary>
+            <param name="element"> The object to locate in the list. </param>
+            <returns> True if the element is found in the list; otherwise, false. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.CopyTo(`0[],System.Int32)">
+            <summary> Copies the elements of the list to an array, starting at a particular array index. </summary>
+            <param name="array"> The one-dimensional array that is the destination of the elements. </param>
+            <param name="arrayIndex"> The zero-based index in the array at which copying begins. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveAt(System.Int32)">
+            <summary> Removes the element at the specified index of the list and notifies listeners. </summary>
+            <param name="index"> The zero-based index of the element to remove. </param>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnAddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when an element is added. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnAddListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when an element is added. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnAddListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds a listener that will be invoked when an element is added, receiving the added value. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnAddListener``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds a listener that will be invoked when an element is added, receiving the added value. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveOnAddListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener from the list. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveOnAddListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Removes a previously added listener from the list. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnRemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when an element is removed. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnRemoveListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when an element is removed. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnRemoveListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Adds a listener that will be invoked when an element is removed, receiving the removed value. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnRemoveListener``1(TinyReactive.Fields.ActionListener{`0},``0)">
+            <summary> Adds a listener that will be invoked when an element is removed, receiving the removed value. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveOnRemoveListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added listener for removing an item from the list. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveOnRemoveListener(TinyReactive.Fields.ActionListener{`0})">
+            <summary> Removes a previously added listener for removing an item from the list. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnClearListener(TinyReactive.Fields.ActionListener)">
+            <summary> Adds a listener that will be invoked when the list is cleared. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.AddOnClearListener``1(TinyReactive.Fields.ActionListener,``0)">
+            <summary> Adds a listener that will be invoked when the list is cleared. </summary>
+            <typeparam name="TUnload"> <see cref="T:TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
+            <param name="listener"> Listener that will be invoked. </param>
+            <param name="unload"> Unload pool for automatic unsubscription. </param>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.RemoveOnClearListener(TinyReactive.Fields.ActionListener)">
+            <summary> Removes a previously added list-clearing listener. </summary>
+            <returns> Current instance. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary> Returns an enumerator that iterates through the list. </summary>
+            <returns> An enumerator for the list. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.GetEnumerator">
+            <summary> Returns an enumerator that iterates through the list. </summary>
+            <returns> An enumerator for the list. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.MoveNext">
+            <summary> Advances the enumerator to the next element of the list. </summary>
+            <returns> True if the next element exists. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Reset">
+            <summary> Resets the enumerator value. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Dispose">
+            <summary> Calls Reset and resets the enumerator value. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Unload">
+            <summary> Clears all listener lists. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.ToString">
+            <summary> Returns the string representation of the list type. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.GetHashCode">
+            <summary> Returns the current unique <see cref="F:TinyReactive.Fields.ObservedList`1.id"/>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedList`1.Equals(TinyReactive.Fields.ObservedList{`0})">
+            <summary> Compares an object by <see cref="F:TinyReactive.Fields.ObservedList`1.id"/>. </summary>
+        </member>
+        <member name="T:TinyReactive.Fields.ObservedListExtension">
+            <summary> Extension methods for <see cref="T:TinyReactive.Fields.ObservedList`1">ObservedList</see>. </summary>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedListExtension.Sort``1(TinyReactive.Fields.ObservedList{``0})">
+            <summary> Invokes the sort method on the included list. </summary>
+            <param name="list"> Target list. </param>
+            <typeparam name="T"> Comparable type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedListExtension.Sort``1(TinyReactive.Fields.ObservedList{``0},System.Comparison{``0})">
+            <summary> Invokes the sort method on the included list. </summary>
+            <param name="list"> Target list. </param>
+            <param name="comparison"></param>
+            <typeparam name="T"> Any object type. </typeparam>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedListExtension.ToArray``1(TinyReactive.Fields.ObservedList{``0})">
+            <summary> Converts values into an array. </summary>
+            <param name="list"> Target list. </param>
+            <typeparam name="T"> Any object type. </typeparam>
+            <returns> The resulting array. </returns>
+        </member>
+        <member name="M:TinyReactive.Fields.ObservedListExtension.ToList``1(TinyReactive.Fields.ObservedList{``0})">
+            <summary> Converts values into a list. </summary>
+            <param name="list"> Target list. </param>
+            <typeparam name="T"> Any object type. </typeparam>
+            <returns> The resulting list. </returns>
+        </member>
         <member name="T:TinyReactive.Fields.UnloadExtension">
             <summary>
             Extension methods for <see cref="T:TinyReactive.UnloadPool">UnloadPool</see> and <see cref="T:TinyReactive.IUnload">IUnload</see>.
@@ -525,6 +1499,13 @@
             <param name="unload"> A reference to the list for unloading. </param>
             <typeparam name="TUnload"> Type to be unloaded. </typeparam>
             <returns> Current. </returns>
+        </member>
+        <member name="T:TinyReactive.Fields.ValueChanger`1">
+            <summary>
+            Used in <see cref="T:TinyReactive.Fields.InputChanger`1">InputChanger</see>
+            to modify an unmanaged value by passing it by reference.
+            </summary>
+            <typeparam name="T"> Any unmanaged type. </typeparam>
         </member>
         <member name="T:TinyReactive.IUnload">
             <summary> Flag for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>

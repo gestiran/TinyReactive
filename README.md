@@ -1,6 +1,7 @@
 # TinyReactive
 
-A lightweight reactive programming library for C#, optimized for use in Unity and other .NET environments. It provides a convenient toolkit for working with reactive data and events.
+A lightweight reactive programming library for C#, optimized for use in Unity and other .NET environments.
+It provides a convenient toolkit for working with reactive data and events.
 
 **Key Features:**
 - Notification of all subscribers when data changes
@@ -49,7 +50,8 @@ This package is available on [OpenUPM](https://openupm.com/packages/com.ges.tiny
 }
 ```
 
-It is also available in `.tgz` format in the current [releases](https://github.com/gestiran/TinyReactive/releases). After downloading, place the `.tgz` archive in your project's `Packages` folder, and add a reference to it in your `manifest.json` file.
+It is also available in `.tgz` format in the current [releases](https://github.com/gestiran/TinyReactive/releases).
+After downloading, place the `.tgz` archive in your project's `Packages` folder, and add a reference to it in your `manifest.json` file.
 
 `Project/Packages/manifest.json`:
 
@@ -71,7 +73,7 @@ To install from [NuGet](https://www.nuget.org/packages/com.ges.tinyreactive), th
 
 ## Usage
 
-### `Observed<T>`
+### [`Observed<T>`](Sources~/com.ges.tinyreactive/Fields/Observed.cs)
 
 Allows tracking changes to a `T` value.
 
@@ -127,7 +129,7 @@ Counter changed: from 100 to 90
 Counter changed
 ```
 
-### `InputListener` and `InputListener<T>`
+### [`InputListener`](Sources~/com.ges.tinyreactive/Fields/InputListener.cs) and [`InputListener<T>`](Sources~/com.ges.tinyreactive/Fields/InputListener.cs)
 
 A trackable event without storing the current value.
 
@@ -187,7 +189,7 @@ Input Event: 10
 Input Event
 ```
 
-### `InputChanger<T>`
+### [`InputChanger<T>`](Sources~/com.ges.tinyreactive/Fields/InputChanger.cs)
 
 Exists for tracking and modifying `unmanaged` values.
 
@@ -221,7 +223,7 @@ Changed first: 110
 Changed second: 110
 ```
 
-### `ObservedList<T>`
+### [`ObservedList<T>`](Sources~/com.ges.tinyreactive/Fields/ObservedList.cs)
 
 Tracks the addition and removal of values in a `List<T>`, as well as its clearing.
 
@@ -272,13 +274,116 @@ Value: 25
 Value: 40
 ```
 
-### `ObservedDictionary<TKey, TValue>`
+### [`ObservedDictionary<TKey, TValue>`](Sources~/com.ges.tinyreactive/Fields/ObservedDictionary.cs)
 
-...
+Tracks the addition and removal of values in a `Dictionary<TKey, TValue>`.
+
+```csharp
+// Create ObservedDictionary field
+ObservedDictionary<string, int> values = new ObservedDictionary<string, int>();
+
+// Add listeners
+values.AddOnAddListener(OnValueAdd);
+values.AddOnRemoveListener(OnValueRemove);
+
+// Change values
+values.Add("Key1", 15);
+values.Add("Key2", 25);
+values.Add("Key3", 35);
+
+values.Remove("Key1");
+values["Key2"] = 40; // Triggers Remove for old value, then Add for new
+
+// Get values by key
+if (values.TryGetValue("Key2", out int foundValue)) {
+	Console.WriteLine($"Found: {foundValue}");
+}
+
+// Batch remove by values
+values.RemoveRange(new List<int> { 40 });
+
+Console.WriteLine($"Current values: {values.Count}");
+
+foreach(KeyValuePair<string, int> item in values) {
+	Console.WriteLine($"Pair: {item.Key}:{item.Value}");
+}
+
+// Remove listeners
+values.RemoveOnAddListener(OnValueAdd);
+values.RemoveOnRemoveListener(OnValueRemove);
+
+// Listen value add
+void OnValueAdd(int value) {
+	Console.WriteLine($"Added: {value}");
+}
+
+// Listen value remove
+void OnValueRemove(int value) {
+	Console.WriteLine($"Removed: {value}");
+}
+```
+
+```cmd
+Added: 15
+Added: 25
+Added: 35
+Removed: 15
+Removed: 25
+Added: 40
+Found: 40
+Removed: 40
+Current values: 1
+"Pair: Key3:35
+```
+
+Tracking a specific type of value.
+
+```csharp
+// Create ObservedDictionary field
+ObservedDictionary<string, object> values = new ObservedDictionary<string, object>();
+UnloadPool unload = new UnloadPool();
+
+// Add listeners
+values.AddOnAddListenerValue<int>(OnIntValueAdd, unload);
+values.AddOnAddListenerValue<string>(OnStringValueAdd, unload);
+
+// Change values
+values.Add("Key1", 15);
+values.Add("Key2", "Hello");
+values.Add("Key3", "World");
+values.Add("Key4", true);
+
+Console.WriteLine($"Current values: {values.Count}");
+
+// Remove listeners
+unload.Unload();
+
+// Listen value add, with type-specific filter
+void OnIntValueAdd(int value) {
+	Console.WriteLine($"Int added: {value}");
+}
+
+// Listen value add, with type-specific filter
+void OnStringValueAdd(string value) {
+	Console.WriteLine($"String added: {value}");
+}
+```
+
+```cmd
+Int added: 15
+String added: Hello
+String added: World
+Current values: 4
+```
 
 ## Serialization
 
-The `Observed<T>` and `ObservedList<T>` classes have built-in converters to the base type `T` and `List<T>` respectively. Implemented via `System.Text.Json`.
+The [`Observed<T>`](Sources~/com.ges.tinyreactive/Fields/Observed.cs) and [`ObservedList<T>`](Sources~/com.ges.tinyreactive/Fields/ObservedList.cs) classes
+have built-in converters to the base type `T` and `List<T>` respectively.
+Implemented via `System.Text.Json`.
+
+The serialization code is located in [`ObservedJsonConverter`](Sources~/com.ges.tinyreactive/JsonConverters/ObservedJsonConverter.cs)
+and [`ObservedListJsonConverter`](Sources~/com.ges.tinyreactive/JsonConverters/ObservedListJsonConverter.cs).
 
 ## Tools and Extensions
 
