@@ -333,7 +333,7 @@ Added: 40
 Found: 40
 Removed: 40
 Current values: 1
-"Pair: Key3:35
+Pair: Key3:35
 ```
 
 Tracking a specific type of value.
