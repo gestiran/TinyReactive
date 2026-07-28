@@ -7,20 +7,20 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "com.ges.tinyreactive.analyser/1.3.6": {
+      "com.ges.tinyreactive.analyser/1.3.12": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp.Workspaces": "4.3.0",
-          "com.ges.tinyutilities.analyser": "1.3.5"
+          "com.ges.tinyutilities.analyser": "1.3.14"
         },
         "runtime": {
           "com.ges.tinyreactive.analyser.dll": {}
         }
       },
-      "com.ges.tinyutilities.analyser/1.3.5": {
+      "com.ges.tinyutilities.analyser/1.3.14": {
         "runtime": {
           "lib/netstandard2.0/com.ges.tinyutilities.analyser.dll": {
-            "assemblyVersion": "1.3.5.0",
-            "fileVersion": "1.3.5.0"
+            "assemblyVersion": "1.3.14.0",
+            "fileVersion": "1.3.14.0"
           }
         }
       },
@@ -422,17 +422,17 @@
     }
   },
   "libraries": {
-    "com.ges.tinyreactive.analyser/1.3.6": {
+    "com.ges.tinyreactive.analyser/1.3.12": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "com.ges.tinyutilities.analyser/1.3.5": {
+    "com.ges.tinyutilities.analyser/1.3.14": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UwKlm8ZZdfBauv2ZmHY/dLP+Vl4yqlSNoafR2mJY5iEK4dUiFXt11jni2rKOC+MHcHLjgOwlEZdqpERf/4wXvQ==",
-      "path": "com.ges.tinyutilities.analyser/1.3.5",
-      "hashPath": "com.ges.tinyutilities.analyser.1.3.5.nupkg.sha512"
+      "sha512": "sha512-qOcQ+SeqcQlgsPtLSJ0kpqZAdTEYijjckBxIJnsrLLKytazT3jjQdl8sxscGx5IBbmg1fPT9dpSdjnF70LTuqw==",
+      "path": "com.ges.tinyutilities.analyser/1.3.14",
+      "hashPath": "com.ges.tinyutilities.analyser.1.3.14.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
