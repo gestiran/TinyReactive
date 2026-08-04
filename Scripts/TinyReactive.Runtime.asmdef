@@ -2,6 +2,8 @@
     "name": "TinyReactive.Runtime",
     "rootNamespace": "TinyReactive",
     "references": [
+        "TinyReactive.Core",
+        "TinyUtilities.Core",
         "TinyUtilities.Runtime",
         "UniTask"
     ],
@@ -10,8 +12,6 @@
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
-        "com.ges.tinyutilities.dll",
-        "com.ges.tinyreactive.dll",
         "Sirenix.OdinInspector.Attributes.dll"
     ],
     "autoReferenced": true,

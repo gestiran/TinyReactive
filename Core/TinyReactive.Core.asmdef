@@ -1,0 +1,16 @@
+{
+    "name": "TinyReactive.Core",
+    "rootNamespace": "TinyReactive",
+    "references": [
+        "TinyUtilities.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

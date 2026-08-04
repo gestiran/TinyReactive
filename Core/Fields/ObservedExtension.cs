@@ -65,7 +65,7 @@ namespace TinyReactive.Fields {
         /// <param name="obj"> Current. </param>
         /// <param name="value"> Amount to add. </param>
         /// <param name="maxValue"> Maximum value. </param>
-        public static void AddValueMax(this Observed<int> obj, int value, int maxValue) => obj.Set(MathfUtility.Min(obj.value + value, maxValue));
+        public static void AddValueMax(this Observed<int> obj, int value, int maxValue) => obj.Set(Mathf.Min(obj.value + value, maxValue));
         
         /// <summary> Increases the current value. </summary>
         /// <param name="obj"> Current. </param>
@@ -100,7 +100,7 @@ namespace TinyReactive.Fields {
         /// <param name="obj"> Current. </param>
         /// <param name="value"> Amount to add. </param>
         /// <param name="maxValue"> Maximum value. </param>
-        public static void AddValueMax(this Observed<float> obj, float value, float maxValue) => obj.Set(MathfUtility.Min(obj.value + value, maxValue));
+        public static void AddValueMax(this Observed<float> obj, float value, float maxValue) => obj.Set(Mathf.Min(obj.value + value, maxValue));
         
         /// <summary> Increases the current value. </summary>
         /// <param name="obj"> Current. </param>
@@ -158,7 +158,7 @@ namespace TinyReactive.Fields {
         /// <param name="value"> Amount to subtract. </param>
         /// <param name="minValue"> Minimum value. </param>
         public static void SubtractValueLimit(this Observed<int> obj, int value, int minValue) {
-            obj.Set(MathfUtility.Max(obj.value - value, minValue));
+            obj.Set(Mathf.Max(obj.value - value, minValue));
         }
         
         /// <summary> Decreases the current value. </summary>
@@ -207,7 +207,7 @@ namespace TinyReactive.Fields {
         /// <param name="value"> Amount to subtract. </param>
         /// <param name="minValue"> Minimum value. </param>
         public static void SubtractValueLimit(this Observed<float> obj, float value, float minValue) {
-            obj.Set(MathfUtility.Max(obj.value - value, minValue));
+            obj.Set(Mathf.Max(obj.value - value, minValue));
         }
         
         /// <summary> Decreases the current value. </summary>
@@ -324,13 +324,13 @@ namespace TinyReactive.Fields {
         /// <param name="obj"> Current. </param>
         /// <param name="values"> Target values. </param>
         /// <returns> Operation status. </returns>
-        public static bool TrySetMin(this Observed<float> obj, params float[] values) => obj.TrySet(MathfUtility.Min(values));
+        public static bool TrySetMin(this Observed<float> obj, params float[] values) => obj.TrySet(Mathf.Min(values));
         
         /// <summary> Set the minimum value from the passed array. </summary>
         /// <param name="obj"> Current. </param>
         /// <param name="values"> Target values. </param>
         /// <returns> Operation status. </returns>
-        public static bool TrySetMin(this Observed<int> obj, params int[] values) => obj.TrySet(MathfUtility.Min(values));
+        public static bool TrySetMin(this Observed<int> obj, params int[] values) => obj.TrySet(Mathf.Min(values));
         
         /// <summary> Set the value to a value between the specified values. </summary>
         /// <param name="obj"> Current. </param>
@@ -338,7 +338,7 @@ namespace TinyReactive.Fields {
         /// <param name="min"> Minimum value. </param>
         /// <param name="max"> Maximum value. </param>
         /// <returns> Operation status. </returns>
-        public static bool TrySetClamp(this Observed<int> obj, int value, int min, int max) => obj.TrySet(MathfUtility.Clamp(value, min, max));
+        public static bool TrySetClamp(this Observed<int> obj, int value, int min, int max) => obj.TrySet(Mathf.Clamp(value, min, max));
         
         [Obsolete("Can't use without parameters!", true)]
         public static bool TrySetMax(this Observed<int> obj) => false;
@@ -350,13 +350,13 @@ namespace TinyReactive.Fields {
         /// <param name="obj"> Current. </param>
         /// <param name="values"> Target values. </param>
         /// <returns> Operation status. </returns>
-        public static bool TrySetMax(this Observed<float> obj, params float[] values) => obj.TrySet(MathfUtility.Max(values));
+        public static bool TrySetMax(this Observed<float> obj, params float[] values) => obj.TrySet(Mathf.Max(values));
         
         /// <summary> Set the maximum value from the passed array. </summary>
         /// <param name="obj"> Current. </param>
         /// <param name="values"> Target values. </param>
         /// <returns> Operation status. </returns>
-        public static bool TrySetMax(this Observed<int> obj, params int[] values) => obj.TrySet(MathfUtility.Max(values));
+        public static bool TrySetMax(this Observed<int> obj, params int[] values) => obj.TrySet(Mathf.Max(values));
         
         /// <summary> Set the value if it is less than the current one. </summary>
         /// <param name="obj"> Current. </param>
