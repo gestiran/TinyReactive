@@ -187,7 +187,7 @@ namespace TinyReactive.Fields {
             T element = list[index];
             list.RemoveAt(index);
             onRemove.Invoke();
-            onAddWithValue.Invoke(element);
+            onRemoveWithValue.Invoke(element);
         }
         
         /// <summary> Adds a listener that will be invoked when an element is added. </summary>
