@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
 
 #if UNITASK_ENABLE
 using Task = Cysharp.Threading.Tasks.UniTask;
@@ -30,9 +31,6 @@ namespace TinyReactive.Fields {
         /// <param name="ms"> Value in milliseconds. </param>
         public static void OverrideDefaultANR(int ms) => asyncAnrMS = ms;
         
-        [Obsolete("Can't add nothing!", true)]
-        public static Task AddAsync<T>(this ObservedList<T> current) => default;
-        
         /// <summary> Add items to the list based on the app's ANR. </summary>
         /// <param name="current"> Current list. </param>
         /// <param name="values"> The items that need to be added. </param>
@@ -40,9 +38,6 @@ namespace TinyReactive.Fields {
         public static Task AddAsync<T>(this ObservedList<T> current, [NotNull] params T[] values) {
             return current.AddAsync(asyncAnrMS, CancellationToken.None, values);
         }
-        
-        [Obsolete("Can't add nothing!", true)]
-        public static Task AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation) => default;
         
         /// <summary> Add items to the list based on the app's ANR. </summary>
         /// <param name="current"> Current list. </param>
@@ -53,9 +48,6 @@ namespace TinyReactive.Fields {
             return current.AddAsync(asyncAnrMS, cancellation, values);
         }
         
-        [Obsolete("Can't add nothing!", true)]
-        public static Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation) => default;
-        
         /// <summary> Add items to the list based on the app's ANR. </summary>
         /// <param name="current"> Current list. </param>
         /// <param name="anr"> Maximum allowable ANR when performing asynchronous operations. </param>
@@ -64,6 +56,9 @@ namespace TinyReactive.Fields {
         /// <typeparam name="T"> The type of the stored value. </typeparam>
         public static async Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock.TryAdd(current.id, true) == false) {
+            #if UNITY_EDITOR || PERFORMANCE_DEBUG
+                Debug.LogError("ObservedList is locked!");
+            #endif
                 return;
             }
             
@@ -148,6 +143,9 @@ namespace TinyReactive.Fields {
         /// <typeparam name="T"> The type of the stored value. </typeparam>
         public static async Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock.TryAdd(current.id, true) == false) {
+            #if UNITY_EDITOR || PERFORMANCE_DEBUG
+                Debug.LogError("ObservedList is locked!");
+            #endif
                 return;
             }
             
@@ -230,6 +228,9 @@ namespace TinyReactive.Fields {
         /// <typeparam name="T"> The type of the stored value. </typeparam>
         public static async Task RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] params T[] values) {
             if (_lock.TryAdd(current.id, true) == false) {
+            #if UNITY_EDITOR || PERFORMANCE_DEBUG
+                Debug.LogError("ObservedList is locked!");
+            #endif
                 return;
             }
             
@@ -317,6 +318,9 @@ namespace TinyReactive.Fields {
         /// <typeparam name="T"> The type of the stored value. </typeparam>
         public static async Task RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation, [NotNull] T value) {
             if (_lock.TryAdd(current.id, true) == false) {
+            #if UNITY_EDITOR || PERFORMANCE_DEBUG
+                Debug.LogError("ObservedList is locked!");
+            #endif
                 return;
             }
             
@@ -373,5 +377,23 @@ namespace TinyReactive.Fields {
             
             _lock.Remove(current.id);
         }
+        
+        [Obsolete("Can't add nothing!", true)]
+        public static Task AddAsync<T>(this ObservedList<T> current) => default;
+        
+        [Obsolete("Can't add nothing!", true)]
+        public static Task AddAsync<T>(this ObservedList<T> current, CancellationToken cancellation) => default;
+        
+        [Obsolete("Can't add nothing!", true)]
+        public static Task AddAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation) => default;
+        
+        [Obsolete("Can't remove nothing!", true)]
+        public static Task RemoveAsync<T>(this ObservedList<T> current) => default;
+        
+        [Obsolete("Can't remove nothing!", true)]
+        public static Task RemoveAsync<T>(this ObservedList<T> current, CancellationToken cancellation) => default;
+        
+        [Obsolete("Can't remove nothing!", true)]
+        public static Task RemoveAsync<T>(this ObservedList<T> current, int anr, CancellationToken cancellation) => default;
     }
 }

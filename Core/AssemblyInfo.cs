@@ -7,5 +7,5 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("TinyReactive.Runtime")]
 [assembly: InternalsVisibleTo("TinyServices.Saving")]
 [assembly: InternalsVisibleTo("TinyMVC.Editor")]
+[assembly: InternalsVisibleTo("TinyMVC.Core")]
 [assembly: InternalsVisibleTo("TinyMVC.Runtime")]
-[assembly: InternalsVisibleTo("TinyMVC")]

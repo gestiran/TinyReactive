@@ -14,7 +14,7 @@ namespace TinyReactive.Editor.Fields {
         private InspectorPropertyInfo _listPropertyInfo;
         
         protected override void Initialize() {
-            FieldInfo listField = typeof(ObservedDictionary<TKey, TValue>).GetField("root", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo listField = typeof(ObservedDictionary<TKey, TValue>).GetField("dictionary", BindingFlags.Instance | BindingFlags.NonPublic);
             
             string label = Property.NiceName;
             
@@ -33,7 +33,7 @@ namespace TinyReactive.Editor.Fields {
             _listPropertyInfo = InspectorPropertyInfo.CreateForMember(Property, listField, true, attributes);
         }
         
-        public override int ChildNameToIndex(string name) => name == "root" ? 0 : -1;
+        public override int ChildNameToIndex(string name) => name == "dictionary" ? 0 : -1;
         
         public override InspectorPropertyInfo GetChildInfo(int childIndex) => _listPropertyInfo;
         

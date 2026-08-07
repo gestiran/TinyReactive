@@ -31,6 +31,12 @@ namespace TinyReactive.Fields {
         /// <summary> Always returns False. </summary>
         public bool IsReadOnly => false;
         
+        /// <summary> Internal list storing the elements. </summary>
+        internal List<T> list;
+        
+        /// <summary> Current index for the enumerator. </summary>
+        private int _currentId;
+        
         /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;
         
@@ -48,12 +54,6 @@ namespace TinyReactive.Fields {
         
         /// <summary> List of parameterless listeners invoked on clear operation. </summary>
         internal readonly LazyList<ActionListener> onClear;
-        
-        /// <summary> Internal list storing the elements. </summary>
-        internal List<T> list;
-        
-        /// <summary> Current index for the enumerator. </summary>
-        private int _currentId;
         
         /// <summary> Creates a new instance and initializes the listener lists. </summary>
         /// <param name="capacity"> Initial capacity of the internal listener lists. </param>
