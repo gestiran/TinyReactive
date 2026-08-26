@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.3.13</Version>
+        <Version>1.3.14</Version>
         
         <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>TinyReactive</RootNamespace>
@@ -34,7 +34,7 @@
 
     <ItemGroup>
         <None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <PackageReference Include="com.ges.tinyutilities" Version="1.3.16" />
+        <PackageReference Include="com.ges.tinyutilities" Version="1.3.17" />
     </ItemGroup>
     
 </Project>
