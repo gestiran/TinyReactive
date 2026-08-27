@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TinyUtilities.Roslyn;
 using TinyUtilities.Roslyn.Extensions;
 
-namespace TinyReactive.Analyser {
+namespace TinyReactive.Roslyn {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnloadRequireFixProvider)), Shared]
     public sealed class UnloadRequireFixProvider : InterfaceRequireFixProvider {
         public override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(Labels.ID_UNLOAD);

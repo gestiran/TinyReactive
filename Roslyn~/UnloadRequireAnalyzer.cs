@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using TinyUtilities.Roslyn;
 
-namespace TinyReactive.Analyser {
+namespace TinyReactive.Roslyn {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UnloadRequireAnalyzer : InterfaceRequireAnalyser {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(_rule);
