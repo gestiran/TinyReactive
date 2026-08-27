@@ -18,8 +18,11 @@ namespace TinyReactive {
         private readonly List<IUnload> _pool;
         
         /// <summary> Create empty unload pool. </summary>
+        public UnloadPool() : this(4) { }
+        
+        /// <summary> Create empty unload pool. </summary>
         /// <param name="capacity"> References an unload <see cref="System.Collections.Generic.List{T}">List</see> capacity. </param>
-        public UnloadPool(int capacity = 4) => _pool = new List<IUnload>(capacity);
+        public UnloadPool(int capacity) => _pool = new List<IUnload>(capacity);
         
         [Obsolete("Can`t use without parameters.", true)]
         public void Add() { }
