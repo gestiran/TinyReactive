@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.3.13</Version>
+        <Version>1.3.15</Version>
         
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>TinyReactive.Analyser</RootNamespace>
@@ -22,7 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.0" PrivateAssets="all"/>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" PrivateAssets="all"/>
-        <PackageReference Include="com.ges.tinyutilities.analyser" Version="1.3.16" PrivateAssets="all" />
+        <PackageReference Include="com.ges.tinyutilities.analyser" Version="1.3.18" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
