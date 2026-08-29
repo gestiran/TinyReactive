@@ -38,7 +38,7 @@ namespace TinyReactive.Fields {
         internal readonly LazyList<ActionListener<TValue>> onRemoveWithValue;
         
         /// <summary> Internal dictionary storing the elements. </summary>
-        internal readonly Dictionary<TKey, TValue> dictionary;
+        internal protected readonly Dictionary<TKey, TValue> dictionary;
         
         /// <summary> Creates a new instance and initializes the listener lists. </summary>
         /// <param name="capacity"> Initial capacity of the internal dictionary and listener lists. </param>

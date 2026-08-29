@@ -16,7 +16,7 @@ namespace TinyReactive.Fields {
 #endif
     public class Observed<T> : IValue<T>, IEquatable<Observed<T>>, IEquatable<T>, IUnload {
         /// <summary> Current value, can be changed via <see cref="Set"/> or <see cref="SetSilent"/>. </summary>
-        public T value { get; protected internal set; }
+        public T value { get; protected set; }
         
         /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;

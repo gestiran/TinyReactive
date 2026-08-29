@@ -32,7 +32,7 @@ namespace TinyReactive.Fields {
         public bool IsReadOnly => false;
         
         /// <summary> Internal list storing the elements. </summary>
-        internal List<T> list;
+        internal protected readonly List<T> list;
         
         /// <summary> Current index for the enumerator. </summary>
         private int _currentId;
