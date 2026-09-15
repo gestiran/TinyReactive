@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 
 namespace TinyReactive.Fields {
+    /// <summary> A composition that invokes subscribed listeners and combines their returned values. </summary>
+    /// <typeparam name="T"> The type of the returned values. </typeparam>
     public sealed class InputComposition<T> : IEquatable<InputComposition<T>>, IUnload {
+        /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;
         
         /// <summary> List of listeners that receive the new value on change. </summary>
@@ -18,6 +21,8 @@ namespace TinyReactive.Fields {
             listeners = new LazyList<CompositionListener<T>>(capacity);
         }
         
+        /// <summary> Invokes all subscribed listeners and returns their values as a single sequence. </summary>
+        /// <returns> Values returned by the subscribed listeners. </returns>
         public IEnumerable<T> Send() {
             if (listeners.isDirty) {
                 listeners.Apply();
@@ -62,6 +67,7 @@ namespace TinyReactive.Fields {
         // Resharper disable Unity.ExpensiveCode
         public void Unload() => listeners.Clear();
         
+        /// <summary> Returns the string representation of the composition. </summary>
         public override string ToString() => $"InputChanger<{typeof(T).Name}>";
         
         /// <summary> Returns the current unique <see cref="id"/>. </summary>
@@ -74,7 +80,11 @@ namespace TinyReactive.Fields {
         public override bool Equals(object obj) => obj is InputComposition<T> other && other.id == id;
     }
     
+    /// <summary> A composition that invokes subscribed listeners with a single value and combines their returned values. </summary>
+    /// <typeparam name="T"> The type of the value. </typeparam>
+    /// <typeparam name="TResult"> The type of the returned values. </typeparam>
     public sealed class InputComposition<T, TResult> : IEquatable<InputComposition<T, TResult>>, IUnload {
+        /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;
         
         /// <summary> List of listeners that receive the new value on change. </summary>
@@ -87,6 +97,9 @@ namespace TinyReactive.Fields {
             listeners = new LazyList<CompositionListener<T, TResult>>(capacity);
         }
         
+        /// <summary> Invokes all subscribed listeners with the specified value and returns their values as a single sequence. </summary>
+        /// <param name="value"> The value to pass to the listeners. </param>
+        /// <returns> Values returned by the subscribed listeners. </returns>
         public IEnumerable<TResult> Send(T value) {
             if (listeners.isDirty) {
                 listeners.Apply();
@@ -131,6 +144,7 @@ namespace TinyReactive.Fields {
         // Resharper disable Unity.ExpensiveCode
         public void Unload() => listeners.Clear();
         
+        /// <summary> Returns the string representation of the composition. </summary>
         public override string ToString() => $"InputChanger<{typeof(T).Name}, {typeof(TResult).Name}>";
         
         /// <summary> Returns the current unique <see cref="id"/>. </summary>
@@ -143,7 +157,12 @@ namespace TinyReactive.Fields {
         public override bool Equals(object obj) => obj is InputComposition<T, TResult> other && other.id == id;
     }
     
+    /// <summary> A composition that invokes subscribed listeners with two values and combines their returned values. </summary>
+    /// <typeparam name="T1"> The type of the first value. </typeparam>
+    /// <typeparam name="T2"> The type of the second value. </typeparam>
+    /// <typeparam name="TResult"> The type of the returned values. </typeparam>
     public sealed class InputComposition<T1, T2, TResult> : IEquatable<InputComposition<T1, T2, TResult>>, IUnload {
+        /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;
         
         /// <summary> List of listeners that receive the new value on change. </summary>
@@ -156,6 +175,10 @@ namespace TinyReactive.Fields {
             listeners = new LazyList<CompositionListener<T1, T2, TResult>>(capacity);
         }
         
+        /// <summary> Invokes all subscribed listeners with the specified values and returns their values as a single sequence. </summary>
+        /// <param name="value1"> The first value to pass to the listeners. </param>
+        /// <param name="value2"> The second value to pass to the listeners. </param>
+        /// <returns> Values returned by the subscribed listeners. </returns>
         public IEnumerable<TResult> Send(T1 value1, T2 value2) {
             if (listeners.isDirty) {
                 listeners.Apply();
@@ -201,6 +224,7 @@ namespace TinyReactive.Fields {
         // Resharper disable Unity.ExpensiveCode
         public void Unload() => listeners.Clear();
         
+        /// <summary> Returns the string representation of the composition. </summary>
         public override string ToString() => $"InputChanger<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(TResult).Name}>";
         
         /// <summary> Returns the current unique <see cref="id"/>. </summary>
@@ -213,7 +237,13 @@ namespace TinyReactive.Fields {
         public override bool Equals(object obj) => obj is InputComposition<T1, T2, TResult> other && other.id == id;
     }
     
+    /// <summary> A composition that invokes subscribed listeners with three values and combines their returned values. </summary>
+    /// <typeparam name="T1"> The type of the first value. </typeparam>
+    /// <typeparam name="T2"> The type of the second value. </typeparam>
+    /// <typeparam name="T3"> The type of the third value. </typeparam>
+    /// <typeparam name="TResult"> The type of the returned values. </typeparam>
     public sealed class InputComposition<T1, T2, T3, TResult> : IEquatable<InputComposition<T1, T2, T3, TResult>>, IUnload {
+        /// <summary> Unique identifier automatically assigned to this instance. </summary>
         internal readonly int id;
         
         /// <summary> List of listeners that receive the new value on change. </summary>
@@ -226,6 +256,11 @@ namespace TinyReactive.Fields {
             listeners = new LazyList<CompositionListener<T1, T2, T3, TResult>>(capacity);
         }
         
+        /// <summary> Invokes all subscribed listeners with the specified values and returns their values as a single sequence. </summary>
+        /// <param name="value1"> The first value to pass to the listeners. </param>
+        /// <param name="value2"> The second value to pass to the listeners. </param>
+        /// <param name="value3"> The third value to pass to the listeners. </param>
+        /// <returns> Values returned by the subscribed listeners. </returns>
         public IEnumerable<TResult> Send(T1 value1, T2 value2, T3 value3) {
             if (listeners.isDirty) {
                 listeners.Apply();
@@ -271,6 +306,7 @@ namespace TinyReactive.Fields {
         // Resharper disable Unity.ExpensiveCode
         public void Unload() => listeners.Clear();
         
+        /// <summary> Returns the string representation of the composition. </summary>
         public override string ToString() => $"InputChanger<{typeof(T1).Name}, {typeof(T2).Name}, {typeof(T3).Name}, {typeof(TResult).Name}>";
         
         /// <summary> Returns the current unique <see cref="id"/>. </summary>
