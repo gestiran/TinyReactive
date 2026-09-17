@@ -202,58 +202,6 @@ namespace TinyReactive.Fields {
             return this;
         }
         
-        /// <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
-        /// <param name="listener"> Listener that will be invoked. </param>
-        /// <returns> Current instance. </returns>
-        // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerLast(ActionListener listener) {
-            if (listeners.CountCache > 0) {
-                listeners.Insert(listeners.CountCache - 1, listener);
-            } else {
-                AddListener(listener);
-            }
-            
-            return this;
-        }
-        
-        /// <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
-        /// <typeparam name="TUnload"> <see cref="TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
-        /// <param name="listener"> Listener that will be invoked. </param>
-        /// <param name="unload"> Unload pool for automatic unsubscription. </param>
-        /// <returns> Current instance. </returns>
-        // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerLast<TUnload>(ActionListener listener, TUnload unload) where TUnload : IUnloadLink {
-            AddListenerLast(listener);
-            unload.Add(new UnloadAction(() => listeners.Remove(listener)));
-            return this;
-        }
-        
-        /// <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
-        /// <param name="listener"> Listener that will be invoked. </param>
-        /// <returns> Current instance. </returns>
-        // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerLast(ActionListener<T> listener) {
-            if (listenersValue.CountCache > 0) {
-                listenersValue.Insert(listenersValue.CountCache - 1, listener);
-            } else {
-                AddListener(listener);
-            }
-            
-            return this;
-        }
-        
-        /// <summary> Adds a listener to the end of the list, which will be triggered when the value changes. </summary>
-        /// <typeparam name="TUnload"> <see cref="TinyReactive.IUnloadLink">Unload</see> pool type. </typeparam>
-        /// <param name="listener"> Listener that will be invoked. </param>
-        /// <param name="unload"> Unload pool for automatic unsubscription. </param>
-        /// <returns> Current instance. </returns>
-        // Resharper disable Unity.ExpensiveCode
-        public Observed<T> AddListenerLast<TUnload>(ActionListener<T> listener, TUnload unload) where TUnload : IUnloadLink {
-            AddListenerLast(listener);
-            unload.Add(new UnloadAction(() => listenersValue.Remove(listener)));
-            return this;
-        }
-        
         /// <summary> Removes a previously added listener. </summary>
         /// <returns> Current instance. </returns>
         // Resharper disable Unity.ExpensiveCode
