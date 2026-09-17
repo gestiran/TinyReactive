@@ -63,40 +63,16 @@ namespace TinyReactive.Fields {
             get => dictionary[key];
             set {
                 if (dictionary.TryGetValue(key, out TValue current)) {
-                    if (onRemove.isDirty) {
-                        onRemove.Apply();
-                    }
-                    
-                    if (onRemoveWithValue.isDirty) {
-                        onRemoveWithValue.Apply();
-                    }
-                    
-                    for (int i = 0; i < onRemove.Count; i++) {
-                        onRemove[i].Invoke();
-                    }
-                    
-                    for (int i = 0; i < onRemoveWithValue.Count; i++) {
-                        onRemoveWithValue[i].Invoke(current);
-                    }
+                    onRemove.Invoke();
+                    onRemoveWithValue.Invoke(current);
+                } else {
+                    Count++;
                 }
                 
                 dictionary[key] = value;
                 
-                if (onAdd.isDirty) {
-                    onAdd.Apply();
-                }
-                
-                if (onAddWithValue.isDirty) {
-                    onAddWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onAdd.Count; i++) {
-                    onAdd[i].Invoke();
-                }
-                
-                for (int i = 0; i < onAddWithValue.Count; i++) {
-                    onAddWithValue[i].Invoke(value);
-                }
+                onAdd.Invoke();
+                onAddWithValue.Invoke(value);
             }
         }
         
@@ -110,22 +86,8 @@ namespace TinyReactive.Fields {
         public virtual void Add(TKey key, TValue value) {
             if (dictionary.TryAdd(key, value)) {
                 Count++;
-                
-                if (onAdd.isDirty) {
-                    onAdd.Apply();
-                }
-                
-                if (onAddWithValue.isDirty) {
-                    onAddWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onAdd.Count; i++) {
-                    onAdd[i].Invoke();
-                }
-                
-                for (int i = 0; i < onAddWithValue.Count; i++) {
-                    onAddWithValue[i].Invoke(value);
-                }
+                onAdd.Invoke();
+                onAddWithValue.Invoke(value);
             }
         }
         
@@ -140,23 +102,8 @@ namespace TinyReactive.Fields {
         public virtual bool Remove(TKey key) {
             if (dictionary.Remove(key, out TValue value)) {
                 Count--;
-                
-                if (onRemove.isDirty) {
-                    onRemove.Apply();
-                }
-                
-                if (onRemoveWithValue.isDirty) {
-                    onRemoveWithValue.Apply();
-                }
-                
-                for (int i = 0; i < onRemove.Count; i++) {
-                    onRemove[i].Invoke();
-                }
-                
-                for (int i = 0; i < onRemoveWithValue.Count; i++) {
-                    onRemoveWithValue[i].Invoke(value);
-                }
-                
+                onRemove.Invoke();
+                onRemoveWithValue.Invoke(value);
                 return true;
             }
             
@@ -180,23 +127,8 @@ namespace TinyReactive.Fields {
                     if (dataPair[dataId].Value.Equals(value)) {
                         dictionary.Remove(dataPair[dataId].Key);
                         Count--;
-                        
-                        if (onRemove.isDirty) {
-                            onRemove.Apply();
-                        }
-                        
-                        if (onRemoveWithValue.isDirty) {
-                            onRemoveWithValue.Apply();
-                        }
-                        
-                        for (int i = 0; i < onRemove.Count; i++) {
-                            onRemove[i].Invoke();
-                        }
-                        
-                        for (int i = 0; i < onRemoveWithValue.Count; i++) {
-                            onRemoveWithValue[i].Invoke(value);
-                        }
-                        
+                        onRemove.Invoke();
+                        onRemoveWithValue.Invoke(value);
                         break;
                     }
                     
