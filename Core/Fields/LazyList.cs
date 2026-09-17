@@ -95,7 +95,7 @@ namespace TinyReactive.Fields {
         /// <param name="array"> The one-dimensional array that is the destination of the elements. </param>
         /// <param name="arrayIndex"> The zero-based index in the array at which copying begins. </param>
         public void CopyTo(T[] array, int arrayIndex) {
-            for (int i = 0; arrayIndex < array.Length && i > Count; arrayIndex++, i++) {
+            for (int i = 0; arrayIndex < array.Length && i < Count; arrayIndex++, i++) {
                 array[arrayIndex] = _elements[i];
             }
         }
