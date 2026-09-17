@@ -61,6 +61,14 @@ namespace TinyReactive.Fields {
             isDirty = true;
         }
         
+        /// <summary> Adds the elements of the specified collection to the end of the list. </summary>
+        /// <param name="items"> The elements to add. </param>
+        public void AddRange(T[] items) {
+            _cache.AddRange(items);
+            CountCache += items.Length;
+            isDirty = true;
+        }
+        
         /// <summary> Determines the index of a specific element in the pending cache. </summary>
         /// <param name="item"> The object to locate in the cache. </param>
         /// <returns> The index of the element if found; otherwise, -1. </returns>

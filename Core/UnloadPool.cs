@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE.md for details.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using TinyReactive.Fields;
 
 namespace TinyReactive {
     /// <summary> Pool of resources requiring unloading, for unsubscribing from events and stopping asynchronous actions in case of scene unloading. </summary>
@@ -15,14 +15,14 @@ namespace TinyReactive {
         public bool isUnloaded { get; private set; }
         
         /// <summary> List of abstract references for unloading. </summary>
-        private readonly List<IUnload> _pool;
+        private readonly LazyList<IUnload> _pool;
         
         /// <summary> Create empty unload pool. </summary>
         public UnloadPool() : this(4) { }
         
         /// <summary> Create empty unload pool. </summary>
         /// <param name="capacity"> References an unload <see cref="System.Collections.Generic.List{T}">List</see> capacity. </param>
-        public UnloadPool(int capacity) => _pool = new List<IUnload>(capacity);
+        public UnloadPool(int capacity) => _pool = new LazyList<IUnload>(capacity);
         
         [Obsolete("Can`t use without parameters.", true)]
         public void Add() { }
@@ -61,9 +61,11 @@ namespace TinyReactive {
         
         /// <summary> Call <see cref="TinyReactive.IUnload.Unload">Unload</see> on all objects. </summary>
         public void Unload() {
-            int count = _pool.Count;
+            if (_pool.isDirty) {
+                _pool.Apply();   
+            }
             
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < _pool.Count; i++) {
                 _pool[i].Unload();
             }
             
