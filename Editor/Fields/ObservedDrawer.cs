@@ -43,6 +43,8 @@ namespace TinyReactive.Editor.Fields {
                         }
                         
                         EditorGUILayout.EndHorizontal();
+                    } else {
+                        DrawValue(label, valueProperty, current);
                     }
                 }
                 
