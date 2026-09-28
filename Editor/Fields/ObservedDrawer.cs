@@ -1,6 +1,7 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
+using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using TinyReactive.Fields;
 using UnityEditor;
@@ -20,7 +21,9 @@ namespace TinyReactive.Editor.Fields {
                 }
                 
                 if (valueProperty != null) {
-                    if (current is Observed<int> observedInt) {
+                    if (Property.GetAttribute<ReadOnlyAttribute>() != null) {
+                        DrawValue(label, valueProperty, current);
+                    } else if (current is Observed<int> observedInt) {
                         EditorGUILayout.BeginHorizontal();
                         
                         DrawValue(label, valueProperty, current);
@@ -40,8 +43,6 @@ namespace TinyReactive.Editor.Fields {
                         }
                         
                         EditorGUILayout.EndHorizontal();
-                    } else {
-                        DrawValue(label, valueProperty, current);
                     }
                 }
                 
@@ -61,6 +62,7 @@ namespace TinyReactive.Editor.Fields {
             }
         }
     }
+    
     public static class ObservedDrawer {
         public const string VALUE = "value";
         public const string X2 = "x2";
