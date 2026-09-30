@@ -1,8 +1,8 @@
 // Copyright (c) 2023 Derek Sliman
 // Licensed under the MIT License. See LICENSE.md for details.
 
-using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
+using Sirenix.Utilities.Editor;
 using TinyReactive.Fields;
 using UnityEditor;
 using UnityEngine;
@@ -21,28 +21,24 @@ namespace TinyReactive.Editor.Fields {
                 }
                 
                 if (valueProperty != null) {
-                    if (Property.GetAttribute<ReadOnlyAttribute>() != null) {
-                        DrawValue(label, valueProperty, current);
-                    } else if (current is Observed<int> observedInt) {
-                        EditorGUILayout.BeginHorizontal();
-                        
-                        DrawValue(label, valueProperty, current);
-                        
-                        if (ObservedDrawer.DrawButtonsInt(observedInt, GUILayout.Width(64f))) {
-                            ValueEntry.Values.ForceMarkDirty();
+                    ObservedDrawerSettingsAttribute settings = Property.GetAttribute<ObservedDrawerSettingsAttribute>();
+                    
+                    if (settings != null) {
+                        if (settings.ShowButtons) {
+                            if (current is Observed<int> observedInt) {
+                                if (ObservedDrawer.DrawValueAndButtonsInt(observedInt, label)) {
+                                    ValueEntry.Values.ForceMarkDirty();
+                                }
+                            } else if (current is Observed<float> observedFloat) {
+                                if (ObservedDrawer.DrawValueAndButtonsFloat(observedFloat, label)) {
+                                    ValueEntry.Values.ForceMarkDirty();
+                                }
+                            } else {
+                                DrawValue(label, valueProperty, current);
+                            }
+                        } else {
+                            DrawValue(label, valueProperty, current);
                         }
-                        
-                        EditorGUILayout.EndHorizontal();
-                    } else if (current is Observed<float> observedFloat) {
-                        EditorGUILayout.BeginHorizontal();
-                        
-                        DrawValue(label, valueProperty, current);
-                        
-                        if (ObservedDrawer.DrawButtonsFloat(observedFloat, GUILayout.Width(64f))) {
-                            ValueEntry.Values.ForceMarkDirty();
-                        }
-                        
-                        EditorGUILayout.EndHorizontal();
                     } else {
                         DrawValue(label, valueProperty, current);
                     }
@@ -69,41 +65,85 @@ namespace TinyReactive.Editor.Fields {
         public const string VALUE = "value";
         public const string X2 = "x2";
         public const string X0_5 = "x0.5";
+        public const float BUTTONS_WIDTH = 32f;
         
-        public static bool DrawButtonsInt<T>(T observed, GUILayoutOption width) where T : Observed<int> {
-            if (GUILayout.Button(X2, width)) {
-                int value = observed.value;
-                value = value == 0 ? 10 : value * 2;
+        private const float _SPACING = 2f;
+        
+        public static bool DrawValueAndButtonsInt<T>(T observed, GUIContent label) where T : Observed<int> {
+            GetControlRects(label, out Rect valueRect, out Rect x2Rect, out Rect x05Rect);
+            
+            bool changed = false;
+            
+            EditorGUI.BeginChangeCheck();
+            int value = SirenixEditorFields.IntField(valueRect, GetFieldLabel(label), observed.value);
+            
+            if (EditorGUI.EndChangeCheck()) {
                 observed.Set(value);
-                return true;
+                changed = true;
             }
             
-            if (GUILayout.Button(X0_5, width)) {
-                int value = observed.value;
-                value = value > 0 && value <= 10 ? 0 : value / 2;
-                observed.Set(value);
-                return true;
+            if (GUI.Button(x2Rect, X2)) {
+                value = observed.value;
+                observed.Set(value == 0 ? 10 : value * 2);
+                changed = true;
             }
             
-            return false;
+            if (GUI.Button(x05Rect, X0_5)) {
+                value = observed.value;
+                observed.Set(value > 0 && value <= 10 ? 0 : value / 2);
+                changed = true;
+            }
+            
+            return changed;
         }
         
-        public static bool DrawButtonsFloat<T>(T observed, GUILayoutOption width) where T : Observed<float> {
-            if (GUILayout.Button(X2, width)) {
-                float value = observed.value;
-                value = value == 0f ? 10f : value * 2f;
+        public static bool DrawValueAndButtonsFloat<T>(T observed, GUIContent label) where T : Observed<float> {
+            GetControlRects(label, out Rect valueRect, out Rect x2Rect, out Rect x05Rect);
+            
+            bool changed = false;
+            
+            EditorGUI.BeginChangeCheck();
+            float value = SirenixEditorFields.FloatField(valueRect, GetFieldLabel(label), observed.value);
+            
+            if (EditorGUI.EndChangeCheck()) {
                 observed.Set(value);
-                return true;
+                changed = true;
             }
             
-            if (GUILayout.Button(X0_5, width)) {
-                float value = observed.value;
-                value = value > 0f && value <= 10f ? 0f : value * 0.5f;
-                observed.Set(value);
-                return true;
+            if (GUI.Button(x2Rect, X2)) {
+                value = observed.value;
+                observed.Set(value == 0f ? 10f : value * 2f);
+                changed = true;
             }
             
-            return false;
+            if (GUI.Button(x05Rect, X0_5)) {
+                value = observed.value;
+                observed.Set(value > 0f && value <= 10f ? 0f : value * 0.5f);
+                changed = true;
+            }
+            
+            return changed;
+        }
+        
+        private static void GetControlRects(GUIContent label, out Rect valueRect, out Rect x2Rect, out Rect x05Rect) {
+            GUIContent fieldLabel = GetFieldLabel(label);
+            float buttonsWidth = BUTTONS_WIDTH * 2f + _SPACING * 2f;
+            Rect rect = EditorGUILayout.GetControlRect(fieldLabel != null, GUILayout.MinWidth(buttonsWidth), GUILayout.ExpandWidth(true));
+            
+            valueRect = rect;
+            valueRect.width = Mathf.Max(0f, rect.width - buttonsWidth);
+            
+            x2Rect = rect;
+            x2Rect.x = valueRect.xMax + _SPACING;
+            x2Rect.width = BUTTONS_WIDTH;
+            
+            x05Rect = rect;
+            x05Rect.x = x2Rect.xMax + _SPACING;
+            x05Rect.width = BUTTONS_WIDTH;
+        }
+        
+        private static GUIContent GetFieldLabel(GUIContent label) {
+            return label == null || string.IsNullOrEmpty(label.text) ? null : label;
         }
     }
 }
