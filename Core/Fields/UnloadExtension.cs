@@ -45,7 +45,7 @@ namespace TinyReactive.Fields {
                 try {
                     obj.Unload();
                 } catch (Exception exception) {
-                    DebugUtility.LogError(new UnloadException($"{obj}", exception));
+                    DebugUtility.LogException(new UnloadException($"{obj}", exception));
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace TinyReactive.Fields {
                     unload.Key.Unload();
                     unload.Value.Unload();
                 } catch (Exception exception) {
-                    DebugUtility.LogError(new UnloadException($"{unload}", exception));
+                    DebugUtility.LogException(new UnloadException($"{unload}", exception));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace TinyReactive.Fields {
                 try {
                     unload.Unload();
                 } catch (Exception exception) {
-                    DebugUtility.LogError(new UnloadException($"{unload}", exception));
+                    DebugUtility.LogException(new UnloadException($"{unload}", exception));
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace TinyReactive.Fields {
                 try {
                     other.Unload();
                 } catch (Exception exception) {
-                    DebugUtility.LogError(new UnloadException($"{obj}", exception));
+                    DebugUtility.LogException(new UnloadException($"{obj}", exception));
                 }
             }
         }
