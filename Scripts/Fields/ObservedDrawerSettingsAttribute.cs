@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TinyReactive.Editor.Fields {
+namespace TinyReactive.Fields {
     [AttributeUsage(AttributeTargets.Field)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public sealed class ObservedDrawerSettingsAttribute : Attribute {
